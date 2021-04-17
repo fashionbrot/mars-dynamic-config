@@ -3,13 +3,6 @@
 //
 //import com.alibaba.fastjson.JSON;
 //import com.github.fashionbrot.validated.exception.ValidatedException;
-//import com.jinxing.wms.common.annotation.PersistentLog;
-//import com.jinxing.wms.common.exception.HzzyException;
-//import com.jinxing.wms.common.model.LoginModel;
-//import com.jinxing.wms.common.util.IpUtil;
-//import com.jinxing.wms.core.entity.sys.LogEntity;
-//import com.jinxing.wms.core.service.LogService;
-//import com.jinxing.wms.core.service.UserLoginService;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;
 //import lombok.extern.slf4j.Slf4j;
@@ -47,7 +40,7 @@
 //    @Autowired
 //    private HttpServletRequest request;
 //
-//    @Pointcut("execution(public * com.jinxing.wms.console.controller..*(..))")
+//    @Pointcut("execution(public * com.wms.console.controller..*(..))")
 //    public void aspect() {
 //    }
 //
@@ -160,7 +153,7 @@
 //                return;
 //            }
 //        }else{
-//            if (exception!=null && (exception instanceof HzzyException || exception instanceof ValidatedException)){
+//            if (exception!=null && ( exception instanceof ValidatedException)){
 //                log.info("syslog-start requestDesc:{} requestUrl:{} requestMethod:{} requestIp:{} requestParam:{} interfaceType:{} userId:{}  logType:{} exception:{} ",
 //                        requestDesc, requestUrl, requestMethod, requestIp, requestParams, 1, userId, logType,exception.getMessage());
 //                return;

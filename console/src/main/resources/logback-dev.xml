@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+	<property name="destination" value="/data/home/www/fashionbrot/logs/" />
+
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<target>System.out</target>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%X{UUID}] %-5level [%thread] %logger{36} - %L : %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${destination}/console.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${destination}/console.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%X{UUID}] %-5level [%thread] %logger{36} - %L : %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<logger name="org.springframework.boot.web.servlet.support.ErrorPageFilter" level="OFF" />
+	<logger name="springfox" level="OFF"/>
+	<logger name="org.springframework" level="OFF"/>
+	<logger name="com.baomidou" level="OFF"/>
+
+
+		<root level="debug">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="STDOUT" />
+		</root>
+
+
+
+</configuration>
