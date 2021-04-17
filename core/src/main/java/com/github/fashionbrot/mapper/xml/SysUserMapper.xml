@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.SysUserMapper">
+
+
+    <resultMap type="com.github.fashionbrot.entity.SysUserEntity" id="sysUserMap">
+            <result property="id" column="id"/>
+            <result property="userName" column="user_name"/>
+            <result property="account" column="account"/>
+            <result property="password" column="password"/>
+            <result property="salt" column="salt"/>
+            <result property="status" column="status"/>
+            <result property="roleId" column="role_id"/>
+            <result property="superAdmin" column="super_admin"/>
+            <result property="createDate" column="create_date"/>
+            <result property="updateDate" column="update_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <resultMap type="com.github.fashionbrot.dto.SysUserDTO" id="sysUserDtoMap">
+            <result property="id" column="id"/>
+            <result property="userName" column="user_name"/>
+            <result property="account" column="account"/>
+            <result property="password" column="password"/>
+            <result property="salt" column="salt"/>
+            <result property="status" column="status"/>
+            <result property="roleId" column="role_id"/>
+            <result property="superAdmin" column="super_admin"/>
+            <result property="createDate" column="create_date"/>
+            <result property="updateDate" column="update_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    <sql id="allSql">
+        id,user_name,account,password,salt,status,role_id,super_admin,create_date,update_date,del_flag
+    </sql>
+
+    
+
+</mapper>

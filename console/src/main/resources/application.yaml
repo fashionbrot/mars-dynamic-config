@@ -1,0 +1,4 @@
+
+mybatis-plus:
+  mapper-locations: classpath*:com/github/fashionbrot/mapper/xml/*.xml
+  type-aliases-package: com.github.fashionbrot.entity

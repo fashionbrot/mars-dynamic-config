@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.SysLogMapper">
+
+
+    <resultMap type="com.github.fashionbrot.entity.SysLogEntity" id="sysLogMap">
+            <result property="id" column="id"/>
+            <result property="requestDesc" column="request_desc"/>
+            <result property="requestUrl" column="request_url"/>
+            <result property="methodType" column="method_type"/>
+            <result property="requestIp" column="request_ip"/>
+            <result property="requestParam" column="request_param"/>
+            <result property="targetMethod" column="target_method"/>
+            <result property="logType" column="log_type"/>
+            <result property="interfaceType" column="interface_type"/>
+            <result property="createId" column="create_id"/>
+            <result property="createDate" column="create_date"/>
+            <result property="exception" column="exception"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <resultMap type="com.github.fashionbrot.dto.SysLogDTO" id="sysLogDtoMap">
+            <result property="id" column="id"/>
+            <result property="requestDesc" column="request_desc"/>
+            <result property="requestUrl" column="request_url"/>
+            <result property="methodType" column="method_type"/>
+            <result property="requestIp" column="request_ip"/>
+            <result property="requestParam" column="request_param"/>
+            <result property="targetMethod" column="target_method"/>
+            <result property="logType" column="log_type"/>
+            <result property="interfaceType" column="interface_type"/>
+            <result property="createId" column="create_id"/>
+            <result property="createDate" column="create_date"/>
+            <result property="exception" column="exception"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    <sql id="allSql">
+        id,request_desc,request_url,method_type,request_ip,request_param,target_method,log_type,interface_type,create_id,create_date,exception,del_flag
+    </sql>
+
+    
+
+</mapper>
