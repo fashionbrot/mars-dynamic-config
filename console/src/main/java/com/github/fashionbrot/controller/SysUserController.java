@@ -130,6 +130,7 @@ public class SysUserController {
         return RespVo.success(service.getById(id));
     }
 
+    @MarsLog
     @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
@@ -140,6 +141,7 @@ public class SysUserController {
     }
 
 
+    @MarsLog
     @MarsPermission(":updateById")
     @ApiOperation("修改")
     @PostMapping("/updateById")
@@ -150,6 +152,7 @@ public class SysUserController {
     }
 
 
+    @MarsLog
     @MarsPermission(":deleteById")
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
@@ -160,14 +163,7 @@ public class SysUserController {
     }
 
 
-    @MarsPermission(":deleteByIds")
-    @ApiOperation("批量删除")
-    @PostMapping("/deleteByIds")
-    @ResponseBody
-    public RespVo delete(@RequestBody Long[] ids){
-        service.removeByIds(Arrays.asList(ids));
-        return RespVo.success();
-    }
+
 
 
 

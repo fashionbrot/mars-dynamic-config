@@ -1,10 +1,14 @@
 package com.github.fashionbrot.controller;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.SysMenuEntity;
+import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysMenuReq;
 import com.github.fashionbrot.service.SysMenuService;
+import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.util.CaffeineCacheUtil;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
@@ -48,6 +52,9 @@ public class SysMenuController  {
 
     @Autowired
     public SysMenuService service;
+
+    @Autowired
+    private SysUserService sysUserService;
 
     @MarsPermission(":index")
     @GetMapping("/index")
@@ -104,44 +111,47 @@ public class SysMenuController  {
         return RespVo.success(service.getById(id));
     }
 
+    @MarsLog
     @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
     @ResponseBody
     public RespVo add(@RequestBody SysMenuEntity entity){
         service.save(entity);
+        clearCache();
         return RespVo.success();
     }
 
 
+    @MarsLog
     @MarsPermission(":updateById")
     @ApiOperation("修改")
     @PostMapping("/updateById")
     @ResponseBody
     public RespVo updateById(@RequestBody SysMenuEntity entity){
         service.updateById(entity);
+        clearCache();
         return RespVo.success();
     }
 
 
+    @MarsLog
     @MarsPermission(":deleteById")
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
     @ResponseBody
     public RespVo deleteById(Long id){
         service.removeById(id);
+        clearCache();
         return RespVo.success();
     }
 
-
-    @MarsPermission(":deleteByIds")
-    @ApiOperation("批量删除")
-    @PostMapping("/deleteByIds")
-    @ResponseBody
-    public RespVo delete(@RequestBody Long[] ids){
-        service.removeByIds(Arrays.asList(ids));
-        return RespVo.success();
+    private void clearCache() {
+        LoginModel login = sysUserService.getLogin();
+        CaffeineCacheUtil.clear(login.getUserId());
     }
+
+
 
 
     @RequestMapping("loadAllMenu")

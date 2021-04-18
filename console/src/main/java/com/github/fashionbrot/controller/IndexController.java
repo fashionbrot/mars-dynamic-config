@@ -2,9 +2,11 @@ package com.github.fashionbrot.controller;
 
 
 import com.github.fashionbrot.entity.SysMenuEntity;
+import com.github.fashionbrot.exception.MarsException;
 import com.github.fashionbrot.service.SysMenuService;
 import com.github.fashionbrot.service.SysUserService;
 import com.github.fashionbrot.util.CookieUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,6 +18,7 @@ import java.util.List;
 
 
 @Controller
+@Slf4j
 public class IndexController {
 
     @Autowired
@@ -26,13 +29,34 @@ public class IndexController {
 
     @GetMapping("/index")
     public String index(ModelMap mmap){
-        setModelMap(mmap);
+        try {
+            setModelMap(mmap);
+        }catch (Exception e){
+            if (e instanceof MarsException){
+                MarsException m = (MarsException) e;
+                if (m.getCode()==11){
+                    return "/login";
+                }
+            }
+            log.error("index error",e);
+        }
         return "index";
     }
 
     @GetMapping("/index-topnav")
     public String indexTopnav(ModelMap mmap){
-        setModelMap(mmap);
+        try {
+            setModelMap(mmap);
+        }catch (Exception e){
+            if (e instanceof MarsException){
+                MarsException m = (MarsException) e;
+                if (m.getCode()==11){
+                    return "/login";
+                }
+            }
+            log.error("indexTopnav error",e);
+        }
+
         return "index-topnav";
     }
 

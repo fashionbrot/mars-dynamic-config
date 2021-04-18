@@ -35,9 +35,7 @@ public class BackstageInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
-        if (true){
-            return true;
-        }
+
         LoginModel model = sysUserService.getSafeLogin();
         if (model == null) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
@@ -51,15 +49,18 @@ public class BackstageInterceptor implements HandlerInterceptor {
         }
 
         if (!sysMenuService.checkPermission(handler,model)){
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            if ( handlerMethod.hasMethodAnnotation(ResponseBody.class)){
-                returnJson(response, RespVo.builder()
-                        .code(RespVo.FAILED)
-                        .msg(RespEnum.NOT_PERMISSION_ERROR.getMsg())
-                        .build());
-                return false;
+            if (handler instanceof  HandlerMethod){
+                HandlerMethod handlerMethod = (HandlerMethod) handler;
+                if ( handlerMethod.hasMethodAnnotation(ResponseBody.class)){
+                    returnJson(response, RespVo.builder()
+                            .code(RespVo.FAILED)
+                            .msg(RespEnum.NOT_PERMISSION_ERROR.getMsg())
+                            .build());
+                    return false;
+                }
+            }else{
+                response.sendRedirect(url(request)+"/401?requestUrl="+request.getRequestURI());
             }
-            response.sendRedirect(url(request)+"/401?requestUrl="+request.getRequestURI());
             return false;
         }else{
             return true;

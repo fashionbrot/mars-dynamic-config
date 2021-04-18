@@ -56,11 +56,10 @@
 
     <select id="selectMenuRoleByUser" parameterType="java.util.Map" resultMap="sysMenuMap">
         SELECT e.id,e.menu_name,e.menu_level,e.menu_url,e.parent_menu_id,e.priority,e.permission
-        FROM  sys_user_role_relation b
-        INNER JOIN sys_role c on c.id=b.role_id   and c.del_flag=0 and c.status=1
+        FROM   sys_role c
         INNER JOIN sys_menu_role_relation d on d.role_id=c.id
         INNER JOIN sys_menu e on e.id=d.menu_id   and e.del_flag=0
-        WHERE b.user_id=#{userId}
+        WHERE c.del_flag=0 and c.status=1 and c.id = #{roleId}
         ORDER BY e.priority ASC
     </select>
 

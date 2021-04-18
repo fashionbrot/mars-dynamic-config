@@ -4,19 +4,23 @@ package com.github.fashionbrot.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.SysMenuEntity;
 import com.github.fashionbrot.mapper.SysMenuMapper;
 import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysMenuReq;
 import com.github.fashionbrot.service.SysMenuService;
 import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.util.CaffeineCacheUtil;
 import com.github.fashionbrot.util.ConvertUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.method.HandlerMethod;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -46,7 +50,62 @@ public class SysMenuServiceImpl  extends ServiceImpl<SysMenuMapper, SysMenuEntit
 
     @Override
     public boolean checkPermission(Object handler, LoginModel model) {
+        if (handler instanceof HandlerMethod) {
+            //如果是超级管理员
+            if (model!=null && model.isSuperAdmin()){
+                return true;
+            }
+
+            HandlerMethod handlerMethod = (HandlerMethod) handler;
+            Method method = handlerMethod.getMethod();
+
+            String permission = null;
+            MarsPermission classAnnotation = method.getDeclaringClass().getAnnotation(MarsPermission.class);
+            if (classAnnotation!=null){
+                MarsPermission methodAnnotation = method.getAnnotation(MarsPermission.class);
+                permission = classAnnotation.value() + methodAnnotation.value();
+            }else{
+                MarsPermission methodAnnotation = method.getAnnotation(MarsPermission.class);
+                if (methodAnnotation!=null){
+                    permission =  methodAnnotation.value();
+                }
+            }
+
+            if (permission!=null) {
+                List<SysMenuEntity> menuBarList = getMenus(model);
+                if (CollectionUtils.isNotEmpty(menuBarList)) {
+                    for (SysMenuEntity m : menuBarList) {
+                        //验证菜单是否有权限
+                        if ( (m.getMenuLevel() == 2 || m.getMenuLevel() == 3) && m.getPermission().equals(permission)) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+            return true;
+        }
+
         return false;
+    }
+
+    public List<SysMenuEntity> getMenus(LoginModel model) {
+        Long userId = model.getUserId();
+        List<SysMenuEntity> menuBarList = (List<SysMenuEntity>) CaffeineCacheUtil.getCache(userId);
+
+        if (CollectionUtils.isNotEmpty(menuBarList)) {
+            return menuBarList;
+        } else {
+            if (model.isSuperAdmin()){
+                menuBarList = baseMapper.selectList(null);
+            }else{
+                Map<String,Object> map =new HashMap<>();
+                map.put("roleId",model.getRoleId());
+                menuBarList = baseMapper.selectMenuRoleByUser(map);
+            }
+            CaffeineCacheUtil.setCache(userId,menuBarList);
+        }
+        return menuBarList;
     }
 
     @Override

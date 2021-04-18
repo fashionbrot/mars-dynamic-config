@@ -1,10 +1,14 @@
 package com.github.fashionbrot.controller;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.SysRoleEntity;
+import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysRoleReq;
 import com.github.fashionbrot.service.SysRoleService;
+import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.util.CaffeineCacheUtil;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
@@ -47,6 +51,8 @@ public class SysRoleController  {
 
     @Autowired
     public SysRoleService service;
+    @Autowired
+    private SysUserService sysUserService;
 
     @MarsPermission(":index")
     @GetMapping("/index")
@@ -92,6 +98,7 @@ public class SysRoleController  {
         return RespVo.success(service.getById(id));
     }
 
+    @MarsLog
     @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
@@ -102,6 +109,7 @@ public class SysRoleController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":updateById")
     @ApiOperation("修改")
     @PostMapping("/updateById")
@@ -112,6 +120,7 @@ public class SysRoleController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":deleteById")
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
@@ -122,14 +131,6 @@ public class SysRoleController  {
     }
 
 
-    @MarsPermission(":deleteByIds")
-    @ApiOperation("批量删除")
-    @PostMapping("/deleteByIds")
-    @ResponseBody
-    public RespVo delete(@RequestBody Long[] ids){
-        service.removeByIds(Arrays.asList(ids));
-        return RespVo.success();
-    }
 
 
 

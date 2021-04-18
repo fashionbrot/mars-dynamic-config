@@ -13,10 +13,7 @@ import com.github.fashionbrot.mapper.SysUserMapper;
 import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysUserReq;
 import com.github.fashionbrot.service.SysUserService;
-import com.github.fashionbrot.util.ConvertUtil;
-import com.github.fashionbrot.util.CookieUtil;
-import com.github.fashionbrot.util.EncryptUtil;
-import com.github.fashionbrot.util.JwtTokenUtil;
+import com.github.fashionbrot.util.*;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.pagehelper.Page;
@@ -39,6 +36,7 @@ import java.util.Map;
  * @email fashionbrot@163.com
  * @date 2021-04-17
  */
+@SuppressWarnings("ALL")
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity> implements SysUserService {
 
@@ -122,6 +120,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
                 .roleId(roleId)
                 .build();
         setRequest(loginModel);
+
+        CaffeineCacheUtil.clear(userInfo.getId());
 
         return null;
     }
