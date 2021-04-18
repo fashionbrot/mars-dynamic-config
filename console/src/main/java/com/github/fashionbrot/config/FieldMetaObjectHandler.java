@@ -2,6 +2,10 @@ package com.github.fashionbrot.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.github.fashionbrot.entity.SysLogEntity;
+import com.github.fashionbrot.model.LoginModel;
+import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.service.UserLoginService;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
@@ -27,6 +31,9 @@ public class FieldMetaObjectHandler implements MetaObjectHandler, BeanFactoryAwa
      */
     @Override
     public void insertFill(MetaObject metaObject) {
+        if (metaObject.getOriginalObject() instanceof SysLogEntity){
+            return;
+        }
         if (hasFiled(CREATE_ID,metaObject)) {
             setFieldValByName(CREATE_ID, getUserId(), metaObject);
         }
@@ -45,6 +52,7 @@ public class FieldMetaObjectHandler implements MetaObjectHandler, BeanFactoryAwa
      */
     @Override
     public void updateFill(MetaObject metaObject) {
+
         if (hasFiled(UPDATE_ID,metaObject)) {
             setFieldValByName(UPDATE_ID,getUserId(),metaObject);
         }
@@ -62,12 +70,18 @@ public class FieldMetaObjectHandler implements MetaObjectHandler, BeanFactoryAwa
     }
 
     private Long getUserId(){
+        LoginModel safeLogin = sysUserService.getSafeLoginUser();
+        if (safeLogin!=null){
+            return safeLogin.getUserId();
+        }
         return 0L;
     }
 
+    private UserLoginService sysUserService;
+
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-
+        sysUserService = beanFactory.getBean(UserLoginService.class);
     }
 
 }

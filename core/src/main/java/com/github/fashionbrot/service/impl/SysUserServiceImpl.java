@@ -13,6 +13,7 @@ import com.github.fashionbrot.mapper.SysUserMapper;
 import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysUserReq;
 import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.*;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.fashionbrot.vo.RespVo;
@@ -47,6 +48,8 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
 
     @Autowired
     private SysRoleMapper sysRoleMapper;
+    @Autowired
+    private UserLoginService userLoginService;
 
     @Override
     public Object pageReq(SysUserReq req) {
@@ -66,7 +69,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
         if (pwd.equals(newPwd)) {
             throw new MarsException("新密码和原密码一致，请修改");
         }
-        LoginModel login = getLogin();
+        LoginModel login = userLoginService.getLogin();
         SysUserEntity user = baseMapper.selectById(login.getUserId());
         if (user != null) {
             String salt =user.getSalt();
@@ -119,7 +122,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
                 .roleName(roleName)
                 .roleId(roleId)
                 .build();
-        setRequest(loginModel);
+        userLoginService.setRequest(loginModel);
 
         CaffeineCacheUtil.clear(userInfo.getId());
 
@@ -142,33 +145,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
         baseMapper.updateById(entity);
     }
 
-    public LoginModel getLogin() {
-        String token = CookieUtil.getCookieValue(request, GlobalConst.AUTH_KEY, false);
-        if (StringUtils.isEmpty(token)) {
-            throw new MarsException(RespEnum.SIGNATURE_MISMATCH);
-        }
-        LoginModel model = JwtTokenUtil.getLogin(token);
-        if (model!=null){
-            request.setAttribute(GlobalConst.AUTH_KEY,model);
-        }
-        return model;
-    }
-
-    public void setRequest(LoginModel loginModel){
-        request.setAttribute(GlobalConst.AUTH_KEY,loginModel);
-    }
-
-    public LoginModel getSafeLogin() {
-        try {
-            Object attribute = request.getAttribute(GlobalConst.AUTH_KEY);
-            if (attribute==null){
-                return  getLogin();
-            }else{
-                return (LoginModel) attribute;
-            }
-        }catch (Exception e){}
-        return null;
-    }
 
 
 }

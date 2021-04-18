@@ -5,6 +5,7 @@ import com.github.fashionbrot.entity.SysMenuEntity;
 import com.github.fashionbrot.exception.MarsException;
 import com.github.fashionbrot.service.SysMenuService;
 import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class IndexController {
 
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private UserLoginService userLoginService;
     @Autowired
     private SysMenuService sysMenuService;
 
@@ -64,7 +67,7 @@ public class IndexController {
     private void setModelMap(ModelMap mmap) {
         List<SysMenuEntity> menus =sysMenuService.loadAllMenu();
         mmap.put("menus", menus);
-        mmap.put("user", sysUserService.getLogin());
+        mmap.put("user", userLoginService.getLogin());
     }
 
     @GetMapping("/build")

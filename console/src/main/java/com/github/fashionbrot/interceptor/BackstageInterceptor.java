@@ -6,6 +6,7 @@ import com.github.fashionbrot.enums.RespEnum;
 import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.service.SysMenuService;
 import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.CookieUtil;
 import com.github.fashionbrot.vo.RespVo;
 import lombok.extern.slf4j.Slf4j;
@@ -33,10 +34,13 @@ public class BackstageInterceptor implements HandlerInterceptor {
     @Autowired
     private SysUserService sysUserService;
 
+    @Autowired
+    private UserLoginService userLoginService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
 
-        LoginModel model = sysUserService.getSafeLogin();
+        LoginModel model = userLoginService.getSafeLogin();
         if (model == null) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             if (!handlerMethod.hasMethodAnnotation(ResponseBody.class)){

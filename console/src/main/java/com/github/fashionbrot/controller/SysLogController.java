@@ -3,8 +3,10 @@ package com.github.fashionbrot.controller;
 
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.SysLogEntity;
+import com.github.fashionbrot.entity.SysUserEntity;
 import com.github.fashionbrot.req.SysLogReq;
 import com.github.fashionbrot.service.SysLogService;
+import com.github.fashionbrot.service.SysUserService;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
@@ -48,6 +50,8 @@ public class SysLogController {
 
     @Autowired
     public SysLogService service;
+    @Autowired
+    private SysUserService sysUserService;
 
 
     @MarsPermission(":index")
@@ -61,6 +65,12 @@ public class SysLogController {
     @GetMapping("/index/detail")
     public String detail( Long id, ModelMap modelMap){
         SysLogEntity data = service.getById(id);
+        if (data!=null){
+            SysUserEntity byId = sysUserService.getById(data.getCreateId());
+            if (byId!=null){
+                data.setCreateName(byId.getUserName());
+            }
+        }
         modelMap.put("operLog",data);
         return "system/log/detail";
     }

@@ -8,6 +8,7 @@ import com.github.fashionbrot.exception.MarsException;
 import com.github.fashionbrot.mapper.SysLogMapper;
 import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.IpUtil;
 import com.github.fashionbrot.validated.exception.ValidatedException;
 import io.swagger.annotations.Api;
@@ -35,6 +36,7 @@ import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -53,7 +55,7 @@ public class BackStageAspect implements DisposableBean {
     @Autowired
     private SysLogMapper logMapper;
     @Autowired
-    private SysUserService userLoginService;
+    private UserLoginService userLoginService;
 
     private static final int pollSize= Runtime.getRuntime().availableProcessors();
 
@@ -165,11 +167,11 @@ public class BackStageAspect implements DisposableBean {
             }
         }
 
-        if (requestParams!=null && requestParams.length()>1000) {
-            requestParams = requestParams.substring(0, 1000);
+        if (requestParams!=null && requestParams.length()>1200) {
+            requestParams = requestParams.substring(0, 1200);
         }
-        if (exceptionDesc!=null && exceptionDesc.length()>1000){
-            exceptionDesc = exceptionDesc.replaceAll("(\\r\\n|\\n|\\n\\r)"," <br/>").substring(0, 1000);
+        if (exceptionDesc!=null && exceptionDesc.length()>1200){
+            exceptionDesc = exceptionDesc.replaceAll("(\\r\\n|\\n|\\n\\r)"," <br/>").substring(0, 1200);
         }
         SysLogEntity build = SysLogEntity.builder()
                 .requestIp(requestIp)
@@ -181,6 +183,8 @@ public class BackStageAspect implements DisposableBean {
                 .targetMethod(targetMethod.getName())
                 .requestParam(requestParams)
                 .createId(userId)
+                .createDate(new Date())
+                .delFlag(0)
                 .build();
         if (logType == 2) {
             build.setException(exceptionDesc);

@@ -32,7 +32,7 @@ import java.util.Map;
 @MarsPermission(value="sys:role")
 @Controller
 @RequestMapping("sys/role")
-@Api(tags="角色表")
+@Api(tags="角色")
 @ApiSort(23744266)
 public class SysRoleController  {
 
@@ -51,8 +51,7 @@ public class SysRoleController  {
 
     @Autowired
     public SysRoleService service;
-    @Autowired
-    private SysUserService sysUserService;
+
 
     @MarsPermission(":index")
     @GetMapping("/index")

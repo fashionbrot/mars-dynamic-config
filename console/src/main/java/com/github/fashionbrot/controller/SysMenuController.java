@@ -8,6 +8,7 @@ import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysMenuReq;
 import com.github.fashionbrot.service.SysMenuService;
 import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.CaffeineCacheUtil;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
@@ -33,7 +34,7 @@ import java.util.Map;
 @MarsPermission(value="sys:menu")
 @Controller
 @RequestMapping("sys/menu")
-@Api(tags="菜单表")
+@Api(tags="菜单")
 @ApiSort(23744266)
 public class SysMenuController  {
 
@@ -54,7 +55,7 @@ public class SysMenuController  {
     public SysMenuService service;
 
     @Autowired
-    private SysUserService sysUserService;
+    private UserLoginService sysUserService;
 
     @MarsPermission(":index")
     @GetMapping("/index")

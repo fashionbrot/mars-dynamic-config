@@ -11,6 +11,7 @@ import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysMenuReq;
 import com.github.fashionbrot.service.SysMenuService;
 import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.CaffeineCacheUtil;
 import com.github.fashionbrot.util.ConvertUtil;
 import com.github.fashionbrot.vo.PageVo;
@@ -35,6 +36,8 @@ public class SysMenuServiceImpl  extends ServiceImpl<SysMenuMapper, SysMenuEntit
 
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private UserLoginService userLoginService;
 
     @Override
     public Object pageReq(SysMenuReq req) {
@@ -111,7 +114,7 @@ public class SysMenuServiceImpl  extends ServiceImpl<SysMenuMapper, SysMenuEntit
     @Override
     public List<SysMenuEntity> loadAllMenu() {
 
-        LoginModel loginModel = sysUserService.getLogin();
+        LoginModel loginModel = userLoginService.getLogin();
 
         List<SysMenuEntity> checkedList = null;
         if (loginModel.isSuperAdmin() ){

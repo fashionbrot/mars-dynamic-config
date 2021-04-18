@@ -7,6 +7,7 @@ import com.github.fashionbrot.entity.SysUserEntity;
 import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysUserReq;
 import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.CookieUtil;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
@@ -34,7 +35,7 @@ import java.util.Map;
 @MarsPermission(value="sys:user")
 @Controller
 @RequestMapping("sys/user")
-@Api(tags="系统用户表")
+@Api(tags="系统用户")
 @ApiSort(23734562)
 public class SysUserController {
 
@@ -53,6 +54,9 @@ public class SysUserController {
 
     @Autowired
     public SysUserService service;
+
+    @Autowired
+    private UserLoginService userLoginService;
 
 
     @MarsPermission(":index")
@@ -74,11 +78,12 @@ public class SysUserController {
 
     @GetMapping("/profile/resetPwd")
     public String test(ModelMap mmap) {
-        LoginModel loginModel = service.getLogin();
+        LoginModel loginModel = userLoginService.getLogin();
         mmap.put("user", loginModel);
         return "/system/user/resetPwd" ;
     }
 
+    @ApiOperation("系统登录")
     @MarsLog
     @RequestMapping("/doLogin")
     @ResponseBody
@@ -86,7 +91,7 @@ public class SysUserController {
         return RespVo.success(service.login(account, password));
     }
 
-
+    @ApiOperation("退出登录")
     @RequestMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         CookieUtil.deleteCookie(request, response);
@@ -94,6 +99,7 @@ public class SysUserController {
     }
 
 
+    @ApiOperation("修改密码")
     @MarsLog
     @RequestMapping("/resetPwd")
     @ResponseBody

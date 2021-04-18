@@ -66,7 +66,6 @@ public class SysLogEntity implements Serializable {
 	private Integer interfaceType;
 
 	@ApiModelProperty(value = "创建者id")
-	@TableField(value="create_id",fill = FieldFill.INSERT)
 	private Long createId;
 
 	@ApiModelProperty(value = "创建时间")
@@ -84,5 +83,7 @@ public class SysLogEntity implements Serializable {
 	@TableField(value = "del_flag",fill = FieldFill.INSERT)
 	private Integer delFlag;
 
+	@TableField(exist = false)
+	private String createName;
 
 }

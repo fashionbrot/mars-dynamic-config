@@ -16,9 +16,6 @@ public interface SysUserService extends IService<SysUserEntity> {
 
     Object pageReq(SysUserReq req);
 
-    LoginModel getLogin();
-
-    LoginModel getSafeLogin();
 
     void updatePwd(String oldPassword, String newPassword);
 
