@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.fashionbrot.entity.SysMenuEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 菜单表
  *
@@ -15,7 +18,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SysMenuMapper extends BaseMapper<SysMenuEntity> {
 
-    
 
+    List<SysMenuEntity> selectMenuRole(Map<String, Object> map);
 
+    List<SysMenuEntity> selectMenuRoleByUser(Map<String,Object> map);
 }

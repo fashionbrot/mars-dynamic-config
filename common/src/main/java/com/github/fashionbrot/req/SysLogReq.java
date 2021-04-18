@@ -24,6 +24,5 @@ public class SysLogReq extends PageReq {
 
     private Integer logType;
 
-    private Long orgId;
 
 }

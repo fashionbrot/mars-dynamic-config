@@ -1,18 +1,24 @@
 package com.github.fashionbrot.controller;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.SysUserEntity;
+import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysUserReq;
 import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.util.CookieUtil;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -49,6 +55,54 @@ public class SysUserController {
     public SysUserService service;
 
 
+    @MarsPermission(":index")
+    @GetMapping("/index")
+    public String index() {
+        return "/system/user/userInfo";
+    }
+
+    @GetMapping("/index/add")
+    public String indexAdd() {
+        return "/system/user/addInfo" ;
+    }
+
+    @RequestMapping("/edit")
+    public String edit(Long id, ModelMap modelMap) {
+        modelMap.put("info",service.getById(id));
+        return "/system/user/editInfo" ;
+    }
+
+    @GetMapping("/profile/resetPwd")
+    public String test(ModelMap mmap) {
+        LoginModel loginModel = service.getLogin();
+        mmap.put("user", loginModel);
+        return "/system/user/resetPwd" ;
+    }
+
+    @MarsLog
+    @RequestMapping("/doLogin")
+    @ResponseBody
+    public RespVo login(String account,String password) {
+        return RespVo.success(service.login(account, password));
+    }
+
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        CookieUtil.deleteCookie(request, response);
+        return "/login";
+    }
+
+
+    @MarsLog
+    @RequestMapping("/resetPwd")
+    @ResponseBody
+    @MarsPermission("system:user:updatePwd")
+    public RespVo updatePwd(String oldPassword, String newPassword) {
+        service.updatePwd(oldPassword, newPassword);
+        return RespVo.success();
+    }
+
 
     @MarsPermission(":page")
     @ApiOperation("分页列表")
@@ -81,7 +135,7 @@ public class SysUserController {
     @PostMapping("/insert")
     @ResponseBody
     public RespVo add(@RequestBody SysUserEntity entity){
-        service.save(entity);
+        service.add(entity);
         return RespVo.success();
     }
 
@@ -91,7 +145,7 @@ public class SysUserController {
     @PostMapping("/updateById")
     @ResponseBody
     public RespVo updateById(@RequestBody SysUserEntity entity){
-        service.updateById(entity);
+        service.edit(entity);
         return RespVo.success();
     }
 

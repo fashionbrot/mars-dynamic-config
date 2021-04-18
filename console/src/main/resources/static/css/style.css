@@ -4392,9 +4392,8 @@ body.modal-open {
 
 .logo-name {
     color: #e6e6e6;
-    font-size: 180px;
-    font-weight: 800;
-    letter-spacing: -10px;
+    font-size: 104px;
+    letter-spacing: 0px;
     margin-bottom: 0px;
 }
 

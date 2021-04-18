@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 菜单表
@@ -90,5 +91,27 @@ public class SysMenuEntity implements Serializable {
 	@TableField(value = "del_flag",fill = FieldFill.INSERT)
 	private Integer delFlag;
 
+
+
+	/**
+	 * 父级 菜单名称
+	 */
+	@TableField(exist = false)
+	private  String parentMenuName;
+
+	@TableField(exist = false)
+	private List<SysMenuEntity> childMenu;
+
+	@TableField(exist = false)
+	private  int active;
+
+	@TableField(exist = false)
+	private  boolean checked;
+
+	@TableField(exist = false)
+	private  boolean open;
+
+	@TableField(exist = false)
+	private  String name;
 
 }

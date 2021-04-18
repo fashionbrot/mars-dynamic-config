@@ -1,6 +1,6 @@
 var editFlag;
 var removeFlag;
-var prefix = ctx + "system/user/";
+var prefix = ctx + "sys/user/";
 
 $(function() {
     var panehHidden = false;

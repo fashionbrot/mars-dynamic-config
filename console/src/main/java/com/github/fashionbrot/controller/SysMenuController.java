@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 
@@ -48,6 +49,24 @@ public class SysMenuController  {
     @Autowired
     public SysMenuService service;
 
+    @MarsPermission(":index")
+    @GetMapping("/index")
+    public String index() {
+        return "system/menu/menu" ;
+    }
+
+    @GetMapping("/index/add")
+    public String indexAdd() {
+        return "system/menu/add" ;
+    }
+
+    @GetMapping("/index/edit")
+    public String indexEdit() {
+        return "system/menu/edit" ;
+    }
+
+
+
 
 
     @MarsPermission(":page")
@@ -66,6 +85,15 @@ public class SysMenuController  {
     public RespVo queryList(@RequestParam Map<String, Object> params){
         return  RespVo.success(service.listByMap(params));
     }
+
+    @MarsPermission(":queryList")
+    @ApiOperation("数据列表")
+    @GetMapping("/queryList2")
+    @ResponseBody
+    public List  queryList2(@RequestParam Map<String, Object> params){
+        return  service.listByMap(params);
+    }
+
 
 
     @MarsPermission(":selectById")
@@ -115,6 +143,12 @@ public class SysMenuController  {
         return RespVo.success();
     }
 
+
+    @RequestMapping("loadAllMenu")
+    @ResponseBody
+    public List<SysMenuEntity> loadAllMenu(Long roleId, Integer isShowCode) {
+        return service.loadMenuAll(roleId, isShowCode);
+    }
 
 
 }

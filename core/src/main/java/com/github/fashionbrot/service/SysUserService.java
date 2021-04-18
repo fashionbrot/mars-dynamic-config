@@ -2,6 +2,7 @@ package com.github.fashionbrot.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.fashionbrot.entity.SysUserEntity;
+import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysUserReq;
 
 /**
@@ -15,4 +16,15 @@ public interface SysUserService extends IService<SysUserEntity> {
 
     Object pageReq(SysUserReq req);
 
+    LoginModel getLogin();
+
+    LoginModel getSafeLogin();
+
+    void updatePwd(String oldPassword, String newPassword);
+
+    Object login(String account, String password);
+
+    void add(SysUserEntity entity);
+
+    void edit(SysUserEntity entity);
 }

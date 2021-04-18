@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('修改用户密码')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-user-resetPwd">
+            <input name="userId"  type="hidden"   />
+            <div class="form-group">
+                <label class="col-sm-3 control-label">登录名称：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="text" readonly="true" name="loginName" th:value="${user.userName}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">旧密码：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="password" name="oldPassword" id="oldPassword">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">新密码：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="password" name="newPassword" id="newPassword">
+                    <!--<i class="fa fa-info-circle" style="color: red;"></i>  密码必须包含（字母，数字）-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">再次确认：</label>
+                <div class="col-sm-8">
+                    <input class="form-control" type="password" name="confirmPassword" id="confirmPassword">
+                    <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 请再次输入您的密码</span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <th:block th:include="include :: footer" />
+
+
+    <script>
+        $("#form-user-resetPwd").validate({
+            rules:{
+                oldPassword:{
+                    required:true,
+                    minlength: 1,
+                    maxlength: 20
+                },
+                newPassword: {
+                    required: true,
+                    minlength: 3,
+                    maxlength: 20
+                },
+                confirmPassword: {
+                    required: true,
+                    equalTo: "#newPassword"
+                }
+            },
+            messages: {
+                oldPassword: {
+                    minlength: "密码不能小于1个字符",
+                    maxlength: "密码不能大于20个字符"
+                },
+                newPassword: {
+                    minlength: "密码不能小于3个字符",
+                    maxlength: "密码不能大于20个字符"
+                },
+                confirmPassword: {
+                    required: "请再次输入新密码",
+                    equalTo: "两次密码输入不一致"
+                }
+
+            },
+            focusCleanup: true
+        });
+        
+        function submitHandler() {
+            var chrtype = 3;
+            var password = $("#newPassword").val();
+            if ($.validate.form() ) {
+                $.operate.save(ctx + "sys/user/resetPwd", $('#form-user-resetPwd').serialize());
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -9,9 +9,9 @@ public class EncryptUtil {
 
     public static void main(String[] args){
 
-        String uuid = "87695a9b644f470d95bf14b2c7f2b53";//UuidUtil.getUuid();
-        String pwd="123456";
-
+        String uuid = getSalt();
+        String pwd="mars";
+        System.out.println(uuid);
         System.out.println(encryptPassword(pwd,uuid));
     }
 

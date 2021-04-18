@@ -36,6 +36,10 @@ public class SysRoleEntity implements Serializable {
 	@TableField("role_name")
 	private String roleName;
 
+	@ApiModelProperty(value = "用户状态 0关闭 1开启")
+	@TableField("status")
+	private Integer status;
+
 	@ApiModelProperty(value = "创建时间")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
@@ -52,6 +56,9 @@ public class SysRoleEntity implements Serializable {
 	@TableLogic(value = "0", delval = "1")
 	@TableField(value = "del_flag",fill = FieldFill.INSERT)
 	private Integer delFlag;
+
+	@TableField(exist = false)
+	private  String menuIds;
 
 
 }

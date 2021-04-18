@@ -34,11 +34,52 @@
             <result property="createDate" column="create_date"/>
             <result property="exception" column="exception"/>
             <result property="delFlag" column="del_flag"/>
+        <result property="createName" column="create_name"/>
     </resultMap>
     <sql id="allSql">
         id,request_desc,request_url,method_type,request_ip,request_param,target_method,log_type,interface_type,create_id,create_date,exception,del_flag
     </sql>
 
+
+
+
+    <select id="selectListByReq" parameterType="com.github.fashionbrot.req.SysLogReq" resultMap="sysLogDtoMap">
+
+        select a.id,
+        a.exception,
+        a.request_desc,
+        a.request_url,
+        a.method_type,
+        a.request_ip,
+        a.request_param,
+        a.target_method,
+        a.log_type,
+        a.interface_type,
+        a.create_id,
+        b.user_name as create_name,
+        a.create_date
+        from sys_log a
+        left join sys_user b on a.create_id= b.id
+        where a.del_flag=0 and a.interface_type=1
+        <if test="startTime!=null">
+            <![CDATA[
+                and a.create_date >= #{startTime}
+                 ]]>
+        </if>
+        <if test="endTime!=null">
+            <![CDATA[
+                and a.create_date <= #{endTime}
+                ]]>
+        </if>
+        <if test="logType!=null">
+            and a.log_type =#{logType}
+        </if>
+        <if test="query!=null and query!=''">
+            and a.request_url like concat('%',#{query},'%')
+        </if>
+        order by a.id desc
+
+    </select>
     
 
 </mapper>

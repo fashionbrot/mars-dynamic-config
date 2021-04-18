@@ -2,8 +2,10 @@ package com.github.fashionbrot.service.impl;
 
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.fashionbrot.dto.SysLogDTO;
 import com.github.fashionbrot.entity.SysLogEntity;
 import com.github.fashionbrot.mapper.SysLogMapper;
+import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysLogReq;
 import com.github.fashionbrot.service.SysLogService;
 import com.github.fashionbrot.util.ConvertUtil;
@@ -26,19 +28,19 @@ import java.util.Map;
 @Service
 public class SysLogServiceImpl extends ServiceImpl<SysLogMapper, SysLogEntity> implements SysLogService {
 
-    @Autowired
-    private SysLogMapper sysLogMapper;
 
     @Override
     public Object pageReq(SysLogReq req) {
         Page<?> page = PageHelper.startPage(req.getPageNum(),req.getPageSize());
         Map<String,Object> map = ConvertUtil.toMap(req);
-        List<SysLogEntity> listByMap = baseMapper.selectByMap(map);
+
+        List<SysLogDTO> list = baseMapper.selectListByReq(req);
 
         return PageVo.builder()
-                .rows(listByMap)
+                .rows(list)
                 .total(page.getTotal())
                 .build();
+
     }
 
 }

@@ -993,6 +993,9 @@ var table = {
             get: function(url, callback) {
             	$.operate.submit(url, "get", "json", "", callback);
             },
+            get2: function(url, callback) {
+                $.operate.submit2(url, "get", "json", "", callback);
+            },
             // 详细信息
             detail: function(id, width, height) {
             	table.set();

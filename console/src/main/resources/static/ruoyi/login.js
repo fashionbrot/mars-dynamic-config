@@ -2,29 +2,42 @@
 $(function() {
     validateKickout();
     validateRule();
-    $('.imgcode').click(function() {
+    /*$('.imgcode').click(function() {
         var url = ctx + "common/captcha?s=" + Math.random();
         $(".imgcode").attr("src", url);
-    });
+    });*/
 
 
     if ($.cookie('rememberme') == 'true') {
 
         $(".uname").val(decodeURIComponent($.cookie('usrname')));
         $(".pword").val(decodeURIComponent($.cookie('pwd'))).focus();
-
         $("input[name='rememberme']").attr("checked",true);
     } else {
         $(".uname").val('').focus();
         $(".pword").val('');
         $(".uname").focus(); //读取cookie中rememberme(记住我)的值为false;用户名获取焦点
     }
+    $("#btnSubmit").on("click",function () {
+        if ($.validate.form()) {
+            login();
+        }
+    });
+
+    common.initOnkeydown(function () {
+        if ($.validate.form()) {
+            login();
+        }
+    })
 
 });
 
+
 $.validator.setDefaults({
     submitHandler: function() {
-        login();
+        if ($.validate.form()) {
+            login();
+        }
     }
 });
 
@@ -36,9 +49,9 @@ function login() {
     var rememberMe = $("input[name='rememberme']").is(':checked');
     $.ajax({
         type: "post",
-        url: ctx + "system/user/doLogin",
+        url: ctx + "sys/user/doLogin",
         data: {
-            "username": username,
+            "account": username,
             "password": password,
             "validateCode": validateCode,
             "rememberMe": rememberMe
@@ -49,7 +62,7 @@ function login() {
                 location.href = ctx + 'index';
             } else {
             	$.modal.closeLoading();
-            	$('.imgcode').click();
+            	// $('.imgcode').click();
             	$(".code").val("");
             	$.modal.msg(r.msg);
             }
@@ -59,7 +72,7 @@ function login() {
 
 function validateRule() {
     var icon = "<i class='fa fa-times-circle'></i> ";
-    $("#signupForm").validate({
+    $("#loginForm").validate({
         rules: {
             username: {
                 required: true
@@ -70,7 +83,7 @@ function validateRule() {
         },
         messages: {
             username: {
-                required: icon + "请输入您的用户名",
+                required: icon + "请输入您的账号",
             },
             password: {
                 required: icon + "请输入您的密码",

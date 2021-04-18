@@ -48,6 +48,22 @@ public class SysRoleController  {
     @Autowired
     public SysRoleService service;
 
+    @MarsPermission(":index")
+    @GetMapping("/index")
+    public String index(){
+        return "system/role/role";
+    }
+
+    @GetMapping("/index/add")
+    public String indexAdd(){
+        return "system/role/add";
+    }
+
+    @GetMapping("/index/edit")
+    public String indexEdit(){
+        return "system/role/edit";
+    }
+
 
 
     @MarsPermission(":page")
@@ -81,7 +97,7 @@ public class SysRoleController  {
     @PostMapping("/insert")
     @ResponseBody
     public RespVo add(@RequestBody SysRoleEntity entity){
-        service.save(entity);
+        service.add(entity);
         return RespVo.success();
     }
 
@@ -91,7 +107,7 @@ public class SysRoleController  {
     @PostMapping("/updateById")
     @ResponseBody
     public RespVo updateById(@RequestBody SysRoleEntity entity){
-        service.updateById(entity);
+        service.edit(entity);
         return RespVo.success();
     }
 

@@ -49,20 +49,22 @@ public class SysLogController {
     @Autowired
     public SysLogService service;
 
-    @MarsPermission("system:log:index")
+
+    @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
         return "system/log/log";
     }
 
 
-    @MarsPermission("system:log:index:detail")
+    @MarsPermission(":index:detail")
     @GetMapping("/index/detail")
     public String detail( Long id, ModelMap modelMap){
         SysLogEntity data = service.getById(id);
         modelMap.put("operLog",data);
         return "system/log/detail";
     }
+
 
 
 

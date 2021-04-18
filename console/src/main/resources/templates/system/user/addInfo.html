@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增用户')" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <form class="form-horizontal m" id="addForm"  style="border: 0px solid red;">
+
+
+        <input name="roleId" id="roleId"  type="hidden"  />
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">姓名：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" name="userName" placeholder="姓名"  />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">账号：</label>
+            <div class="col-sm-8">
+                <input name="account"  placeholder="账号" class="form-control" type="text"   />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">登录密码：</label>
+            <div class="col-sm-8">
+                <input name="password" id="password" placeholder="请输入密码"
+                       class="form-control" type="password" maxlength="30"   required />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">用户状态：</label>
+            <div class="col-sm-8">
+                <label class="toggle-switch switch-solid">
+                    <input type="checkbox" id="status" checked="checked" >
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">用户角色：</label>
+            <div class="col-sm-8">
+                <select name="roleId" id="roleId2" class="form-control m-b" required >
+                    <option ></option>
+                </select>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+<script type="text/javascript">
+    var prefix = ctx + "sys/user";
+
+    loadRole("roleId2",$("#roleId").val());
+    $("#addForm").validate({
+        onkeyup: false,
+        rules: {
+            account:{
+                required: true,
+                minlength: 2,
+                maxlength:16
+            },
+            userName: {
+                required: true,
+                minlength: 2,
+                maxlength:16
+            },
+            password: {
+                required: true,
+                minlength: 4,
+                maxlength:20
+            },
+            roleId: {
+                required: true,
+            }
+        },
+        messages: {
+            password: {
+                minlength: "密码必须5个字符以上",
+                maxlength: "密码必须20字符以下"
+            }
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#addForm").serializeJson();
+            console.log(JSON.stringify(data));
+            var status = $("input[id='status']").is(':checked') == false ? 0 : 1;
+            data.status = status;
+            $.operate.save(prefix + "/insert", data,null,true);
+        }
+    }
+</script>
+</body>
+</html>

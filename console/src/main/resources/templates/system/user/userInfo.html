@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('用户列表')" />
+	<th:block th:include="include :: layout-latest-css" />
+	<th:block th:include="include :: ztree-css" />
+</head>
+<body class="gray-bg">
+
+<div class="container-div">
+	<div class="row">
+
+		<div class="btn-group-sm" id="toolbar" role="group">
+			<a class="btn btn-success" onclick="$.operate.openAdd(800,430)"  hasPermission="system:user:edit">
+				<i class="fa fa-plus"></i> 新增
+			</a>
+		</div>
+
+		<div class="col-sm-12 select-table table-striped " style="height:98%;">
+			<table id="bootstrap-table"></table>
+		</div>
+
+	</div>
+</div>
+
+
+<th:block th:include="include :: footer" />
+<script >
+
+	var editFlag;
+	var removeFlag;
+	var prefix = ctx + "sys/user/";
+
+	$(function() {
+		queryList();
+	});
+
+	function queryList() {
+		var options = {
+			url: prefix + "/page",
+			createUrl: prefix + "/index/add",
+			updateUrl: prefix + "/edit?id={id}",
+			removeUrl: prefix + "/deleteById",
+			exportUrl: prefix + "/export",
+			importUrl: prefix + "/importData",
+			importTemplateUrl: prefix + "/importTemplate",
+			sortName: "createTime",
+			sortOrder: "desc",
+			modalName: "用户",
+			method:"get",
+			columns: [
+				{
+					width:"5%",
+					checkbox: true
+				},
+				{
+					width:"20%",
+					field: 'account',
+					title: '账号',
+					sortable: false
+				},
+				{
+					width:"20%",
+					field: 'userName',
+					title: '用户名'
+				},
+				{
+					width:"20%",
+					visible: true,
+					title: '用户状态',
+					align: 'center',
+					formatter: function (value, row, index) {
+						return statusTools(row);
+					}
+				},
+				{
+					width:"20%",
+					field: 'createDate',
+					title: '创建时间',
+					sortable: false
+				},
+				{
+					width:"20%",
+					title: '操作',
+					align: 'center',
+					formatter: function (value, row, index) {
+						var actions = [];
+						if (row.superAdmin==0){
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\',800,400)"><i class="fa fa-edit"></i>编辑</a> ');
+							actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+						}
+						return actions.join('');
+					}
+				}]
+		};
+		$.table.init(options);
+	}
+
+
+	/* 用户状态显示 */
+	function statusTools(row) {
+		if (row.status == 1) {
+			return '开启';
+		} else {
+			return '关闭';
+		}
+	}
+
+
+</script>
+</body>
+</html>

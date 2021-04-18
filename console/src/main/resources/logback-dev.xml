@@ -27,7 +27,7 @@
 	<logger name="org.springframework.boot.web.servlet.support.ErrorPageFilter" level="OFF" />
 	<logger name="springfox" level="OFF"/>
 	<logger name="org.springframework" level="OFF"/>
-	<logger name="com.baomidou" level="OFF"/>
+	<!--<logger name="com.baomidou" level="OFF"/>-->
 
 
 		<root level="debug">

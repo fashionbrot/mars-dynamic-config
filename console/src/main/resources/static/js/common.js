@@ -55,9 +55,9 @@ function radioChecked(name,value,checked) {
 
 
 function loadRole(id,selectId) {
-    var prefix = ctx + "system/user";
-    var orgId = $("#orgId").val();
-    $.operate.post2(prefix + "/queryRoleAll",{"orgId":orgId},function (data) {
+    var prefix = ctx + "sys/role";
+
+    $.operate.get2(prefix + "/queryList",function (data) {
         if (data.code==0){
             var rows=data.data;
             var html="<option value=''>请选择</option>";
@@ -79,23 +79,25 @@ function loadRole(id,selectId) {
 }
 
 function loadMenuLevel(id,selectId,level) {
-    var prefix = ctx + "system/menu";
-    $.operate.post2(prefix + "/queryMenuLevel",{"menuLevel":level},function (data) {
-            var rows=data;
-            var html="<option value=''>请选择</option>";
-            for(var i=0;i<rows.length;i++){
-                var row=rows[i];
-                if (selectId && row.id==selectId){
-                    html+="<option selected='selected' value='"+row.id+"'>"+row.menuName+"</option>";
-                }else{
-                    html+="<option value='"+row.id+"'>"+row.menuName+"</option>";
+    var prefix = ctx + "sys/menu";
+    $.operate.get2(prefix + "/queryList?menu_level="+level,function (data) {
+            if (data.code==0){
+                var rows=data.data;
+                var html="<option value=''>请选择</option>";
+                for(var i=0;i<rows.length;i++){
+                    var row=rows[i];
+                    if (selectId && row.id==selectId){
+                        html+="<option selected='selected' value='"+row.id+"'>"+row.menuName+"</option>";
+                    }else{
+                        html+="<option value='"+row.id+"'>"+row.menuName+"</option>";
+                    }
                 }
+                $("#"+id).html(html);
+                $('#'+id).select2({
+                    placeholder: "请选择",
+                    allowClear: false
+                });
             }
-            $("#"+id).html(html);
-            $('#'+id).select2({
-                placeholder: "请选择",
-                allowClear: false
-            });
     });
 }
 

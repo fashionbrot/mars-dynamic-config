@@ -697,3 +697,15 @@ function initDate2(names,value) {
         });
     })
 }
+
+var common={
+    initOnkeydown:function (callback) {
+        document.onkeydown = function (e) { // 回车提交表单
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+            if (code == 13) {
+                callback();
+            }
+        }
+    }
+}

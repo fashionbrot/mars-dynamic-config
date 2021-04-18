@@ -1,8 +1,10 @@
 package com.github.fashionbrot.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -52,12 +54,12 @@ public class SysLogDTO implements Serializable {
 	private Long createId;
 
 	@ApiModelProperty(value = "创建时间")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date createDate;
 
 	@ApiModelProperty(value = "异常日志")
 	private String exception;
 
-	@ApiModelProperty(value = "删除标志位 1删除 0未删除")
-	private Integer delFlag;
-
+	private String createName;
 }
