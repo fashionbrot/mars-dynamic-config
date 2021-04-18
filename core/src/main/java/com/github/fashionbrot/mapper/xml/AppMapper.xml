@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.AppMapper">
+
+
+    <resultMap type="com.github.fashionbrot.entity.AppEntity" id="appMap">
+            <result property="id" column="id"/>
+            <result property="appCode" column="app_code"/>
+            <result property="appDesc" column="app_desc"/>
+            <result property="createId" column="create_id"/>
+            <result property="createDate" column="create_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <resultMap type="com.github.fashionbrot.dto.AppDTO" id="appDtoMap">
+            <result property="id" column="id"/>
+            <result property="appCode" column="app_code"/>
+            <result property="appDesc" column="app_desc"/>
+            <result property="createId" column="create_id"/>
+            <result property="createDate" column="create_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    <sql id="allSql">
+        id,app_code,app_desc,create_id,create_date,del_flag
+    </sql>
+
+    
+
+</mapper>

@@ -1,14 +1,13 @@
-package com.github.fashionbrot.controller;
+package com.github.fashionbrot.controller.sys;
 
 
 import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
-import com.github.fashionbrot.entity.SysMenuEntity;
+import com.github.fashionbrot.entity.SysRoleEntity;
 import com.github.fashionbrot.model.LoginModel;
-import com.github.fashionbrot.req.SysMenuReq;
-import com.github.fashionbrot.service.SysMenuService;
+import com.github.fashionbrot.req.SysRoleReq;
+import com.github.fashionbrot.service.SysRoleService;
 import com.github.fashionbrot.service.SysUserService;
-import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.CaffeineCacheUtil;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
@@ -19,61 +18,56 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 
 /**
- * 菜单表
+ * 角色表
  *
  * @author fashionbrot
  * @email fashionbrot@163.com
  * @date 2021-04-18
  */
 
-@MarsPermission(value="sys:menu")
+@MarsPermission(value="sys:role")
 @Controller
-@RequestMapping("sys/menu")
-@Api(tags="菜单")
+@RequestMapping("sys/role")
+@Api(tags="角色")
 @ApiSort(23744266)
-public class SysMenuController  {
+public class SysRoleController  {
 
     /**
      * 权限 注解 MarsPermission
      * 默认接口以下
-     * 分页       sys/menu/page        权限：sys:menu:page
-     * 数据列表    sys/menu/queryList   权限：sys:menu:queryList
-     * 根据id查询  sys/menu/selectById  权限：sys:menu:selectById
-     * 新增       sys/menu/insert      权限：sys:menu:insert
-     * 修改       sys/menu/updateById  权限：sys:menu:updateById
-     * 根据id删除  sys/menu/deleteById  权限：sys:menu:deleteById
-     * 多个id删除  sys/menu/deleteByIds 权限：sys:menu:deleteByIds
+     * 分页       sys/role/page        权限：sys:role:page
+     * 数据列表    sys/role/queryList   权限：sys:role:queryList
+     * 根据id查询  sys/role/selectById  权限：sys:role:selectById
+     * 新增       sys/role/insert      权限：sys:role:insert
+     * 修改       sys/role/updateById  权限：sys:role:updateById
+     * 根据id删除  sys/role/deleteById  权限：sys:role:deleteById
+     * 多个id删除  sys/role/deleteByIds 权限：sys:role:deleteByIds
      */
 
 
     @Autowired
-    public SysMenuService service;
+    public SysRoleService service;
 
-    @Autowired
-    private UserLoginService sysUserService;
 
     @MarsPermission(":index")
     @GetMapping("/index")
-    public String index() {
-        return "system/menu/menu" ;
+    public String index(){
+        return "system/role/role";
     }
 
     @GetMapping("/index/add")
-    public String indexAdd() {
-        return "system/menu/add" ;
+    public String indexAdd(){
+        return "system/role/add";
     }
 
     @GetMapping("/index/edit")
-    public String indexEdit() {
-        return "system/menu/edit" ;
+    public String indexEdit(){
+        return "system/role/edit";
     }
-
-
 
 
 
@@ -81,7 +75,7 @@ public class SysMenuController  {
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody
-    public RespVo pageReq(SysMenuReq req) {
+    public RespVo pageReq(SysRoleReq req) {
         return RespVo.success(service.pageReq(req));
     }
 
@@ -93,15 +87,6 @@ public class SysMenuController  {
     public RespVo queryList(@RequestParam Map<String, Object> params){
         return  RespVo.success(service.listByMap(params));
     }
-
-    @MarsPermission(":queryList")
-    @ApiOperation("数据列表")
-    @GetMapping("/queryList2")
-    @ResponseBody
-    public List  queryList2(@RequestParam Map<String, Object> params){
-        return  service.listByMap(params);
-    }
-
 
 
     @MarsPermission(":selectById")
@@ -117,9 +102,8 @@ public class SysMenuController  {
     @ApiOperation("新增")
     @PostMapping("/insert")
     @ResponseBody
-    public RespVo add(@RequestBody SysMenuEntity entity){
-        service.save(entity);
-        clearCache();
+    public RespVo add(@RequestBody SysRoleEntity entity){
+        service.add(entity);
         return RespVo.success();
     }
 
@@ -129,9 +113,8 @@ public class SysMenuController  {
     @ApiOperation("修改")
     @PostMapping("/updateById")
     @ResponseBody
-    public RespVo updateById(@RequestBody SysMenuEntity entity){
-        service.updateById(entity);
-        clearCache();
+    public RespVo updateById(@RequestBody SysRoleEntity entity){
+        service.edit(entity);
         return RespVo.success();
     }
 
@@ -143,23 +126,11 @@ public class SysMenuController  {
     @ResponseBody
     public RespVo deleteById(Long id){
         service.removeById(id);
-        clearCache();
         return RespVo.success();
     }
 
-    private void clearCache() {
-        LoginModel login = sysUserService.getLogin();
-        CaffeineCacheUtil.clear(login.getUserId());
-    }
 
 
-
-
-    @RequestMapping("loadAllMenu")
-    @ResponseBody
-    public List<SysMenuEntity> loadAllMenu(Long roleId, Integer isShowCode) {
-        return service.loadMenuAll(roleId, isShowCode);
-    }
 
 
 }

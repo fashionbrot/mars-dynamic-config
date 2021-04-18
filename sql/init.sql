@@ -113,3 +113,81 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_men
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('49', '日志-数据分页', '3', '', '46', '504', 'sys:log:page', 'menuItem', '0', '1', '', '2021-03-01 14:47:05', NULL, '0');
 
 
+
+
+
+DROP TABLE IF EXISTS `m_app`;
+CREATE TABLE `m_app` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `app_code` varchar(32) NOT NULL COMMENT '应用',
+  `app_desc` varchar(255) NOT NULL COMMENT '应用说明',
+  `create_id` bigint(11) NOT NULL COMMENT '创建者id',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='应用表';
+
+
+DROP TABLE IF EXISTS `m_env`;
+CREATE TABLE `m_env` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `env_code` varchar(32) NOT NULL COMMENT '环境',
+  `env_desc` varchar(64) NOT NULL COMMENT '环境描述',
+  `create_id` bigint(11) NOT NULL COMMENT '创建者id',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='环境表';
+
+
+DROP TABLE IF EXISTS `m_env_variable`;
+CREATE TABLE `m_env_variable` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `variable_name` varchar(32) NOT NULL COMMENT '变量名称',
+  `variable_desc` varchar(64) DEFAULT NULL COMMENT '变量说明',
+  `variable_key` varchar(32) NOT NULL COMMENT '变量key',
+  `create_id` bigint(11) NOT NULL COMMENT '创建者id',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='常量表';
+
+
+
+DROP TABLE IF EXISTS `m_template`;
+CREATE TABLE `m_template` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `app_code` varchar(32) NOT NULL COMMENT '应用',
+  `template_key` varchar(64) NOT NULL COMMENT '模板key',
+  `template_name` varchar(64) NOT NULL COMMENT '模板名称',
+  `template_desc` varchar(128) DEFAULT NULL COMMENT '模板描述',
+  `create_id` bigint(11) NOT NULL COMMENT '创建者id',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='模板表';
+
+
+DROP TABLE IF EXISTS `m_property`;
+CREATE TABLE `m_property` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `property_name` varchar(32) NOT NULL COMMENT '属性名称',
+  `property_key` varchar(32) NOT NULL COMMENT '属性key',
+  `property_type` varchar(32) NOT NULL COMMENT '属性类型',
+  `column_length` tinyint(4) NOT NULL COMMENT '属性长度',
+  `label_type` varchar(64) NOT NULL COMMENT 'html标签类型',
+  `label_value` varchar(255) COMMENT 'html 标签值',
+  `app_code` varchar(32) NOT NULL COMMENT '应用名称',
+  `variable_key` varchar(32) DEFAULT NULL COMMENT '常量key',
+  `template_key` varchar(32) DEFAULT NULL COMMENT '模板key ，公共属性为空，指定模板属性不为空',
+  `attribute_type` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '0 公共属性 1 模板属性',
+  `priority` tinyint(5) NOT NULL DEFAULT '0' COMMENT '显示优先级',
+  `create_id` bigint(11) NOT NULL COMMENT '创建者id',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='属性表';
+
+INSERT INTO `property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`,  `del_flag`, `priority`) VALUES (64, '标题', 'title', 'varchar', 'input', '', '-1', '', '-1', '1', '1', '2020-10-14 14:56:59', '0', '1');
+INSERT INTO `property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`, `del_flag`, `priority`) VALUES (0,'开始时间', 'startDate', 'datetime', 'input', '', '-1', '', '-1', '0', '1', '2020-10-14 14:58:03', '0', '2');
+INSERT INTO `property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`,  `del_flag`, `priority`) VALUES (0, '结束时间', 'endDate', 'datetime', 'input', '', '-1', '', '-1', '1', '1', '2020-10-14 14:58:47', '0', '3');

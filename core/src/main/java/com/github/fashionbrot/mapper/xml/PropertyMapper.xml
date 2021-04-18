@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.PropertyMapper">
+
+
+    <resultMap type="com.github.fashionbrot.entity.PropertyEntity" id="propertyMap">
+            <result property="id" column="id"/>
+            <result property="propertyName" column="property_name"/>
+            <result property="propertyKey" column="property_key"/>
+            <result property="propertyType" column="property_type"/>
+            <result property="columnLength" column="column_length"/>
+            <result property="labelType" column="label_type"/>
+            <result property="labelValue" column="label_value"/>
+            <result property="appCode" column="app_code"/>
+            <result property="variableKey" column="variable_key"/>
+            <result property="templateKey" column="template_key"/>
+            <result property="attributeType" column="attribute_type"/>
+            <result property="priority" column="priority"/>
+            <result property="createId" column="create_id"/>
+            <result property="createDate" column="create_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <resultMap type="com.github.fashionbrot.dto.PropertyDTO" id="propertyDtoMap">
+            <result property="id" column="id"/>
+            <result property="propertyName" column="property_name"/>
+            <result property="propertyKey" column="property_key"/>
+            <result property="propertyType" column="property_type"/>
+            <result property="columnLength" column="column_length"/>
+            <result property="labelType" column="label_type"/>
+            <result property="labelValue" column="label_value"/>
+            <result property="appCode" column="app_code"/>
+            <result property="variableKey" column="variable_key"/>
+            <result property="templateKey" column="template_key"/>
+            <result property="attributeType" column="attribute_type"/>
+            <result property="priority" column="priority"/>
+            <result property="createId" column="create_id"/>
+            <result property="createDate" column="create_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    <sql id="allSql">
+        id,property_name,property_key,property_type,column_length,label_type,label_value,app_code,variable_key,template_key,attribute_type,priority,create_id,create_date,del_flag
+    </sql>
+
+    
+
+</mapper>

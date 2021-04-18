@@ -118,16 +118,18 @@
                     
                     <!-- 顶部菜单列表 -->
 	                <th:block th:each="menu : ${menus}">
-               	    <li role="presentation" th:id="|tab_${menu.id}|">
-                        <a data-toggle="tab" th:class="@{${!#strings.isEmpty(menu.target) && menu.target == 'menuBlank'} ? 'menuBlank'}" th:href="@{${!#strings.isEmpty(menu.target) && menu.target == 'menuBlank'} ? ${menu.menuUrl} : |#menu_${menu.id}|}">
-                            <i th:class="${menu.icon}"></i> <span>[[${menu.menuName}]]</span>
-                        </a>
-						<ul class="dropdown-menu" th:each="m : ${menu.childMenu}">
+                        <li role="presentation" th:id="|tab_${menu.id}|">
+                            <a data-toggle="tab" th:class="@{${!#strings.isEmpty(menu.target) && menu.target == 'menuBlank'} ? 'menuBlank'}" th:href="@{${!#strings.isEmpty(menu.target) && menu.target == 'menuBlank'} ? ${menu.menuUrl} : |#menu_${menu.id}|}">
+                                <i th:class="${menu.icon}"></i> <span>[[${menu.menuName}]]</span>
+                            </a>
+                            <ul class="dropdown-menu" >
 
-							<li><a class="menuItem" th:href="@{${m.menuUrl}}" >[[${m.menuName}]]</a></li>
+                                <li th:each="m : ${menu.childMenu}">
+                                    <a class="menuItem" th:href="@{${m.menuUrl}}" >[[${m.menuName}]]</a>
+                                </li>
 
-						</ul>
-                    </li>
+                            </ul>
+                        </li>
 	                </th:block>
 
 				  </ul>

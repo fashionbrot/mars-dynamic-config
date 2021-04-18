@@ -1,4 +1,4 @@
-package com.github.fashionbrot.controller;
+package com.github.fashionbrot.controller.sys;
 
 
 import com.github.fashionbrot.annotation.MarsLog;

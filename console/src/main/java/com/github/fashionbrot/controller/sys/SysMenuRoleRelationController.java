@@ -1,19 +1,17 @@
-package com.github.fashionbrot.controller;
+package com.github.fashionbrot.controller.sys;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
-import com.github.fashionbrot.entity.SysLogEntity;
-import com.github.fashionbrot.entity.SysUserEntity;
-import com.github.fashionbrot.req.SysLogReq;
-import com.github.fashionbrot.service.SysLogService;
-import com.github.fashionbrot.service.SysUserService;
+import com.github.fashionbrot.entity.SysMenuRoleRelationEntity;
+import com.github.fashionbrot.req.SysMenuRoleRelationReq;
+import com.github.fashionbrot.service.SysMenuRoleRelationService;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -21,61 +19,35 @@ import java.util.Map;
 
 
 /**
- * 系统日志
+ * 菜单-角色关系表
  *
  * @author fashionbrot
  * @email fashionbrot@163.com
  * @date 2021-04-18
  */
 
-@MarsPermission(value="sys:log")
+@MarsPermission(value="sys:menu:role:relation")
 @Controller
-@RequestMapping("sys/log")
-@Api(tags="系统日志")
-@ApiSort(23735114)
-public class SysLogController {
+@RequestMapping("sys/menu/role/relation")
+@Api(tags="菜单-角色关系表")
+@ApiSort(23744272)
+public class SysMenuRoleRelationController  {
 
     /**
      * 权限 注解 MarsPermission
      * 默认接口以下
-     * 分页       sys/log/page        权限：sys:log:page
-     * 数据列表    sys/log/queryList   权限：sys:log:queryList
-     * 根据id查询  sys/log/selectById  权限：sys:log:selectById
-     * 新增       sys/log/insert      权限：sys:log:insert
-     * 修改       sys/log/updateById  权限：sys:log:updateById
-     * 根据id删除  sys/log/deleteById  权限：sys:log:deleteById
-     * 多个id删除  sys/log/deleteByIds 权限：sys:log:deleteByIds
+     * 分页       sys/menu/role/relation/page        权限：sys:menu:role:relation:page
+     * 数据列表    sys/menu/role/relation/queryList   权限：sys:menu:role:relation:queryList
+     * 根据id查询  sys/menu/role/relation/selectById  权限：sys:menu:role:relation:selectById
+     * 新增       sys/menu/role/relation/insert      权限：sys:menu:role:relation:insert
+     * 修改       sys/menu/role/relation/updateById  权限：sys:menu:role:relation:updateById
+     * 根据id删除  sys/menu/role/relation/deleteById  权限：sys:menu:role:relation:deleteById
+     * 多个id删除  sys/menu/role/relation/deleteByIds 权限：sys:menu:role:relation:deleteByIds
      */
 
 
     @Autowired
-    public SysLogService service;
-    @Autowired
-    private SysUserService sysUserService;
-
-
-    @MarsPermission(":index")
-    @GetMapping("/index")
-    public String index(){
-        return "system/log/log";
-    }
-
-
-    @MarsPermission(":index:detail")
-    @GetMapping("/index/detail")
-    public String detail( Long id, ModelMap modelMap){
-        SysLogEntity data = service.getById(id);
-        if (data!=null){
-            SysUserEntity byId = sysUserService.getById(data.getCreateId());
-            if (byId!=null){
-                data.setCreateName(byId.getUserName());
-            }
-        }
-        modelMap.put("operLog",data);
-        return "system/log/detail";
-    }
-
-
+    public SysMenuRoleRelationService service;
 
 
 
@@ -83,7 +55,7 @@ public class SysLogController {
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody
-    public RespVo pageReq(SysLogReq req) {
+    public RespVo pageReq(SysMenuRoleRelationReq req) {
         return RespVo.success(service.pageReq(req));
     }
 
@@ -105,26 +77,29 @@ public class SysLogController {
         return RespVo.success(service.getById(id));
     }
 
+    @MarsLog
     @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
     @ResponseBody
-    public RespVo add(@RequestBody SysLogEntity entity){
+    public RespVo add(@RequestBody SysMenuRoleRelationEntity entity){
         service.save(entity);
         return RespVo.success();
     }
 
 
+    @MarsLog
     @MarsPermission(":updateById")
     @ApiOperation("修改")
     @PostMapping("/updateById")
     @ResponseBody
-    public RespVo updateById(@RequestBody SysLogEntity entity){
+    public RespVo updateById(@RequestBody SysMenuRoleRelationEntity entity){
         service.updateById(entity);
         return RespVo.success();
     }
 
 
+    @MarsLog
     @MarsPermission(":deleteById")
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
@@ -135,6 +110,7 @@ public class SysLogController {
     }
 
 
+    @MarsLog
     @MarsPermission(":deleteByIds")
     @ApiOperation("批量删除")
     @PostMapping("/deleteByIds")
