@@ -123,7 +123,7 @@ DROP TABLE IF EXISTS `m_app`;
 CREATE TABLE `m_app` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `app_code` varchar(32) NOT NULL COMMENT '应用',
-  `app_desc` varchar(255) NOT NULL COMMENT '应用说明',
+  `app_desc` varchar(32) NOT NULL COMMENT '应用说明',
   `create_id` bigint(11) NOT NULL COMMENT '创建者id',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
@@ -135,7 +135,7 @@ DROP TABLE IF EXISTS `m_env`;
 CREATE TABLE `m_env` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `env_code` varchar(32) NOT NULL COMMENT '环境',
-  `env_desc` varchar(64) NOT NULL COMMENT '环境描述',
+  `env_desc` varchar(32) NOT NULL COMMENT '环境描述',
   `create_id` bigint(11) NOT NULL COMMENT '创建者id',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
@@ -161,9 +161,9 @@ DROP TABLE IF EXISTS `m_template`;
 CREATE TABLE `m_template` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `app_code` varchar(32) NOT NULL COMMENT '应用',
-  `template_key` varchar(64) NOT NULL COMMENT '模板key',
-  `template_name` varchar(64) NOT NULL COMMENT '模板名称',
-  `template_desc` varchar(128) DEFAULT NULL COMMENT '模板描述',
+  `template_key` varchar(32) NOT NULL COMMENT '模板key',
+  `template_name` varchar(32) NOT NULL COMMENT '模板名称',
+  `template_desc` varchar(32) DEFAULT NULL COMMENT '模板描述',
   `create_id` bigint(11) NOT NULL COMMENT '创建者id',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',

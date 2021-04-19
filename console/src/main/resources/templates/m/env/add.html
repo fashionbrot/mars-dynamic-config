@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增环境')" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <form class="form-horizontal m" id="addForm"  style="border: 0px solid red;">
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">环境：</label>
+            <div class="col-sm-9">
+                <input type="text" name="envCode" class="form-control" placeholder="请输入环境">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">环境名称：</label>
+            <div class="col-sm-9">
+                <input type="text" name="envDesc" class="form-control" placeholder="请输入环境名称">
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+
+<script type="text/javascript">
+
+
+
+    var prefix = ctx + "m/env";
+
+    $("#addForm").validate({
+        onkeyup: false,
+        rules: {
+            envCode:{
+                required: true,
+                minlength: 2,
+                maxlength:32
+            },
+            envDesc:{
+                required: true,
+                minlength: 2,
+                maxlength:32
+            }
+        },
+        messages: {
+
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#addForm").serializeJson();
+
+            $.operate.save(prefix + "/insert", data,null,true);
+        }
+    }
+</script>
+</body>
+</html>

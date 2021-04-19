@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增模板')" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <form class="form-horizontal m" id="addForm"  style="border: 0px solid red;">
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">应用：</label>
+            <div class="col-sm-9">
+                <select id="appCode" name="appCode">
+
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">模板名称：</label>
+            <div class="col-sm-9">
+                <input type="text" name="templateName" class="form-control" placeholder="请输入模板名称">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">模板Key：</label>
+            <div class="col-sm-9">
+                <input type="text" name="templateKey" class="form-control" placeholder="请输入模板key">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">模板描述：</label>
+            <div class="col-sm-9">
+                <input type="text" name="templateDesc" class="form-control" placeholder="请输入模板描述">
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+
+<script type="text/javascript">
+
+
+
+    var prefix = ctx + "m/template";
+
+    common.loadApp("appCode","");
+
+    $("#addForm").validate({
+        onkeyup: false,
+        rules: {
+            appCode:{
+                required: true,
+            },
+            templateName:{
+                required: true,
+                minlength: 2,
+                maxlength:32
+            },
+            templateKey:{
+                required: true,
+                minlength: 2,
+                maxlength:32,
+                isKey:true
+            },
+            templateDesc:{
+                maxlength:32,
+            }
+        },
+        messages: {
+
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#addForm").serializeJson();
+
+            $.operate.save(prefix + "/insert", data,null,true);
+        }
+    }
+</script>
+</body>
+</html>

@@ -101,3 +101,28 @@ function loadMenuLevel(id,selectId,level) {
     });
 }
 
+var common={
+    loadApp:function (id,selectId) {
+        var prefix = ctx + "m/app";
+        $.operate.get2(prefix + "/queryList",function (data) {
+            if (data.code==0){
+                var rows=data.data;
+                var html="<option value=''>请选择应用</option>";
+                for(var i=0;i<rows.length;i++){
+                    var row=rows[i];
+                    if (selectId && row.appCode==selectId){
+                        html+="<option selected='selected' value='"+row.appCode+"'>"+row.appDesc+"</option>";
+                    }else{
+                        html+="<option value='"+row.appCode+"'>"+row.appDesc+"</option>";
+                    }
+                }
+                $("#"+id).html(html);
+                $('#'+id).select2({
+                    placeholder: "请选择",
+                    allowClear: false
+                });
+            }
+        });
+    }
+}
+
