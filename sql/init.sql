@@ -115,6 +115,10 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_men
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('51', '应用列表', '2', '/m/app/index', '50', '601', '', 'menuItem', '0', '0', 'fa fa-gears', '2021-04-18 15:38:24', '2021-04-18 15:39:07', '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('52', '环境列表', '2', '/m/env/index', '50', '602', ' ', 'menuItem', '0', '0', 'fa fa-object-group', '2021-04-18 15:40:32', NULL, '0');
 
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('53', '模板属性', '1', '', '0', '700', '', 'menuItem', '0', '1', 'fa fa-object-group', '2021-04-19 09:38:11', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('54', '模板列表', '2', '/m/template/index', '53', '701', '', 'menuItem', '0', '1', 'fa fa-object-ungroup', '2021-04-19 09:39:09', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('55', '属性列表', '2', '/m/property/index', '53', '702', '', 'menuItem', '0', '1', 'fa fa-sitemap', '2021-04-19 09:41:30', NULL, '0');
+
 
 
 
