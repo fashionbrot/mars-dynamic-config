@@ -3,6 +3,7 @@
 <head>
 	<th:block th:include="include :: header('属性列表')" />
 	<th:block th:include="include :: layout-latest-css" />
+	<th:block th:include="include :: select2-css" />
 </head>
 <body class="gray-bg">
 
@@ -10,9 +11,29 @@
 	<div class="row">
 
 		<div class="btn-group-sm" id="toolbar" role="group">
-			<a class="btn btn-success" onclick="$.operate.openAdd(800,450)" >
-				<i class="fa fa-plus"></i> 新增
-			</a>
+			<form id="searchForm">
+			<div class="col-sm-12">
+				<div class="select-list">
+					<ul>
+						<li>
+							<a class="btn btn-success" onclick="xinzeng()" >
+								<i class="fa fa-plus"></i> 新增
+							</a>
+						</li>
+						<li>
+							<label>应用：</label>
+							<select id="appCode" name="appCode"  style="width: 100px;">
+							</select>
+						</li>
+						<li>
+							<label>模板：</label>
+							<select id="templateKey" name="templateKey"  style="width: 100px;">
+							</select>
+						</li>
+					</ul>
+				</div>
+			</div>
+			</form>
 		</div>
 
 		<div class="col-sm-12 select-table table-condensed " style="height:98%;">
@@ -22,12 +43,45 @@
 </div>
 
 <th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
 
 	<script th:inline="javascript">
 		var editFlag ;
 		var removeFlag ;
 		var prefix = ctx + "m/property";
 
+		function xinzeng(){
+			var appCode = $("#appCode").val();
+			if (!appCode){
+				$.modal.msgWarning("请选择应用");
+				return;
+			}
+			var templateKey = $("#templateKey").val();
+			if (!templateKey){
+				$.modal.msgWarning("请选择模板");
+				return;
+			}
+			$.operate.openAdd(800,450,"?appCode="+appCode+"&templateKey="+templateKey);
+		}
+
+		function queryParams(params) {
+			var search = $.table.queryParams(params);
+			return search;
+		}
+
+		function searchPre() {
+			$.table.search('searchForm', 'bootstrap-table');
+		}
+
+		common.loadApp("appCode","");
+
+		$("#appCode").on("change",function () {
+			var appCode = $("#appCode").val();
+			common.loadTemplate("templateKey","",appCode);
+		})
+		$("#appCode").on("change",function () {
+			searchPre();
+		});
 
 		$(function() {
 		    var options = {
@@ -40,7 +94,14 @@
 				sortName: "createDate",
 				sortOrder: "desc",
 				method:"get",
+				queryParams:queryParams,
 		        columns: [
+					{
+						width:"20%",
+						field: 'priority',
+						title: '优先级',
+						align: 'center'
+					},
 		        {
 					width:"20%",
 		            field: 'propertyName',
@@ -61,7 +122,7 @@
 				},
 				{
 					width:"20%",
-					field: 'propertyLength',
+					field: 'columnLength',
 					title: '属性长度',
 					align: 'center'
 				},
@@ -77,12 +138,7 @@
 					title: '常量key',
 					align: 'center'
 				},
-				{
-					width:"20%",
-					field: 'priority',
-					title: '优先级',
-					align: 'center'
-				},
+
 				{
 					width:"20%",
 					field: 'createDate',

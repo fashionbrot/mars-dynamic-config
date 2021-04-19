@@ -10,9 +10,11 @@ import com.github.fashionbrot.util.ConvertUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +28,15 @@ import java.util.Map;
 @Service
 public class TemplateServiceImpl  extends ServiceImpl<TemplateMapper, TemplateEntity> implements TemplateService {
 
-    @Autowired
-    private TemplateMapper templateMapper;
+
 
     @Override
     public Object pageReq(TemplateReq req) {
         Page<?> page = PageHelper.startPage(req.getPageNum(),req.getPageSize());
-        Map<String,Object> map = ConvertUtil.toMap(req);
+        Map<String,Object> map = new HashMap<>();
+        if (StringUtils.isNotEmpty(req.getAppCode())){
+            map.put("app_code",req.getAppCode());
+        }
         List<TemplateEntity> listByMap = baseMapper.selectByMap(map);
 
         return PageVo.builder()

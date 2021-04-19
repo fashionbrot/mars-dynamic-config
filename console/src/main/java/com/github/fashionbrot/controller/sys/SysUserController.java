@@ -92,7 +92,7 @@ public class SysUserController {
     }
 
     @ApiOperation("退出登录")
-    @RequestMapping("/logout")
+    @RequestMapping(value = {"/logout"})
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         CookieUtil.deleteCookie(request, response);
         return "/login";

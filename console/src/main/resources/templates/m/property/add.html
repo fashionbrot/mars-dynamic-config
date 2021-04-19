@@ -11,6 +11,23 @@
 
 
         <div class="form-group">
+            <label class="col-sm-3 control-label">优先级：</label>
+            <div class="col-sm-9">
+                <input type="text" name="priority" class="form-control" placeholder="请输入优先级">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">属性类别：</label>
+            <div class="col-sm-9">
+                <select id="addAttributeType" name="attributeType" style="width: 100%" class="form-control">
+                    <option value="1" >单个模板属性</option>
+                    <option value="0" >公共属性</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-sm-3 control-label">属性名称：</label>
             <div class="col-sm-9">
                 <input type="text" name="propertyName" class="form-control" placeholder="请输入属性名称">
@@ -21,6 +38,57 @@
             <label class="col-sm-3 control-label">属性key：</label>
             <div class="col-sm-9">
                 <input type="text" name="propertyKey" class="form-control" placeholder="请输入属性key">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">属性类型：</label>
+            <div class="col-sm-9">
+                <select  name="propertyType" class="form-control" >
+                    <option value="varchar">varchar 字符串数据</option>
+                    <option value="text">text 长文本数据</option>
+                    <option value="tinyint">tinyint (1 byte) 小整数值</option>
+                    <option value="int">int (4 bytes) 大整数值</option>
+                    <option value="bigint">bigint (8 bytes) 极大整数值</option>
+                    <option value="double">double (8 bytes) 双精度浮点数值</option>
+                    <option value="decimal">decimal 小数值</option>
+                    <option value="date">date (yyyy-MM-dd) 日期值</option>
+                    <option value="time">time (HH:mm:ss) 时间值</option>
+                    <option value="year">year (yyyy) 年份值</option>
+                    <option value="datetime">datetime (yyyy-MM-dd HH:mm:ss) 日期时间</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">属性长度：</label>
+            <div class="col-sm-9">
+                <input type="text" name="columnLength" class="form-control" placeholder="请输入属性长度">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">标签类型：</label>
+            <div class="col-sm-9">
+                <select  name="labelType" class="form-control" >
+                    <option value="input">input:普通文本框</option>
+                    <option value="textarea">textarea:大文本框</option>
+                    <option value="editor">editor:富文本</option>
+                    <option value="select">select:下拉框</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">标签默认值：</label>
+            <div class="col-sm-9">
+                <input type="text" name="labelValue" class="form-control" placeholder="请输入标签默认值">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">常量：</label>
+            <div class="col-sm-9">
+                <select name="variableKey" class="form-control" >
+
+                </select>
             </div>
         </div>
 
@@ -35,11 +103,16 @@
 
 
 
-    var prefix = ctx + "m/env";
+    var prefix = ctx + "m/property";
 
     $("#addForm").validate({
         onkeyup: false,
         rules: {
+            priority:{
+                required: true,
+                maxlength:4,
+                number:true
+            },
             propertyName:{
                 required: true,
                 minlength: 2,
@@ -49,6 +122,13 @@
                 required: true,
                 minlength: 2,
                 maxlength:32
+            },
+            columnLength:{
+                required: true,
+                maxlength:4,
+                number:true
+            },labelValue:{
+                maxlength:255,
             }
         },
         messages: {
@@ -60,6 +140,10 @@
     function submitHandler() {
         if ($.validate.form()) {
             var data = $("#addForm").serializeJson();
+            var appCode = getQuery("appCode");
+            data.appCode=appCode;
+            var templateKey = getQuery("templateKey");
+            data.templateKey=templateKey;
 
             $.operate.save(prefix + "/insert", data,null,true);
         }

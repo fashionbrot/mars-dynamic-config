@@ -3,6 +3,7 @@
 <head>
 	<th:block th:include="include :: header('模板列表')" />
 	<th:block th:include="include :: layout-latest-css" />
+	<th:block th:include="include :: select2-css" />
 </head>
 <body class="gray-bg">
 
@@ -10,9 +11,25 @@
 	<div class="row">
 
 		<div class="btn-group-sm" id="toolbar" role="group">
-			<a class="btn btn-success" onclick="$.operate.openAdd(800,450)" >
-				<i class="fa fa-plus"></i> 新增
-			</a>
+			<form id="searchForm">
+
+			<div class="col-sm-12">
+				<div class="select-list">
+					<ul>
+						<li>
+							<a class="btn btn-success" onclick="$.operate.openAdd(800,450)" >
+								<i class="fa fa-plus"></i> 新增
+							</a>
+						</li>
+						<li>
+							<label>应用：</label>
+							<select id="appCode" name="appCode"  style="width: 100px;height: 34px">
+							</select>
+						</li>
+					</ul>
+				</div>
+			</div>
+			</form>
 		</div>
 
 		<div class="col-sm-12 select-table table-condensed " style="height:98%;">
@@ -22,11 +39,26 @@
 </div>
 
 <th:block th:include="include :: footer" />
-
+<th:block th:include="include :: select2-js" />
 	<script th:inline="javascript">
 		var editFlag ;
 		var removeFlag ;
 		var prefix = ctx + "m/template";
+
+		common.loadApp("appCode","");
+		$("#appCode").on("change",function () {
+			searchPre();
+		})
+
+
+		function queryParams(params) {
+			var search = $.table.queryParams(params);
+			return search;
+		}
+
+		function searchPre() {
+			$.table.search('searchForm', 'bootstrap-table');
+		}
 
 
 		$(function() {
@@ -40,6 +72,7 @@
 				sortName: "createDate",
 				sortOrder: "desc",
 				method:"get",
+				queryParams : queryParams,
 		        columns: [
 		        {
 					width:"20%",

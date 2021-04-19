@@ -10,9 +10,12 @@ import com.github.fashionbrot.util.ConvertUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import jdk.internal.org.objectweb.asm.Handle;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +29,18 @@ import java.util.Map;
 @Service
 public class PropertyServiceImpl  extends ServiceImpl<PropertyMapper, PropertyEntity> implements PropertyService {
 
-    @Autowired
-    private PropertyMapper propertyMapper;
+
 
     @Override
     public Object pageReq(PropertyReq req) {
         Page<?> page = PageHelper.startPage(req.getPageNum(),req.getPageSize());
-        Map<String,Object> map = ConvertUtil.toMap(req);
+        Map<String,Object> map = new HashMap<>();
+        if (StringUtils.isNotEmpty(req.getAppCode())){
+            map.put("app_code",req.getAppCode());
+            if (StringUtils.isNotEmpty(req.getTemplateKey())){
+                map.put("template_key",req.getTemplateKey());
+            }
+        }
         List<PropertyEntity> listByMap = baseMapper.selectByMap(map);
 
         return PageVo.builder()

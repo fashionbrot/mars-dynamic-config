@@ -29,6 +29,11 @@ public class IndexController {
     @Autowired
     private SysMenuService sysMenuService;
 
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
 
     @GetMapping("/index")
     public String index(ModelMap mmap){

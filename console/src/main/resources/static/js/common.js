@@ -123,6 +123,31 @@ var common={
                 });
             }
         });
+    },
+    loadTemplate:function (id,selectId,appCode) {
+        var prefix = ctx + "m/template/queryList";
+        if (appCode){
+            prefix = prefix+"?app_code="+appCode;
+        }
+        $.operate.get2(prefix,function (data) {
+            if (data.code==0){
+                var rows=data.data;
+                var html="<option value=''>请选择模板</option>";
+                for(var i=0;i<rows.length;i++){
+                    var row=rows[i];
+                    if (selectId && row.appCode==selectId){
+                        html+="<option selected='selected' value='"+row.templateKey+"'>"+row.templateName+"</option>";
+                    }else{
+                        html+="<option value='"+row.templateKey+"'>"+row.templateName+"</option>";
+                    }
+                }
+                $("#"+id).html(html);
+                $('#'+id).select2({
+                    placeholder: "请选择",
+                    allowClear: false
+                });
+            }
+        });
     }
 }
 
