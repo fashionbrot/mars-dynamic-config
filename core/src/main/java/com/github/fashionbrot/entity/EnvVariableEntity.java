@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 常量表
@@ -59,5 +60,6 @@ public class EnvVariableEntity implements Serializable {
 	@TableField(value = "del_flag",fill = FieldFill.INSERT)
 	private Integer delFlag;
 
-
+	@TableField(exist = false)
+	private List<EnvVariableRelationEntity> relation;
 }

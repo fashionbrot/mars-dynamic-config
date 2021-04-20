@@ -151,7 +151,7 @@ DROP TABLE IF EXISTS `m_env_variable`;
 CREATE TABLE `m_env_variable` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `variable_name` varchar(32) NOT NULL COMMENT '变量名称',
-  `variable_desc` varchar(64) DEFAULT NULL COMMENT '变量说明',
+  `variable_desc` varchar(32) DEFAULT NULL COMMENT '变量说明',
   `variable_key` varchar(32) NOT NULL COMMENT '变量key',
   `create_id` bigint(11) NOT NULL COMMENT '创建者id',
   `create_date` datetime NOT NULL COMMENT '创建时间',
@@ -159,6 +159,13 @@ CREATE TABLE `m_env_variable` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='常量表';
 
+CREATE TABLE `m_env_variable_relation` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `env_code` varchar(32) NOT NULL COMMENT '环境code',
+  `variable_value` varchar(255) NOT NULL COMMENT '常量值',
+  `variable_key` varchar(32) NOT NULL COMMENT '常量key',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='常量和环境关系表';
 
 
 DROP TABLE IF EXISTS `m_template`;

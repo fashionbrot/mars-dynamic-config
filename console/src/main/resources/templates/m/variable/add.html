@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增应用')" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <form class="form-horizontal m" id="addForm"  style="border: 0px solid red;">
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">常量名称：</label>
+            <div class="col-sm-9">
+                <input type="text" name="variableName" class="form-control" placeholder="请输入常量名称">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">常量说明：</label>
+            <div class="col-sm-9">
+                <input type="text" name="variableDesc" class="form-control" placeholder="请输入常量说明">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">常量key：</label>
+            <div class="col-sm-9">
+                <input type="text" name="variableKey" class="form-control" placeholder="请输入常量key">
+            </div>
+        </div>
+        <div id="envDiv">
+
+        </div>
+
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+
+<script type="text/javascript">
+
+
+
+    var prefix = ctx + "m/env/variable";
+
+    $("#addForm").validate({
+        onkeyup: false,
+        rules: {
+            variableName:{
+                required: true,
+                minlength: 2,
+                maxlength:32
+            },
+            variableDesc:{
+                maxlength:32
+            },variableKey:{
+                required: true,
+                minlength: 2,
+                maxlength:32,
+                isKey:true
+            }
+        },
+        messages: {
+
+        },
+        focusCleanup: true
+    });
+    loadEnv();
+    function loadEnv() {
+        var prefix = ctx + "m/env";
+        $.operate.get2(prefix + "/queryList",function (data) {
+            if (data.code==0){
+                var rows=data.data;
+                var html="";
+                for(var i=0;i<rows.length;i++){
+                    var row=rows[i];
+                    html+=div(row.envCode);
+                }
+                $("#envDiv").html(html);
+            }
+        });
+    }
+    function div(env) {
+        var html="        <div class=\"form-group\">\n" +
+            "            <label class=\"col-sm-3 control-label\">"+env+"环境：</label>\n" +
+            "            <div class=\"col-sm-9\">\n" +
+                "<input type='hidden' name='envCode' value='"+env+"' />"+
+            "                <input type=\"text\" name=\"variableValue\" class=\"form-control\" placeholder=\"请输入常量值\">\n" +
+            "            </div>\n" +
+            "        </div>";
+        return html;
+    }
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#addForm").serializeJson();
+            var group = $("#envDiv").find(".form-group");
+            if (group){
+                var array=new Array();
+                for(var i=0;i<group.length;i++){
+                    var envCode = $(group[i]).find("[name='envCode']").val();
+                    var variableValue = $(group[i]).find("[name='variableValue']").val();
+                    console.log(envCode,variableValue)
+                    var relation =new Object();
+                    relation.envCode=envCode;
+                    relation.variableValue= variableValue;
+                    relation.variableKey = data.variableKey;
+                    array.push(relation);
+                }
+                data.relation = array;
+            }
+            $.operate.save(prefix + "/insert", data,null,true);
+        }
+    }
+</script>
+</body>
+</html>

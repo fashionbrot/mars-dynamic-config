@@ -1,9 +1,13 @@
 package com.github.fashionbrot.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.fashionbrot.entity.EnvVariableEntity;
+import com.github.fashionbrot.entity.EnvVariableRelationEntity;
 import com.github.fashionbrot.mapper.EnvVariableMapper;
+import com.github.fashionbrot.mapper.EnvVariableRelationMapper;
 import com.github.fashionbrot.req.EnvVariableReq;
 import com.github.fashionbrot.service.EnvVariableService;
 import com.github.fashionbrot.util.ConvertUtil;
@@ -12,6 +16,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +31,9 @@ import java.util.Map;
 @Service
 public class EnvVariableServiceImpl  extends ServiceImpl<EnvVariableMapper, EnvVariableEntity> implements EnvVariableService {
 
+
     @Autowired
-    private EnvVariableMapper envVariableMapper;
+    private EnvVariableRelationMapper envVariableRelationMapper;
 
     @Override
     public Object pageReq(EnvVariableReq req) {
@@ -41,4 +47,40 @@ public class EnvVariableServiceImpl  extends ServiceImpl<EnvVariableMapper, EnvV
                 .build();
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void add(EnvVariableEntity entity) {
+        baseMapper.insert(entity);
+        List<EnvVariableRelationEntity> relation = entity.getRelation();
+        if (CollectionUtils.isNotEmpty(relation)){
+            for(EnvVariableRelationEntity e :relation){
+                envVariableRelationMapper.insert(e);
+            }
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void edit(EnvVariableEntity entity) {
+        baseMapper.updateById(entity);
+        envVariableRelationMapper.delete(new QueryWrapper<EnvVariableRelationEntity>().eq("variable_key",entity.getVariableKey()));
+        List<EnvVariableRelationEntity> relation = entity.getRelation();
+        if (CollectionUtils.isNotEmpty(relation)){
+            for(EnvVariableRelationEntity e :relation){
+                envVariableRelationMapper.insert(e);
+            }
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteById(Long id) {
+        EnvVariableEntity entity = baseMapper.selectById(id);
+        if (entity!=null){
+            //TODO 判断是否已使用，已使用不能删除
+            baseMapper.deleteById(id);
+            envVariableRelationMapper.delete(new QueryWrapper<EnvVariableRelationEntity>().eq("variable_key",entity.getVariableKey()));
+        }
+
+    }
 }

@@ -15,4 +15,9 @@ public interface EnvVariableService  extends IService<EnvVariableEntity> {
 
     Object pageReq(EnvVariableReq req);
 
+    void add(EnvVariableEntity entity);
+
+    void edit(EnvVariableEntity entity);
+
+    void deleteById(Long id);
 }

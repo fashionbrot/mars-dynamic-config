@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.EnvVariableRelationMapper">
+
+
+    <resultMap type="com.github.fashionbrot.entity.EnvVariableRelationEntity" id="envVariableRelationMap">
+            <result property="id" column="id"/>
+            <result property="envCode" column="env_code"/>
+            <result property="variableValue" column="variable_value"/>
+            <result property="variableKey" column="variable_key"/>
+    </resultMap>
+
+    <resultMap type="com.github.fashionbrot.dto.EnvVariableRelationDTO" id="envVariableRelationDtoMap">
+            <result property="id" column="id"/>
+            <result property="envCode" column="env_code"/>
+            <result property="variableValue" column="variable_value"/>
+            <result property="variableKey" column="variable_key"/>
+    </resultMap>
+
+    <sql id="allSql">
+        id,env_code,variable_value,variable_key
+    </sql>
+
+    
+
+</mapper>
