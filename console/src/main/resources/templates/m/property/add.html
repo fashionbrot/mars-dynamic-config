@@ -236,7 +236,11 @@
                         json =json+ ",'"+key+"':'"+value+"'";
                     }
                 }
-                data.lebelValue= "{"+json+"}";
+                if (json!=""){
+                    data.lebelValue= "{"+json+"}";
+                }else{
+                    data.lebelValue= "";
+                }
             }
 
             $.operate.save(prefix + "/insert", data,null,true);

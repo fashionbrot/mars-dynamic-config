@@ -220,8 +220,11 @@
                         json +=",'"+key+"':'"+value+"'";
                     }
                 }
-                data.labelValue= "{"+json+"}";
-                console.log(JSON.stringify(data))
+                if (json!=""){
+                    data.lebelValue= "{"+json+"}";
+                }else{
+                    data.lebelValue= "";
+                }
             }
             $.operate.save(prefix + "/updateById", data,null,true);
         }
