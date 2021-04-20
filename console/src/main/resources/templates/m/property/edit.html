@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('新增属性')" />
+    <th:block th:include="include :: header('编辑属性')" />
     <th:block th:include="include :: select2-css" />
     <th:block th:include="include :: summernote-css" />
 </head>
@@ -10,7 +10,7 @@
 
     <form class="form-horizontal m" id="addForm"  style="border: 0px solid red;">
 
-
+        <input type="hidden" name="id" />
         <div class="form-group">
             <label class="col-sm-3 control-label">优先级：</label>
             <div class="col-sm-9">
@@ -59,7 +59,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">属性类型：</label>
             <div class="col-sm-9">
-                <select  name="propertyType" class="form-control" >
+                <select  name="propertyType" id="propertyType"  >
                     <option value="varchar">varchar 字符串数据</option>
                     <option value="text">text 长文本数据</option>
                     <option value="tinyint">tinyint (1 byte) 小整数值</option>
@@ -91,7 +91,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">标签类型：</label>
             <div class="col-sm-9">
-                <select  name="labelType" id="labelType" class="form-control" >
+                <select  name="labelType" id="labelType"  >
                     <option value="input">input:普通文本框</option>
                     <option value="textarea">textarea:大文本框</option>
                     <option value="editor">editor:富文本</option>
@@ -114,75 +114,59 @@
             </div>
         </div>
 
+
     </form>
 </div>
 
 <th:block th:include="include :: footer" />
 <th:block th:include="include :: select2-js" />
 <th:block th:include="include :: summernote-js" />
-
 <script type="text/javascript">
+    var prefix = ctx + "m/property";
 
-    var appCode = getQuery("appCode");
-    common.loadApp("appCode",appCode);
 
-    var templateKey = getQuery("templateKey");
-    common.loadTemplate("templateKey",templateKey,appCode);
+
 
     $("#appCode").on("change",function () {
         var appCode = $("#appCode").val();
         common.loadTemplate("templateKey","",appCode);
     })
 
-    var prefix = ctx + "m/property";
-    common.loadVariable("variableKey","");
 
 
-    function loadLabelType(type){
-        var html="";
-        if (type=='input'){
-            html =  "<input type=\"text\"  class=\"form-control\" >";
-        }else if (type=='textarea'){
-            html =  "<textarea  class=\"form-control\" ></textarea>";
-        }else if (type=='select'){
-            html = selectHtml("","");
-        }else if (type=='editor'){
-            html = "<div class=\"summernote\"></div>";
+
+    var id = getQuery("id");
+    $.operate.post2(prefix+"/selectById",{"id":id},function (data) {
+        if (data.code==0){
+            var row = data.data;
+            if (row){
+                $.each(row,function (k,v) {
+                    $("[name="+k+"]").attr("value",v);
+                })
+
+
+                common.loadApp("appCode",row.appCode);
+
+                common.loadTemplate("templateKey",row.templateKey,row.appCode);
+
+                common.loadVariable("variableKey",row.variableKey);
+
+                $("#propertyType").val(row.propertyType);
+                $('#propertyType').select2({
+                    placeholder: "请选择",
+                    allowClear: false
+                });
+
+                $("#labelType").val(row.labelType);
+                $('#labelType').select2({
+                    placeholder: "请选择",
+                    allowClear: false
+                });
+
+                loadLabelType(row.labelType,row.labelValue);
+            }
         }
-        $("#labelTypeDiv").html(html);
-        if (type=='editor'){
-            $('.summernote').summernote({
-                lang: 'zh-CN'
-            });
-        }
-    }
-    function selectHtml(key,value) {
-        var propertyHtml="<div style='margin-top:5px;display: flex;line-height:34px;' class='propertyGroupValue' > ";
-        if(value!=null && value!=''){
-            propertyHtml+="属性名称：<input class='form-control key' placeholder='中文名称' onkeyup=\"value=value.replace(/[^\\w\u4E00-\u9FA5]/g,'')\" value='"+key+"' style='width:31%;' /> ";
-        }else{
-            propertyHtml+="属性名称：<input class='form-control key' placeholder='中文名称' onkeyup=\"value=value.replace(/[^\\w\u4E00-\u9FA5]/g,'')\" style='width:31%;' /> ";
-        }
-        if (key!=null && key!=''){
-            propertyHtml+="属性值:<input class='form-control value' placeholder='对应值' onKeyUp=\"value=value.replace(/[\\W]/g,'')\" value='"+value+"'  style='width:31%;' /> ";
-        }else{
-            propertyHtml+="属性值:<input class='form-control value'  placeholder='对应值' onKeyUp=\"value=value.replace(/[\\W]/g,'')\"  style='width:31%;' /> ";
-        }
-        propertyHtml+="&nbsp;";
-        propertyHtml+="<button type='button' class='btn-xs btn-success' onclick='addPropertyButton(\""+"labelTypeDiv"+"\")' >添加</button>";
-        propertyHtml+="&nbsp;";
-        propertyHtml+="<button type='button' class='btn-xs btn-warning' onclick='$(this).parent().remove();' >删除</button>";
-        propertyHtml+="</div>";
-        return propertyHtml;
-    }
-    function addPropertyButton(divClass) {
-        $("#"+divClass).append(selectHtml('',''));
-    }
-    loadLabelType('input')
-    $("#labelType").on("change",function () {
-        var aa = $("#labelType").val();
-        loadLabelType(aa);
-    });
+    })
 
 
     $("#addForm").validate({
@@ -230,18 +214,81 @@
                 for(var i=0;i<select.length;i++){
                     var key =  $(select[i]).find(".key").val();
                     var value =  $(select[i]).find(".value").val();
-                    if (json==''){
+                    if (json==""){
                         json = "'"+key+"':'"+value+"'";
                     }else{
-                        json =json+ ",'"+key+"':'"+value+"'";
+                        json +=",'"+key+"':'"+value+"'";
                     }
                 }
-                data.lebelValue= "{"+json+"}";
+                data.labelValue= "{"+json+"}";
+                console.log(JSON.stringify(data))
             }
-
-            $.operate.save(prefix + "/insert", data,null,true);
+            $.operate.save(prefix + "/updateById", data,null,true);
         }
     }
+
+
+    function loadLabelType(type,value){
+        var html="";
+        if (type=='input'){
+            html =  "<input type=\"text\" value='"+value+"' class=\"form-control\" >";
+        }else if (type=='textarea'){
+            html =  "<textarea  class=\"form-control\" >"+value+"</textarea>";
+        }else if (type=='select'){
+            if (value){
+                var valueJson=eval('(' + value + ')');
+                html = getForJsonHtml(valueJson);
+            }else{
+                html = selectHtml("","");
+            }
+        }else if (type=='editor'){
+            html = "<div class=\"summernote\">"+value+"</div>";
+        }
+        $("#labelTypeDiv").html(html);
+        if (type=='editor'){
+            $('.summernote').summernote({
+                lang: 'zh-CN'
+            });
+        }
+    }
+
+    function getForJsonHtml(json) {
+        console.log(json)
+        var html='';
+        for(var k in json){
+            console.log(k,json[k])
+            html+=selectHtml(k,json[k]);
+        }
+        return html;
+    }
+
+    function selectHtml(key,value) {
+        var propertyHtml="<div style='margin-top:5px;display: flex;line-height:34px;' class='propertyGroupValue' > ";
+        if(value!=null && value!=''){
+            propertyHtml+="属性名称：<input class='form-control key' placeholder='中文名称' onkeyup=\"value=value.replace(/[^\\w\u4E00-\u9FA5]/g,'')\" value='"+key+"' style='width:31%;' /> ";
+        }else{
+            propertyHtml+="属性名称：<input class='form-control key' placeholder='中文名称' onkeyup=\"value=value.replace(/[^\\w\u4E00-\u9FA5]/g,'')\" style='width:31%;' /> ";
+        }
+        if (key!=null && key!=''){
+            propertyHtml+="属性值:<input class='form-control value' placeholder='对应值' onKeyUp=\"value=value.replace(/[\\W]/g,'')\" value='"+value+"'  style='width:31%;' /> ";
+        }else{
+            propertyHtml+="属性值:<input class='form-control value'  placeholder='对应值' onKeyUp=\"value=value.replace(/[\\W]/g,'')\"  style='width:31%;' /> ";
+        }
+        propertyHtml+="&nbsp;";
+        propertyHtml+="<button type='button' class='btn-xs btn-success' onclick='addPropertyButton(\""+"labelTypeDiv"+"\")' >添加</button>";
+        propertyHtml+="&nbsp;";
+        propertyHtml+="<button type='button' class='btn-xs btn-warning' onclick='$(this).parent().remove();' >删除</button>";
+        propertyHtml+="</div>";
+        return propertyHtml;
+    }
+    function addPropertyButton(divClass) {
+        $("#"+divClass).append(selectHtml('',''));
+    }
+
+    $("#labelType").on("change",function () {
+        var aa = $("#labelType").val();
+        loadLabelType(aa);
+    });
 </script>
 </body>
 </html>

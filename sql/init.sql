@@ -191,6 +191,7 @@ CREATE TABLE `m_property` (
   `column_length` tinyint(4) NOT NULL COMMENT '属性长度',
   `label_type` varchar(64) NOT NULL COMMENT 'html标签类型',
   `label_value` varchar(255) default '' COMMENT 'html 标签默认值',
+  `default_value` varchar(64) default '' COMMENT '默认值',
   `app_code` varchar(32) NOT NULL COMMENT '应用名称',
   `variable_key` varchar(32) DEFAULT NULL COMMENT '常量key',
   `template_key` varchar(32) DEFAULT NULL COMMENT '模板key ，公共属性为空，指定模板属性不为空',

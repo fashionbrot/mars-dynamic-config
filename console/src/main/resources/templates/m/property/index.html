@@ -52,16 +52,18 @@
 
 		function xinzeng(){
 			var appCode = $("#appCode").val();
-			if (!appCode){
+			/*if (!appCode){
+				$("#appCode").focus();
 				$.modal.msgWarning("请选择应用");
 				return;
-			}
+			}*/
 			var templateKey = $("#templateKey").val();
-			if (!templateKey){
+			/*if (!templateKey){
+				$("#templateKey").focus();
 				$.modal.msgWarning("请选择模板");
 				return;
-			}
-			$.operate.openAdd(800,450,"?appCode="+appCode+"&templateKey="+templateKey);
+			}*/
+			$.operate.openAdd("","","?appCode="+appCode+"&templateKey="+templateKey);
 		}
 
 		function queryParams(params) {
@@ -79,7 +81,7 @@
 			var appCode = $("#appCode").val();
 			common.loadTemplate("templateKey","",appCode);
 		})
-		$("#appCode").on("change",function () {
+		$("#templateKey").on("change",function () {
 			searchPre();
 		});
 
@@ -130,6 +132,12 @@
 					width:"20%",
 					field: 'labelType',
 					title: '标签类型',
+					align: 'center'
+				},
+				{
+					width:"20%",
+					field: 'defaultValue',
+					title: '默认值',
 					align: 'center'
 				},
 				{

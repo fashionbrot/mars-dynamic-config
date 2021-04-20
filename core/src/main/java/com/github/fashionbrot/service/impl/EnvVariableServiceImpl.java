@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.fashionbrot.entity.EnvVariableEntity;
 import com.github.fashionbrot.entity.EnvVariableRelationEntity;
+import com.github.fashionbrot.exception.MarsException;
 import com.github.fashionbrot.mapper.EnvVariableMapper;
 import com.github.fashionbrot.mapper.EnvVariableRelationMapper;
 import com.github.fashionbrot.req.EnvVariableReq;
@@ -50,6 +51,11 @@ public class EnvVariableServiceImpl  extends ServiceImpl<EnvVariableMapper, EnvV
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void add(EnvVariableEntity entity) {
+        Integer count = baseMapper.selectCount(new QueryWrapper<EnvVariableEntity>().eq("variable_key", entity.getVariableKey()));
+        if (count>0){
+            throw new MarsException(entity.getVariableKey()+"：已存在，请重新输入");
+        }
+
         baseMapper.insert(entity);
         List<EnvVariableRelationEntity> relation = entity.getRelation();
         if (CollectionUtils.isNotEmpty(relation)){
@@ -62,6 +68,11 @@ public class EnvVariableServiceImpl  extends ServiceImpl<EnvVariableMapper, EnvV
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void edit(EnvVariableEntity entity) {
+        EnvVariableEntity variable_key = baseMapper.selectOne(new QueryWrapper<EnvVariableEntity>().eq("variable_key", entity.getVariableKey()));
+        if (variable_key!=null && variable_key.getId().longValue()!=entity.getId().longValue()){
+            throw new MarsException(entity.getVariableKey()+"：已存在，请重新输入");
+        }
+
         baseMapper.updateById(entity);
         envVariableRelationMapper.delete(new QueryWrapper<EnvVariableRelationEntity>().eq("variable_key",entity.getVariableKey()));
         List<EnvVariableRelationEntity> relation = entity.getRelation();

@@ -56,6 +56,10 @@ public class PropertyEntity implements Serializable {
 	@TableField("label_value")
 	private String labelValue;
 
+	@ApiModelProperty(value = "默认值")
+	@TableField("default_value")
+	private String defaultValue;
+
 	@ApiModelProperty(value = "应用名称")
 	@TableField("app_code")
 	private String appCode;

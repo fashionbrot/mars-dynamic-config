@@ -7,9 +7,9 @@
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
 
-    <form class="form-horizontal m" id="addForm"  style="border: 0px solid red;">
+    <form class="form-horizontal m" id="editForm"  style="border: 0px solid red;">
 
-
+        <input type="hidden" name="id" />
         <div class="form-group">
             <label class="col-sm-3 control-label">常量名称：</label>
             <div class="col-sm-9">
@@ -47,7 +47,22 @@
 
     var prefix = ctx + "m/env/variable";
 
-    $("#addForm").validate({
+    var id = getQuery("id");
+    $.operate.post2(prefix+"/selectById",{"id":id},function (data) {
+        if (data.code==0){
+            var row = data.data;
+            if (row){
+                $.each(row,function (k,v) {
+                    $("[name="+k+"]").attr("value",v);
+                })
+                loadEnv(row.variableKey);
+                // common.loadApp("appCode",row.appCode);
+            }
+        }
+    })
+
+
+    $("#editForm").validate({
         onkeyup: false,
         rules: {
             variableName:{
@@ -72,8 +87,24 @@
         },
         focusCleanup: true
     });
-    loadEnv();
-    function loadEnv() {
+
+    function loadEnv(variableKey) {
+        var variableRelationList;
+        $.ajax({
+            url: ctx+"m/env/variable/relation/queryList",
+            type: "get",
+            dataType: "json",
+            data:{"variable_key":variableKey},
+            async: false,
+            success: function (result) {
+                if (result.code!=0){
+                    alert("请求失败或超时，请稍后再试");
+                    return;
+                }
+                variableRelationList=result.data;
+            }
+        });
+
         var prefix = ctx + "m/env";
         $.operate.get2(prefix + "/queryList",function (data) {
             if (data.code==0){
@@ -81,18 +112,34 @@
                 var html="";
                 for(var i=0;i<rows.length;i++){
                     var row=rows[i];
-                    html+=div(row.envCode);
+                    html+=div(row.envCode,getRelation(variableRelationList,row.envCode));
                 }
                 $("#envDiv").html(html);
             }
         });
     }
-    function div(env) {
+
+    function getRelation(relationDataList,envCode) {
+        if(relationDataList!=null){
+            for (var i=0;i<relationDataList.length;i++){
+                var relation=relationDataList[i];
+                if(relation.envCode==envCode){
+                    return relation.variableValue;
+                }
+            }
+        }
+        return "";
+    }
+
+
+
+
+    function div(env,value) {
         var html="        <div class=\"form-group\">\n" +
             "            <label class=\"col-sm-3 control-label\">"+env+"环境：</label>\n" +
             "            <div class=\"col-sm-9\">\n" +
                 "<input type='hidden' name='envCode' value='"+env+"' />"+
-            "                <input type=\"text\" name=\"variableValue\" class=\"form-control\" placeholder=\"请输入常量值\">\n" +
+            "                <input type=\"text\" name=\"variableValue\" class=\"form-control\" value='"+value+"' placeholder=\"请输入常量值\">\n" +
             "            </div>\n" +
             "        </div>";
         return html;
@@ -100,19 +147,19 @@
 
     function submitHandler() {
         if ($.validate.form()) {
-            var data = $("#addForm").serializeJson();
+            var data = $("#editForm").serializeJson();
             var group = $("#envDiv").find(".form-group");
             if (group){
                 var array=new Array();
                 for(var i=0;i<group.length;i++){
                     var envCode = $(group[i]).find("[name='envCode']").val();
                     var variableValue = $(group[i]).find("[name='variableValue']").val();
+                    console.log(envCode,variableValue)
                     if (!variableValue){
                         $(group[i]).find("[name='variableValue']").focus();
                         $.modal.msgError("请输入");
                         return false;
                     }
-                    console.log(envCode,variableValue)
                     var relation =new Object();
                     relation.envCode=envCode;
                     relation.variableValue= variableValue;
@@ -121,7 +168,7 @@
                 }
                 data.relation = array;
             }
-            $.operate.save(prefix + "/insert", data,null,true);
+            $.operate.save(prefix + "/updateById", data,null,true);
         }
     }
 </script>
