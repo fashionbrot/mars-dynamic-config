@@ -23,6 +23,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -173,6 +174,11 @@ public class BackStageAspect implements DisposableBean {
         if (exceptionDesc!=null && exceptionDesc.length()>1200){
             exceptionDesc = exceptionDesc.replaceAll("(\\r\\n|\\n|\\n\\r)"," <br/>").substring(0, 1200);
         }
+        String requestId ="";
+        try {
+            requestId = MDC.get("UUID");
+        }catch (Exception e){}
+
         SysLogEntity build = SysLogEntity.builder()
                 .requestIp(requestIp)
                 .methodType(requestMethod.toLowerCase().equals("post")?1:2)
@@ -185,6 +191,7 @@ public class BackStageAspect implements DisposableBean {
                 .createId(userId)
                 .createDate(new Date())
                 .delFlag(0)
+                .requestId(requestId)
                 .build();
         if (logType == 2) {
             build.setException(exceptionDesc);

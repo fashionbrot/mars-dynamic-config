@@ -75,6 +75,7 @@ CREATE TABLE `sys_log` (
   `create_id` bigint(11) DEFAULT NULL COMMENT '创建者id',
   `create_date` datetime DEFAULT NULL COMMENT '创建时间',
   `exception` varchar(1200) DEFAULT NULL COMMENT '异常日志',
+  `request_id` varchar(32) DEFAULT NULL COMMENT '日志id',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='系统日志';

@@ -83,6 +83,10 @@ public class SysLogEntity implements Serializable {
 	@TableField(value = "del_flag",fill = FieldFill.INSERT)
 	private Integer delFlag;
 
+	@ApiModelProperty(value = "日志 id")
+	@TableField("request_id")
+	private String requestId;
+
 	@TableField(exist = false)
 	private String createName;
 

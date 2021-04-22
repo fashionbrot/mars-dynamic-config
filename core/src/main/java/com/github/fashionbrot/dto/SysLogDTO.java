@@ -1,5 +1,6 @@
 package com.github.fashionbrot.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -60,6 +61,9 @@ public class SysLogDTO implements Serializable {
 
 	@ApiModelProperty(value = "异常日志")
 	private String exception;
+
+	@ApiModelProperty(value = "日志 id")
+	private String requestId;
 
 	private String createName;
 }

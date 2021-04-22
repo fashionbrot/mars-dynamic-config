@@ -1,4 +1,4 @@
-
+var dm="mdc"
 $(function() {
     validateKickout();
     validateRule();
@@ -8,10 +8,10 @@ $(function() {
     });*/
 
 
-    if ($.cookie('rememberme') == 'true') {
+    if ($.cookie(dm+'rememberme') == 'true') {
 
-        $(".uname").val(decodeURIComponent($.cookie('usrname')));
-        $(".pword").val(decodeURIComponent($.cookie('pwd'))).focus();
+        $(".uname").val(decodeURIComponent($.cookie(dm+'usrname')));
+        $(".pword").val(decodeURIComponent($.cookie(dm+'pwd'))).focus();
         $("input[name='rememberme']").attr("checked",true);
     } else {
         $(".uname").val('').focus();
@@ -118,13 +118,13 @@ function validateKickout() {
 var setcookie=function(){
     var rememberMe = $("input[name='rememberme']").is(':checked');
     if(rememberMe){
-        $.cookie('rememberme',"true",{expires:60}); //创建cookie 记住我; 值为true ;有效期为60天
-        $.cookie('usrname',encodeURIComponent($(".uname").val()),{expires:60}); //usrname 值为 用户名  有效期60天
-        $.cookie('pwd',encodeURIComponent($(".pword").val()),{expires:60}); //pwd 值为密码  有效期60天
+        $.cookie(dm+'rememberme',"true",{expires:60}); //创建cookie 记住我; 值为true ;有效期为60天
+        $.cookie(dm+'usrname',encodeURIComponent($(".uname").val()),{expires:60}); //usrname 值为 用户名  有效期60天
+        $.cookie(dm+'pwd',encodeURIComponent($(".pword").val()),{expires:60}); //pwd 值为密码  有效期60天
     }else{
-        $.cookie('rememberme',"false");
-        $.cookie('usrname',''); //usrname 值为 用户名  有效期60天
-        $.cookie('pwd',''); //pwd 值为密码  有效期60天
+        $.cookie(dm+'rememberme',"false");
+        $.cookie(dm+'usrname',''); //usrname 值为 用户名  有效期60天
+        $.cookie(dm+'pwd',''); //pwd 值为密码  有效期60天
     }
 }
 
