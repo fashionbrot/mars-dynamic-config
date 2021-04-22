@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.DynamicDataLogMapper">
+
+
+    <resultMap type="com.github.fashionbrot.entity.DynamicDataLogEntity" id="dynamicDataLogMap">
+            <result property="id" column="id"/>
+            <result property="envCode" column="env_code"/>
+            <result property="appCode" column="app_code"/>
+            <result property="templateKey" column="template_key"/>
+            <result property="description" column="description"/>
+            <result property="releaseType" column="release_type"/>
+            <result property="json" column="json"/>
+            <result property="tempJson" column="temp_json"/>
+            <result property="createId" column="create_id"/>
+            <result property="createDate" column="create_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <resultMap type="com.github.fashionbrot.dto.DynamicDataLogDTO" id="dynamicDataLogDtoMap">
+            <result property="id" column="id"/>
+            <result property="envCode" column="env_code"/>
+            <result property="appCode" column="app_code"/>
+            <result property="templateKey" column="template_key"/>
+            <result property="description" column="description"/>
+            <result property="releaseType" column="release_type"/>
+            <result property="json" column="json"/>
+            <result property="tempJson" column="temp_json"/>
+            <result property="createId" column="create_id"/>
+            <result property="createDate" column="create_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    <sql id="allSql">
+        id,env_code,app_code,template_key,description,release_type,json,temp_json,create_id,create_date,del_flag
+    </sql>
+
+    
+
+</mapper>

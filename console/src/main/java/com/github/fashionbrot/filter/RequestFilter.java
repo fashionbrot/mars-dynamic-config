@@ -1,6 +1,6 @@
 package com.github.fashionbrot.filter;
 
-import com.github.fashionbrot.tool.UuidUtil;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
@@ -27,7 +27,7 @@ public class RequestFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest)request;
         String uuid = req.getHeader(REQUEST_HEADER_UUID_KEY);
         if(StringUtils.isEmpty(uuid)){
-            uuid = UuidUtil.getUuid();
+            uuid = IdWorker.getIdStr();
         }
         MDC.put(UUID, uuid);
         filterChain.doFilter(request, response);

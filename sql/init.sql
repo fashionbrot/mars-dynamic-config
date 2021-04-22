@@ -205,6 +205,71 @@ CREATE TABLE `m_property` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='属性表';
 
-INSERT INTO `property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`,  `del_flag`, `priority`) VALUES (64, '标题', 'title', 'varchar', 'input', '', '-1', '', '-1', '1', '1', '2020-10-14 14:56:59', '0', '1');
-INSERT INTO `property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`, `del_flag`, `priority`) VALUES (0,'开始时间', 'startDate', 'datetime', 'input', '', '-1', '', '-1', '0', '1', '2020-10-14 14:58:03', '0', '2');
-INSERT INTO `property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`,  `del_flag`, `priority`) VALUES (0, '结束时间', 'endDate', 'datetime', 'input', '', '-1', '', '-1', '1', '1', '2020-10-14 14:58:47', '0', '3');
+
+INSERT INTO `m_property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`,  `del_flag`, `priority`) VALUES (32, '标题', 'title', 'varchar', 'input', '', '-1', '', '-1', '0', '1', '2020-10-14 14:56:59', '0', '1');
+INSERT INTO `m_property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`, `del_flag`, `priority`) VALUES (0,'开始时间', 'startDate', 'datetime', 'input', '', '-1', '', '-1', '0', '1', '2020-10-14 14:58:03', '0', '2');
+INSERT INTO `m_property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`,  `del_flag`, `priority`) VALUES (0, '结束时间', 'endDate', 'datetime', 'input', '', '-1', '', '-1', '0', '1', '2020-10-14 14:58:47', '0', '3');
+
+
+DROP TABLE IF EXISTS `m_dynamic_data`;
+CREATE TABLE `m_dynamic_data` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `env_code` varchar(32) NOT NULL COMMENT '环境code',
+  `app_code` varchar(32) NOT NULL COMMENT '应用名',
+  `template_key` varchar(32) NOT NULL COMMENT '模板key',
+  `status` tinyint(1)  DEFAULT '1' COMMENT '状态 1开启 0关闭',
+  `data_desc` varchar(32) DEFAULT '' COMMENT '描述',
+  `priority` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '优先级',
+  `release_type` tinyint(1) DEFAULT '0' COMMENT '发布状态 1已发布 0修改 2已删除 3新增',
+  `create_id` bigint(11) NOT NULL COMMENT '创建者id',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `update_id` bigint(11) DEFAULT NULL COMMENT '最近更新者id',
+  `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`),
+  KEY `index_eat` (`env_code`,`app_code`,`template_key`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='动态配置表';
+
+
+DROP TABLE IF EXISTS `m_dynamic_data_value`;
+CREATE TABLE `m_dynamic_data_value` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `data_id` bigint(20) unsigned NOT NULL COMMENT '动态配置表id',
+  `json` text DEFAULT NULL COMMENT '实例json',
+  `temp_json` text DEFAULT NULL COMMENT 'temp json',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`),
+  KEY `index_eat` (`data_id`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='动态配置数据表';
+
+
+DROP TABLE IF EXISTS `m_dynamic_data_log`;
+CREATE TABLE `m_dynamic_data_log` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `env_code` varchar(32) NOT NULL COMMENT '环境code',
+  `app_code` varchar(32) NOT NULL COMMENT '应用名',
+  `template_key` varchar(32) NOT NULL COMMENT '模板key',
+  `description` varchar(32) DEFAULT NULL COMMENT '描述',
+  `release_type` tinyint(1) DEFAULT '0' COMMENT '发布状态 1已发布 0修改 2已删除 3新增',
+  `json` text DEFAULT NULL COMMENT '实例json',
+  `temp_json` text DEFAULT NULL COMMENT 'temp json',
+  `create_id` bigint(11) NOT NULL COMMENT '创建者id',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`),
+  KEY `index_eat` (`env_code`,`app_code`,`template_key`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='配置数据记录表';
+
+
+
+DROP TABLE IF EXISTS `m_dynamic_data_release`;
+CREATE TABLE `m_dynamic_data_release` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `env_code` varchar(32) NOT NULL COMMENT '环境code',
+  `app_code` varchar(32) NOT NULL COMMENT '应用名',
+  `template_keys` varchar(255) DEFAULT NULL COMMENT '模板keys',
+  `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`),
+  KEY `index_envCode_appName` (`env_code`,`app_code`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='配置数据发布表';

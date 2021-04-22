@@ -52,17 +52,10 @@
 
 		function xinzeng(){
 			var appCode = $("#appCode").val();
-			/*if (!appCode){
-				$("#appCode").focus();
-				$.modal.msgWarning("请选择应用");
-				return;
-			}*/
 			var templateKey = $("#templateKey").val();
-			/*if (!templateKey){
-				$("#templateKey").focus();
-				$.modal.msgWarning("请选择模板");
-				return;
-			}*/
+			if (templateKey==null){
+				templateKey="";
+			}
 			$.operate.openAdd("","","?appCode="+appCode+"&templateKey="+templateKey);
 		}
 
@@ -104,67 +97,81 @@
 						title: '优先级',
 						align: 'center'
 					},
-		        {
-					width:"20%",
-		            field: 'propertyName',
-		            title: '属性名称',
-					align: 'center'
-		        },
-				{
-					width:"20%",
-					field: 'propertyKey',
-					title: '属性key',
-					align: 'center'
-				},
-				{
-					width:"20%",
-					field: 'propertyType',
-					title: '属性类型',
-					align: 'center'
-				},
-				{
-					width:"20%",
-					field: 'columnLength',
-					title: '属性长度',
-					align: 'center'
-				},
-				{
-					width:"20%",
-					field: 'labelType',
-					title: '标签类型',
-					align: 'center'
-				},
-				{
-					width:"20%",
-					field: 'defaultValue',
-					title: '默认值',
-					align: 'center'
-				},
-				{
-					width:"20%",
-					field: 'variableKey',
-					title: '常量key',
-					align: 'center'
-				},
+					{
+						width:"20%",
+						field: 'attributeType',
+						title: '模板',
+						align: 'center',
+						formatter:function (value, row, index) {
+							if (value==0){
+								return "<span style='color: red;'>公共属性</span>";
+							}else if (value==1){
+								return row.templateKey+"模板";
+							}
+							return "未知";
+						}
+					},
+					{
+						width:"20%",
+						field: 'propertyName',
+						title: '属性名称',
+						align: 'center'
+					},
+					{
+						width:"20%",
+						field: 'propertyKey',
+						title: '属性key',
+						align: 'center'
+					},
+					{
+						width:"20%",
+						field: 'propertyType',
+						title: '属性类型',
+						align: 'center'
+					},
+					{
+						width:"20%",
+						field: 'columnLength',
+						title: '属性长度',
+						align: 'center'
+					},
+					{
+						width:"20%",
+						field: 'labelType',
+						title: '标签类型',
+						align: 'center'
+					},
+					{
+						width:"20%",
+						field: 'defaultValue',
+						title: '默认值',
+						align: 'center'
+					},
+					{
+						width:"20%",
+						field: 'variableKey',
+						title: '常量key',
+						align: 'center'
+					},
 
-				{
-					width:"20%",
-					field: 'createDate',
-					title: '创建时间',
-					sortable: false,
-					align: "center"
-				},
-		        {
-					width:"20%",
-		            title: '操作',
-		            align: 'center',
-		            formatter: function(value, row, index) {
-		                var actions = [];
-		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\',780,450)"><i class="fa fa-edit"></i>编辑</a> ');
-						actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
-		                return actions.join('');
-		            }
-		        }]
+					{
+						width:"20%",
+						field: 'createDate',
+						title: '创建时间',
+						sortable: false,
+						align: "center"
+					},
+					{
+						width:"20%",
+						title: '操作',
+						align: 'center',
+						formatter: function(value, row, index) {
+							var actions = [];
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\',780,450)"><i class="fa fa-edit"></i>编辑</a> ');
+							actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+							return actions.join('');
+						}
+					}]
 		    };
 		    $.table.init(options);
 		});

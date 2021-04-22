@@ -1,8 +1,10 @@
 package com.github.fashionbrot.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.fashionbrot.entity.TemplateEntity;
+import com.github.fashionbrot.exception.MarsException;
 import com.github.fashionbrot.mapper.TemplateMapper;
 import com.github.fashionbrot.req.TemplateReq;
 import com.github.fashionbrot.service.TemplateService;
@@ -43,6 +45,25 @@ public class TemplateServiceImpl  extends ServiceImpl<TemplateMapper, TemplateEn
                 .rows(listByMap)
                 .total(page.getTotal())
                 .build();
+    }
+
+    @Override
+    public void add(TemplateEntity entity) {
+        QueryWrapper q = new QueryWrapper<>().eq("app_code",entity.getAppCode()).eq("template_code",entity.getTemplateKey());
+        if(baseMapper.selectCount(q)>0){
+            throw new MarsException("["+entity.getTemplateKey()+"]已存在，请重新输入");
+        }
+        baseMapper.insert(entity);
+    }
+
+    @Override
+    public void edit(TemplateEntity entity) {
+        QueryWrapper q = new QueryWrapper<>().eq("app_code",entity.getAppCode()).eq("template_code",entity.getTemplateKey());
+        TemplateEntity temp = baseMapper.selectOne(q);
+        if(temp!=null && entity.getId().longValue()!=temp.getId().longValue()){
+            throw new MarsException("["+entity.getTemplateKey()+"]已存在，请重新输入");
+        }
+        baseMapper.updateById(entity);
     }
 
 }

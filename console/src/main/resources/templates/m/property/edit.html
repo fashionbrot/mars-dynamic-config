@@ -18,14 +18,14 @@
             </div>
         </div>
 
-        <div class="form-group appCode">
+        <div class="form-group appCode" >
             <label class="col-sm-3 control-label">应用：</label>
             <div class="col-sm-9">
                 <select type="text" name="appCode" id="appCode" class="form-control" >
                 </select>
             </div>
         </div>
-        <div class="form-group templateKey">
+        <div class="form-group templateKey" >
             <label class="col-sm-3 control-label">模板：</label>
             <div class="col-sm-9">
                 <select type="text" name="templateKey" id="templateKey" class="form-control" >
@@ -57,6 +57,25 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-3 control-label">标签类型：</label>
+            <div class="col-sm-9">
+                <select  name="labelType" id="labelType"  >
+                    <option value="input">input:普通文本框</option>
+                    <option value="textarea">textarea:大文本框</option>
+                    <option value="editor">editor:富文本</option>
+                    <option value="select">select:下拉框</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">标签默认值：</label>
+            <div class="col-sm-9">
+                <input type="text" name="defaultValue" class="form-control" placeholder="请输入标签默认值">
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-sm-3 control-label">属性类型：</label>
             <div class="col-sm-9">
                 <select  name="propertyType" id="propertyType"  >
@@ -77,7 +96,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">属性长度：</label>
             <div class="col-sm-9">
-                <input type="text" name="columnLength" class="form-control" placeholder="请输入属性长度">
+                <input type="text" name="columnLength" id="columnLength" class="form-control" placeholder="请输入属性长度">
             </div>
         </div>
         <div class="form-group">
@@ -88,24 +107,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-3 control-label">标签类型：</label>
-            <div class="col-sm-9">
-                <select  name="labelType" id="labelType"  >
-                    <option value="input">input:普通文本框</option>
-                    <option value="textarea">textarea:大文本框</option>
-                    <option value="editor">editor:富文本</option>
-                    <option value="select">select:下拉框</option>
-                </select>
-            </div>
-        </div>
 
-        <div class="form-group">
-            <label class="col-sm-3 control-label">标签默认值：</label>
-            <div class="col-sm-9">
-                <input type="text" name="defaultValue" class="form-control" placeholder="请输入标签默认值">
-            </div>
-        </div>
 
         <div class="form-group" style="height: 100%; border:1px #3300FF dashed;padding-top: 15px;padding-bottom:15px;">
             <label class="col-sm-3 control-label">显示标签html：</label>
@@ -122,6 +124,21 @@
 <th:block th:include="include :: select2-js" />
 <th:block th:include="include :: summernote-js" />
 <script type="text/javascript">
+
+    function groupHide(id) {
+        $("#"+id).parent().parent().hide();
+    }
+    function groupShow(id) {
+        $("#"+id).parent().parent().show();
+    }
+
+    groupShow("appCode");
+    groupShow("templateKey");
+    groupShow("propertyType");
+    groupShow("columnLength");
+    groupShow("variableKey");
+
+
     var prefix = ctx + "m/property";
 
 
@@ -144,11 +161,11 @@
                     $("[name="+k+"]").attr("value",v);
                 })
 
+                groupHide("appCode");
+                groupHide("templateKey");
 
                 common.loadApp("appCode",row.appCode);
-
                 common.loadTemplate("templateKey",row.templateKey,row.appCode);
-
                 common.loadVariable("variableKey",row.variableKey);
 
                 $("#propertyType").val(row.propertyType);
@@ -232,6 +249,16 @@
 
 
     function loadLabelType(type,value){
+        if (type!='input'){
+            groupHide("propertyType");
+            groupHide("columnLength");
+            groupHide("variableKey");
+        }else{
+            groupShow("propertyType");
+            groupShow("columnLength");
+            groupShow("variableKey");
+        }
+
         var html="";
         if (type=='input'){
             html =  "<input type=\"text\" value='"+value+"' class=\"form-control\" >";
@@ -289,8 +316,9 @@
     }
 
     $("#labelType").on("change",function () {
-        var aa = $("#labelType").val();
-        loadLabelType(aa);
+        var labelType = $("#labelType").val();
+
+        loadLabelType(labelType,"");
     });
 </script>
 </body>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.DynamicDataReleaseMapper">
+
+
+    <resultMap type="com.github.fashionbrot.entity.DynamicDataReleaseEntity" id="dynamicDataReleaseMap">
+            <result property="id" column="id"/>
+            <result property="envCode" column="env_code"/>
+            <result property="appCode" column="app_code"/>
+            <result property="templateKeys" column="template_keys"/>
+            <result property="updateDate" column="update_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+    <resultMap type="com.github.fashionbrot.dto.DynamicDataReleaseDTO" id="dynamicDataReleaseDtoMap">
+            <result property="id" column="id"/>
+            <result property="envCode" column="env_code"/>
+            <result property="appCode" column="app_code"/>
+            <result property="templateKeys" column="template_keys"/>
+            <result property="updateDate" column="update_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+    <sql id="allSql">
+        id,env_code,app_code,template_keys,update_date,del_flag
+    </sql>
+
+    
+
+</mapper>

@@ -2,11 +2,6 @@ var dm="mdc"
 $(function() {
     validateKickout();
     validateRule();
-    /*$('.imgcode').click(function() {
-        var url = ctx + "common/captcha?s=" + Math.random();
-        $(".imgcode").attr("src", url);
-    });*/
-
 
     if ($.cookie(dm+'rememberme') == 'true') {
 

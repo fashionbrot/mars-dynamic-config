@@ -15,4 +15,7 @@ public interface TemplateService  extends IService<TemplateEntity> {
 
     Object pageReq(TemplateReq req);
 
+    void add(TemplateEntity entity);
+
+    void edit(TemplateEntity entity);
 }
