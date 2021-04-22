@@ -48,6 +48,21 @@ public class DynamicDataController  {
     @Autowired
     public DynamicDataService service;
 
+    @GetMapping("/index")
+    public String index(){
+        return "/m/dynamicData/index";
+    }
+
+    @GetMapping("/add")
+    public String add(){
+        return "/m/dynamicData/add";
+    }
+
+    @GetMapping("/edit")
+    public String edit(){
+        return "/m/dynamicData/edit";
+    }
+
 
 
     @MarsPermission(":page")

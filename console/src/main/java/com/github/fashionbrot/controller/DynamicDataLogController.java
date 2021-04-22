@@ -48,7 +48,20 @@ public class DynamicDataLogController  {
     @Autowired
     public DynamicDataLogService service;
 
+    @GetMapping("/index")
+    public String index(){
+        return "/m/dynamicDataLog/index";
+    }
 
+    @GetMapping("/add")
+    public String add(){
+        return "/m/dynamicDataLog/add";
+    }
+
+    @GetMapping("/edit")
+    public String edit(){
+        return "/m/dynamicDataLog/edit";
+    }
 
     @MarsPermission(":page")
     @ApiOperation("分页列表")

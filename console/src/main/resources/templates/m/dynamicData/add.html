@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增数据配置')" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <form class="form-horizontal m" id="addForm"  style="border: 0px solid red;">
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">优先级：</label>
+            <div class="col-sm-9">
+                <input type="text" name="priority" class="form-control" placeholder="请输入优先级" value="1">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">描述：</label>
+            <div class="col-sm-9">
+                <input type="text" name="dataDesc" class="form-control" placeholder="请输入描述">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态：</label>
+            <div class="col-sm-9">
+                <select id="status" name="status" class="form-control">
+                    <option value="1">开启</option>
+                    <option value="0">关闭</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">应用：</label>
+            <div class="col-sm-9">
+                <select type="text" name="appCode" id="appCode" class="form-control" >
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label is-required">模板：</label>
+            <div class="col-sm-9">
+                <select type="text" name="templateKey" id="templateKey" class="form-control" >
+                </select>
+            </div>
+        </div>
+
+        <div id="dynamicDiv">
+
+        </div>
+
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+
+<script type="text/javascript">
+
+    function groupHide(id) {
+        $("#"+id).parent().parent().hide();
+    }
+    function groupShow(id) {
+        $("#"+id).parent().parent().show();
+    }
+
+    groupShow("appCode");
+    groupShow("templateKey");
+
+    var appCode = getQuery("appCode");
+    if (appCode){
+        groupHide("appCode");
+    }
+    common.loadApp("appCode",appCode);
+
+    var templateKey = getQuery("templateKey");
+    if (templateKey && templateKey!=null){
+        groupHide("templateKey");
+    }
+    common.loadTemplate("templateKey",templateKey,appCode);
+
+
+    $("#appCode").on("change",function () {
+        var appCode = $("#appCode").val();
+        common.loadTemplate("templateKey","",appCode);
+    })
+
+    if (appCode && templateKey){
+        $("#dynamicDiv").html('');
+        var rows = common.loadProperty(appCode,templateKey);
+        if (rows){
+
+            var html = "";
+            for(var i=0;i<rows.length;i++){
+                var row = rows[i];
+                html +=abc(row);
+            }
+            $("#dynamicDiv").html(html);
+        }
+    }
+    
+    function abc(row) {
+        var labelType = row.labelType;
+        var propertyName = row.propertyName;
+        var propertyKey =  row.propertyKey;
+        var propertyType = row.propertyType;
+        var columnLength = row.columnLength;
+
+        var other = " propertyType='"+propertyType+"' columnLength ='"+columnLength+"' ";
+
+        var html="";
+        html += "<div class=\"form-group\">";
+        if (labelType=='input'){
+
+            html += "<label class=\"col-sm-3 control-label is-required\">"+propertyName+"：</label>";
+            html += "<div class=\"col-sm-9\">";
+            if (propertyType=='varchar'){
+                html +=" <input type=\"text\" name=\""+propertyKey+"\" "+other+" class=\"form-control\" placeholder=\"请输入"+propertyName+"\">";
+            }else if (propertyType=='datetime'){
+                html +=" <input type=\"text\" name=\""+propertyKey+"\" "+other+" class=\"form-control\" placeholder=\"请输入"+propertyName+"\">";
+            }
+
+            html += "</div>";
+        }else if (labelType=='select'){
+
+        }else if (labelType=='textarea'){
+
+        }else if (labelType=='editor'){
+
+        }
+        html += "</div>";
+        return html;
+    }
+
+
+
+
+    var prefix = ctx + "m/env";
+
+    $("#addForm").validate({
+        onkeyup: false,
+        rules: {
+            priority:{
+                required: true,
+                number: true,
+                maxlength:4
+            },
+            dataDesc:{
+                required: true,
+                minlength: 2,
+                maxlength:32
+            }
+        },
+        messages: {
+
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#addForm").serializeJson();
+
+            $.operate.save(prefix + "/insert", data,null,true);
+        }
+    }
+</script>
+</body>
+</html>

@@ -171,6 +171,23 @@ var common={
                 });
             }
         });
+    },
+    loadProperty(appCode, templateKey) {
+        var prefix = ctx + "m/property/queryList?app_code="+appCode+"&template_key="+templateKey;
+        var rows;
+        $.ajax({
+            url: prefix,
+            type: "get",
+            dataType: "json",
+            async: false,
+            success: function (data) {
+                if (data.code==0){
+                    rows = data.data;
+                    return rows;
+                }
+            }
+        });
+        return rows;
     }
 }
 

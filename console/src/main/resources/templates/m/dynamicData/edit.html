@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('编辑应用')" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <form class="form-horizontal m" id="editForm"  style="border: 0px solid red;">
+
+        <input type="hidden" name="id" />
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">环境：</label>
+            <div class="col-sm-9">
+                <input type="text" disabled="disabled" name="envCode" class="form-control" placeholder="请输入环境">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">环境名称：</label>
+            <div class="col-sm-9">
+                <input type="text" name="envDesc" class="form-control" placeholder="请输入环境名称">
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+
+<script type="text/javascript">
+    var prefix = ctx + "m/env";
+
+    var id = getQuery("id");
+    $.operate.post2(prefix+"/selectById",{"id":id},function (data) {
+        if (data.code==0){
+            var row = data.data;
+            if (row){
+                $.each(row,function (k,v) {
+                    $("[name="+k+"]").attr("value",v);
+                })
+            }
+        }
+    })
+
+
+
+    $("#addForm").validate({
+        onkeyup: false,
+        rules: {
+            envCode:{
+                required: true,
+                minlength: 2,
+                maxlength:32
+            },
+            envDesc:{
+                required: true,
+                minlength: 2,
+                maxlength:32
+            }
+        },
+        messages: {
+
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#editForm").serializeJson();
+
+            $.operate.save(prefix + "/updateById", data,null,true);
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('数据配置列表')" />
+	<th:block th:include="include :: layout-latest-css" />
+	<th:block th:include="include :: select2-css" />
+</head>
+<body class="gray-bg">
+
+<div class="container-div">
+	<div class="row">
+
+		<!--<div class="col-sm-12 search-collapse">
+
+		</div>-->
+
+		<div class="btn-group-sm" id="toolbar" role="group">
+			<form id="searchForm">
+				<div class="col-sm-12">
+					<div class="select-list">
+						<ul>
+							<li>
+								<a class="btn btn-success" onclick="xinzeng()" >
+									<i class="fa fa-plus"></i> 新增
+								</a>
+							</li>
+
+							<li>
+								<label>应用：</label>
+								<select id="appCode" name="appCode"  style="width: 100px;">
+								</select>
+							</li>
+							<li>
+								<label>模板：</label>
+								<select id="templateKey" name="templateKey"  style="width: 100px;">
+								</select>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</form>
+
+		</div>
+
+		<div class="col-sm-12 select-table table-condensed " style="height:98%;">
+			<table id="bootstrap-table"></table>
+		</div>
+
+	</div>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+	<script th:inline="javascript">
+
+
+		function xinzeng(){
+			var appCode = $("#appCode").val();
+			var templateKey = $("#templateKey").val();
+			if (templateKey==null){
+				templateKey="";
+			}
+			$.operate.openAdd("","","?appCode="+appCode+"&templateKey="+templateKey);
+		}
+
+		common.loadApp("appCode","");
+		$("#appCode").on("change",function () {
+			var appCode = $("#appCode").val();
+			common.loadTemplate("templateKey","",appCode);
+		})
+		$("#templateKey").on("change",function () {
+			searchPre();
+		});
+
+
+		var editFlag ;
+		var removeFlag ;
+		var prefix = ctx + "m/dynamic/data";
+
+
+		$(function() {
+		    var options = {
+		        url: prefix + "/page",
+		        createUrl: prefix + "/add",
+		        updateUrl: prefix + "/edit?id={id}",
+		        removeUrl: prefix + "/deleteById",
+		        exportUrl: prefix + "/export",
+		        modalName: "环境",
+				sortName: "createDate",
+				sortOrder: "desc",
+				method:"get",
+		        columns: [
+		        {
+					width:"20%",
+		            field: 'status',
+		            title: '状态',
+					align: 'center',
+					formatter: function(value, row, index) {
+						return statusTools(row);
+					}
+		        },
+				{
+					width:"20%",
+					field: 'dataDesc',
+					title: '描述',
+					align: 'center'
+				},
+				{
+					width:"20%",
+					field: 'createDate',
+					title: '创建时间',
+					sortable: false,
+					align: "center"
+				},
+		        {
+					width:"20%",
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		                var actions = [];
+		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\',780,450)"><i class="fa fa-edit"></i>编辑</a> ');
+						actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+		                return actions.join('');
+		            }
+		        }]
+		    };
+		    $.table.init(options);
+
+		});
+
+		function queryParams(params) {
+			var search = $.table.queryParams(params);
+			return search;
+		}
+
+		function searchPre() {
+			$.table.search('searchForm', 'bootstrap-table');
+		}
+
+		/* 角色状态显示 */
+		function statusTools(row) {
+			if (row.status == 1) {
+				return '开启';
+			} else {
+				return '关闭';
+			}
+		}
+
+
+	</script>
+</body>
+</html>
