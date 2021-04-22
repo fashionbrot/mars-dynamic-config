@@ -46,7 +46,9 @@
         #navMenu ul li.active{
             font-weight: bold !important;
             background-color: #337ab7;
+            color: white;
         }
+
 
 
     </style>
@@ -205,7 +207,7 @@ var isLinkage = true;
 
 /* 用户管理-重置密码 */
 function resetPwd() {
-    var url = ctx + 'system/user/profile/resetPwd';
+    var url = ctx + 'sys/user/profile/resetPwd';
     $.modal.open("重置密码", url, '770', '380');
 }
 /* 切换主题 */
