@@ -67,6 +67,15 @@
                 </select>
             </div>
         </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否必填：</label>
+            <div class="col-sm-9">
+                <select  name="labelRequired" id="labelRequired" >
+                    <option value="0">非必填</option>
+                    <option value="1">必填</option>
+                </select>
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label">标签默认值：</label>
@@ -80,15 +89,9 @@
             <div class="col-sm-9">
                 <select  name="propertyType" id="propertyType"  >
                     <option value="varchar">varchar 字符串数据</option>
-                    <option value="text">text 长文本数据</option>
-                    <option value="tinyint">tinyint (1 byte) 小整数值</option>
-                    <option value="int">int (4 bytes) 大整数值</option>
-                    <option value="bigint">bigint (8 bytes) 极大整数值</option>
-                    <option value="double">double (8 bytes) 双精度浮点数值</option>
+                    <option value="bigint">bigint 极大整数值</option>
                     <option value="decimal">decimal 小数值</option>
                     <option value="date">date (yyyy-MM-dd) 日期值</option>
-                    <option value="time">time (HH:mm:ss) 时间值</option>
-                    <option value="year">year (yyyy) 年份值</option>
                     <option value="datetime">datetime (yyyy-MM-dd HH:mm:ss) 日期时间</option>
                 </select>
             </div>
@@ -180,6 +183,14 @@
                     allowClear: false
                 });
 
+                $("#labelRequired").val(row.labelRequired);
+                $('#labelRequired').select2({
+                    placeholder: "请选择",
+                    allowClear: false
+                });
+
+
+
                 loadLabelType(row.labelType,row.labelValue);
             }
         }
@@ -222,40 +233,17 @@
         focusCleanup: true
     });
 
-    function submitHandler() {
-        if ($.validate.form()) {
-            var data = $("#addForm").serializeJson();
-            var select = $(".propertyGroupValue");
-            if (select){
-                var json="";
-                for(var i=0;i<select.length;i++){
-                    var key =  $(select[i]).find(".key").val();
-                    var value =  $(select[i]).find(".value").val();
-                    if (json==""){
-                        json = "'"+key+"':'"+value+"'";
-                    }else{
-                        json +=",'"+key+"':'"+value+"'";
-                    }
-                }
-                if (json!=""){
-                    data.lebelValue= "{"+json+"}";
-                }else{
-                    data.lebelValue= "";
-                }
-            }
-            $.operate.save(prefix + "/updateById", data,null,true);
-        }
-    }
+
 
 
     function loadLabelType(type,value){
         if (type!='input'){
             groupHide("propertyType");
-            groupHide("columnLength");
+            // groupHide("columnLength");
             groupHide("variableKey");
         }else{
             groupShow("propertyType");
-            groupShow("columnLength");
+            // groupShow("columnLength");
             groupShow("variableKey");
         }
 
@@ -320,6 +308,32 @@
 
         loadLabelType(labelType,"");
     });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#addForm").serializeJson();
+            var select = $(".propertyGroupValue");
+            if (select){
+                var json="";
+                for(var i=0;i<select.length;i++){
+                    var key =  $(select[i]).find(".key").val();
+                    var value =  $(select[i]).find(".value").val();
+                    if (json==""){
+                        json = "'"+key+"':'"+value+"'";
+                    }else{
+                        json +=",'"+key+"':'"+value+"'";
+                    }
+                }
+                if (json!=""){
+                    data.labelValue= "{"+json+"}";
+                }else{
+                    data.labelValue= "";
+                }
+            }
+            console.log(data.labelValue)
+            $.operate.save(prefix + "/updateById", data,null,true);
+        }
+    }
 </script>
 </body>
 </html>

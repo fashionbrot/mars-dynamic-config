@@ -3,6 +3,8 @@
 <head>
     <th:block th:include="include :: header('新增数据配置')" />
     <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: summernote-css" />
 </head>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
@@ -54,12 +56,16 @@
 
         </div>
 
+        <div  style="height: 50px;border: 0px;">
+        </div>
 
     </form>
 </div>
 
 <th:block th:include="include :: footer" />
 <th:block th:include="include :: select2-js" />
+<th:block th:include="include :: datetimepicker-js" />
+<th:block th:include="include :: summernote-js" />
 
 <script type="text/javascript">
 
@@ -69,7 +75,6 @@
     function groupShow(id) {
         $("#"+id).parent().parent().show();
     }
-
     groupShow("appCode");
     groupShow("templateKey");
 
@@ -91,50 +96,176 @@
         common.loadTemplate("templateKey","",appCode);
     })
 
-    if (appCode && templateKey){
-        $("#dynamicDiv").html('');
-        var rows = common.loadProperty(appCode,templateKey);
-        if (rows){
+    initProperty(appCode,templateKey);
 
-            var html = "";
-            for(var i=0;i<rows.length;i++){
-                var row = rows[i];
-                html +=abc(row);
+    $("#templateKey").on("change",function () {
+        var appCode = $("#appCode").val();
+        var templateKey = $("#templateKey").val();
+        initProperty(appCode,templateKey);
+    })
+
+    function initProperty(appCode,templateKey) {
+        $("#dynamicDiv").html('');
+        if (appCode && templateKey){
+
+            var propertyRows = common.getProperty(appCode,templateKey);
+            var variableRows = common.getVariable();
+            if (propertyRows){
+
+                var html = "";
+                for(var i=0;i<propertyRows.length;i++){
+                    var property = propertyRows[i];
+                    html +=initPropertyHtml(property,variableRows);
+                }
+                $("#dynamicDiv").html(html);
             }
-            $("#dynamicDiv").html(html);
+            initDate();
+            initEditor();
         }
     }
-    
-    function abc(row) {
-        var labelType = row.labelType;
-        var propertyName = row.propertyName;
-        var propertyKey =  row.propertyKey;
-        var propertyType = row.propertyType;
-        var columnLength = row.columnLength;
 
-        var other = " propertyType='"+propertyType+"' columnLength ='"+columnLength+"' ";
+    
+    function initPropertyHtml(property,variableRows) {
+        var labelType    = property.labelType;
+        var propertyName = property.propertyName;
+        var propertyKey  = property.propertyKey;
+        var propertyType = property.propertyType;
+        var columnLength = property.columnLength;
+        var labelRequired= property.labelRequired;
+        var defaultValue = property.defaultValue;
+        var labelValue   = property.labelValue;
+        var variableKey  = property.variableKey;
+
+        var otherHtml = " propertyType='"+propertyType+"' columnLength ='"+columnLength+"' ";
+        var requiredHtml = labelRequired==1?"is-required":"";
 
         var html="";
         html += "<div class=\"form-group\">";
+        html += "<label class=\"col-sm-3 control-label "+requiredHtml+" \">"+propertyName+"：</label>";
         if (labelType=='input'){
 
-            html += "<label class=\"col-sm-3 control-label is-required\">"+propertyName+"：</label>";
+            otherHtml += " value= '"+defaultValue+"' ";
             html += "<div class=\"col-sm-9\">";
+            var eventHtml = "";
+            var classHtml = "";
+            var styleHtml = "";
             if (propertyType=='varchar'){
-                html +=" <input type=\"text\" name=\""+propertyKey+"\" "+other+" class=\"form-control\" placeholder=\"请输入"+propertyName+"\">";
+                eventHtml = " onkeyup='varcharEvent(this)' onafterpaste='varcharEvent(this)' "
+                styleHtml = " style='width:70%;' "
+                html += getVariableHtml(variableRows,propertyKey,variableKey);
+            }else if (propertyType=='bigint'){
+                eventHtml = " onkeyup='bigintEvent(this)' onafterpaste='bigintEvent(this)' "
+            }else if (propertyType=='decimal'){
+                eventHtml = " onkeyup='doubleEvent(this)' onafterpaste='doubleEvent(this)' "
+            }else if (propertyType=='date'){
+                classHtml  = " input-date";
             }else if (propertyType=='datetime'){
-                html +=" <input type=\"text\" name=\""+propertyKey+"\" "+other+" class=\"form-control\" placeholder=\"请输入"+propertyName+"\">";
+                classHtml  = " input-datetime";
             }
+            html +=" <input type=\"text\" name=\""+propertyKey+"\" "+styleHtml+eventHtml+otherHtml+" class=\"form-control "+classHtml+"\" placeholder=\"请输入"+propertyName+"\">";
+            html += "</div>";
+
+        }else if (labelType=='select'){
+            html += "<div class=\"col-sm-9\">";
+
+            var valueJson=eval('(' + labelValue + ')');
+            html += "<select   class='form-control-select' style='width:100%;' >";
+            for(var k in valueJson){
+                if(defaultValue==k){
+                    html += "<option value='"+k+"' selected='selected' >"+valueJson[k]+" : "+k+"</option>";
+                }else{
+                    html += "<option value='"+k+"'  >"+valueJson[k]+" : "+k+"</option>";
+                }
+            }
+            html +="</select>";
 
             html += "</div>";
-        }else if (labelType=='select'){
-
         }else if (labelType=='textarea'){
-
+            html += "<div class=\"col-sm-9\">";
+            html += "<textarea name=\""+propertyKey+"\" class='form-control' style=\"resize:none;\" "+otherHtml+" >"+defaultValue+"</textarea>";
+            html += "</div>";
         }else if (labelType=='editor'){
-
+            html += "<div class=\"col-sm-9\">";
+            html += "<div class=\"summernote\" name=\""+propertyKey+"\" "+otherHtml+" >"+defaultValue+"</div>";
+            html += "</div>";
         }
+
         html += "</div>";
+        return html;
+    }
+    
+    function varcharEvent(obj) {
+        var value = $(obj).val();
+        $(obj).val(value.replaceAll(/\'/g,"‘").replaceAll(/\"/g,"“"));
+    }
+    function bigintEvent(obj) {
+        var value = $(obj).val();
+        $(obj).val(value.replaceAll(/\D/g,""))
+    }
+    function doubleEvent(obj) {
+        var value = $(obj).val();
+        //得到第一个字符是否为负号
+        var t = value.charAt(0);
+        //先把非数字的都替换掉，除了数字和.
+        value = value.replaceAll(/[^\d\.]/g,'');
+        //必须保证第一个为数字而不是.
+        value = value.replaceAll(/^\./g,'');
+        //保证只有出现一个.而没有多个.
+        value = value.replaceAll(/\.{2,}/g,'.');
+        //保证.只出现一次，而不能出现两次以上
+        value = value.replaceAll('.','$#$').replaceAll(/\./g,'').replaceAll('$#$','.');
+        //如果第一位是负号，则允许添加
+        if(t == '-'){
+            value = '-'+value;
+        }
+        $(obj).val(value);
+    }
+
+
+
+
+    function initDate() {
+        var s1 = $("input.input-date");
+        for(var i=0;i<s1.length;i++){
+            $(s1[i]).datetimepicker({
+                format: "yyyy-mm-dd",
+                minView: "month",
+                autoclose: true
+            });
+        }
+        var s2 = $("input.input-datetime");
+        for(var j=0;j<s2.length;j++){
+            $(s2[j]).datetimepicker({
+                format: "yyyy-mm-dd HH:mm:ss",
+                minView: "month",
+                autoclose: true
+            });
+        }
+    }
+    function initEditor() {
+        $('.summernote').summernote({
+            lang: 'zh-CN'
+        });
+    }
+
+    function  getVariableHtml(variableRows,propertyKey,variableKey) {
+        var html="";
+        if (variableKey=="" || variableKey==null){
+            return  html;
+        }
+        if (variableRows){
+            html+="<select name='"+propertyKey+"Variable' style='width: 30%;float:left;' class='form-control-select'  >"
+            html+="<option value=''>无前缀</option>";
+            for(var k=0;k<variableRows.length;k++){
+                var variable = variableRows[k];
+                if (variableKey == variable.variableKey){
+                    html+="<option value='"+variable.variableKey+"' selected='selected' >"+variable.variableName+"</option>";
+                }else{
+                    html+="<option value='"+variable.variableKey+"'>"+variable.variableName+"</option>";
+                }
+            }
+            html+="</select>";
+        }
         return html;
     }
 
@@ -142,7 +273,6 @@
 
 
     var prefix = ctx + "m/env";
-
     $("#addForm").validate({
         onkeyup: false,
         rules: {

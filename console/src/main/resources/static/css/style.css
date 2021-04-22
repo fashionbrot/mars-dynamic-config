@@ -7065,3 +7065,16 @@ nav .logo {
 	z-index: 9998;
 	margin: 0;
 }
+
+.form-control-select {
+    background: #FFFFFF none;
+    border: 1px solid #e5e6e7;
+    border-radius: 4px;
+    color: inherit;
+    display: block;
+    padding: 3px 6px 4px;
+    -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    height: 31px;
+    font-size: 14px;
+}

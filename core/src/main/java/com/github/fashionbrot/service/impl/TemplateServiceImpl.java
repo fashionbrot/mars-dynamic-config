@@ -49,7 +49,7 @@ public class TemplateServiceImpl  extends ServiceImpl<TemplateMapper, TemplateEn
 
     @Override
     public void add(TemplateEntity entity) {
-        QueryWrapper q = new QueryWrapper<>().eq("app_code",entity.getAppCode()).eq("template_code",entity.getTemplateKey());
+        QueryWrapper q = new QueryWrapper<>().eq("app_code",entity.getAppCode()).eq("template_key",entity.getTemplateKey());
         if(baseMapper.selectCount(q)>0){
             throw new MarsException("["+entity.getTemplateKey()+"]已存在，请重新输入");
         }
@@ -58,7 +58,7 @@ public class TemplateServiceImpl  extends ServiceImpl<TemplateMapper, TemplateEn
 
     @Override
     public void edit(TemplateEntity entity) {
-        QueryWrapper q = new QueryWrapper<>().eq("app_code",entity.getAppCode()).eq("template_code",entity.getTemplateKey());
+        QueryWrapper q = new QueryWrapper<>().eq("app_code",entity.getAppCode()).eq("template_key",entity.getTemplateKey());
         TemplateEntity temp = baseMapper.selectOne(q);
         if(temp!=null && entity.getId().longValue()!=temp.getId().longValue()){
             throw new MarsException("["+entity.getTemplateKey()+"]已存在，请重新输入");

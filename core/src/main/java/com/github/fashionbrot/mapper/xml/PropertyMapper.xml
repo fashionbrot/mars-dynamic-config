@@ -19,6 +19,7 @@
             <result property="priority" column="priority"/>
             <result property="createId" column="create_id"/>
             <result property="createDate" column="create_date"/>
+            <result property="labelRequired" column="label_required"/>
             <result property="delFlag" column="del_flag"/>
     </resultMap>
 
@@ -38,6 +39,7 @@
             <result property="createId" column="create_id"/>
             <result property="createDate" column="create_date"/>
             <result property="delFlag" column="del_flag"/>
+            <result property="labelRequired" column="label_required"/>
     </resultMap>
     <sql id="allSql">
         id,property_name,property_key,property_type,column_length,label_type,label_value,app_code,variable_key,template_key,attribute_type,priority,create_id,create_date,del_flag

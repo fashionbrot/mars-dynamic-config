@@ -120,9 +120,8 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_men
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('54', '模板列表', '2', '/m/template/index', '53', '701', '', 'menuItem', '0', '1', 'fa fa-object-ungroup', '2021-04-19 09:39:09', NULL, '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('55', '属性列表', '2', '/m/property/index', '53', '702', '', 'menuItem', '0', '1', 'fa fa-sitemap', '2021-04-19 09:41:30', NULL, '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('56', '环境变量', '2', 'm/env/variable/index', '53', '703', '', 'menuItem', '0', '1', 'fa fa-trademark', '2021-04-20 02:24:49', NULL, '0');
-
-
-
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('57', '动态数据配置', '1', '', '0', '800', NULL, 'menuItem', '0', '1', 'fa fa-cubes', '2021-04-22 12:23:07', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('58', '动态配置列表', '2', '/m/dynamic/data/index', '57', '801', NULL, 'menuItem', '0', '1', 'fa fa-cube', '2021-04-22 12:23:58', NULL, '0');
 
 
 DROP TABLE IF EXISTS `m_app`;
@@ -193,6 +192,7 @@ CREATE TABLE `m_property` (
   `column_length` tinyint(4) NOT NULL COMMENT '属性长度',
   `label_type` varchar(64) NOT NULL COMMENT 'html标签类型',
   `label_value` varchar(255) default '' COMMENT 'html 标签默认值',
+  `label_required` tinyint(1)  DEFAULT '0' COMMENT '是否必填 0非必填 1必填 ',
   `default_value` varchar(64) default '' COMMENT '默认值',
   `app_code` varchar(32) NOT NULL COMMENT '应用名称',
   `variable_key` varchar(32) DEFAULT NULL COMMENT '常量key',

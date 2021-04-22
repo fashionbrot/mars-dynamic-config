@@ -68,7 +68,15 @@
                 </select>
             </div>
         </div>
-
+        <div class="form-group">
+            <label class="col-sm-3 control-label">是否必填：</label>
+            <div class="col-sm-9">
+                <select  name="labelRequired" id="labelRequired" class="form-control" >
+                    <option value="0">非必填</option>
+                    <option value="1">必填</option>
+                </select>
+            </div>
+        </div>
         <div class="form-group">
             <label class="col-sm-3 control-label">标签默认值：</label>
             <div class="col-sm-9">
@@ -81,15 +89,9 @@
             <div class="col-sm-9">
                 <select  name="propertyType" id="propertyType" class="form-control" >
                     <option value="varchar">varchar 字符串数据</option>
-                    <option value="text">text 长文本数据</option>
-                    <option value="tinyint">tinyint (1 byte) 小整数值</option>
-                    <option value="int">int (4 bytes) 大整数值</option>
-                    <option value="bigint">bigint (8 bytes) 极大整数值</option>
-                    <option value="double">double (8 bytes) 双精度浮点数值</option>
+                    <option value="bigint">bigint 极大整数值</option>
                     <option value="decimal">decimal 小数值</option>
                     <option value="date">date (yyyy-MM-dd) 日期值</option>
-                    <option value="time">time (HH:mm:ss) 时间值</option>
-                    <option value="year">year (yyyy) 年份值</option>
                     <option value="datetime">datetime (yyyy-MM-dd HH:mm:ss) 日期时间</option>
                 </select>
             </div>
@@ -164,11 +166,11 @@
 
         if (type!='input'){
             groupHide("propertyType");
-            groupHide("columnLength");
+            // groupHide("columnLength");
             groupHide("variableKey");
         }else{
             groupShow("propertyType");
-            groupShow("columnLength");
+            // groupShow("columnLength");
             groupShow("variableKey");
         }
 
@@ -272,12 +274,12 @@
                     }
                 }
                 if (json!=""){
-                    data.lebelValue= "{"+json+"}";
+                    data.labelValue= "{"+json+"}";
                 }else{
-                    data.lebelValue= "";
+                    data.labelValue= "";
                 }
             }
-
+            console.log(data.labelValue)
             $.operate.save(prefix + "/insert", data,null,true);
         }
     }

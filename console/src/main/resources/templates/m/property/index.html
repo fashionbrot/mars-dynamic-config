@@ -92,13 +92,11 @@
 				queryParams:queryParams,
 		        columns: [
 					{
-						width:"20%",
 						field: 'priority',
 						title: '优先级',
 						align: 'center'
 					},
 					{
-						width:"20%",
 						field: 'attributeType',
 						title: '模板',
 						align: 'center',
@@ -112,57 +110,60 @@
 						}
 					},
 					{
-						width:"20%",
 						field: 'propertyName',
 						title: '属性名称',
 						align: 'center'
 					},
 					{
-						width:"20%",
 						field: 'propertyKey',
 						title: '属性key',
 						align: 'center'
 					},
 					{
-						width:"20%",
 						field: 'propertyType',
 						title: '属性类型',
 						align: 'center'
 					},
 					{
-						width:"20%",
 						field: 'columnLength',
 						title: '属性长度',
 						align: 'center'
 					},
 					{
-						width:"20%",
 						field: 'labelType',
 						title: '标签类型',
 						align: 'center'
 					},
 					{
-						width:"20%",
+						field: 'labelRequired',
+						title: '是否必填',
+						align: 'center',
+						formatter: function(value, row, index) {
+							if (value==1){
+								return "<span style='color: red'>必填</span>"
+							}else {
+								return "非必填"
+							}
+						}
+					},
+					{
 						field: 'defaultValue',
 						title: '默认值',
 						align: 'center'
 					},
 					{
-						width:"20%",
 						field: 'variableKey',
 						title: '常量key',
 						align: 'center'
 					},
 
 					{
-						width:"20%",
 						field: 'createDate',
 						title: '创建时间',
 						sortable: false,
 						align: "center"
 					},
 					{
-						width:"20%",
 						title: '操作',
 						align: 'center',
 						formatter: function(value, row, index) {

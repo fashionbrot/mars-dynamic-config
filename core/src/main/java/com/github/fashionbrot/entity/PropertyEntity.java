@@ -60,6 +60,10 @@ public class PropertyEntity implements Serializable {
 	@TableField("default_value")
 	private String defaultValue;
 
+	@ApiModelProperty("是否必填 1必填 0非必填")
+	@TableField("label_required")
+	private Integer labelRequired;
+
 	@ApiModelProperty(value = "应用名称")
 	@TableField("app_code")
 	private String appCode;

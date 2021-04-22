@@ -1,5 +1,6 @@
 package com.github.fashionbrot.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -41,6 +42,9 @@ public class PropertyDTO implements Serializable {
 
 	@ApiModelProperty(value = "html 标签值")
 	private String labelValue;
+
+	@ApiModelProperty("是否必填 1必填 0非必填")
+	private Integer labelRequired;
 
 	@ApiModelProperty(value = "应用名称")
 	private String appCode;
