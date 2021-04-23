@@ -108,7 +108,12 @@
     function submitHandler() {
         if ($.validate.form()) {
             var data = $("#addForm").serializeJson();
-            data.tempJson = getTempJson();
+            getTempJson(function (json) {
+                data.tempJson = json;
+            });
+            if (!data.tempJson){
+                return;
+            }
 
             $.operate.save(prefix + "/updateById", data,null,true);
         }

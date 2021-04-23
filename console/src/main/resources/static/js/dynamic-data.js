@@ -199,7 +199,7 @@ function  getVariableHtml(variableRows,propertyKey,variableKeyValue) {
     return html;
 }
 
-function getTempJson() {
+function getTempJson(callback) {
 
     var inputs = $("#dynamicDiv").find(".mars-input");
     if (inputs){
@@ -231,16 +231,17 @@ function getTempJson() {
             }
             console.log(propertyType,propertyKey,columnLength,labelRequired,labelType,variableKey,value,propertyName);
             if (labelRequired=="1"){
+                console.log(propertyKey,value);
                 if ($.common.isEmpty(value)){
                     $(input).focus();
                     $.modal.msgError(propertyName+"必填");
-                    return;
+                    return ;
                 }
             }
             if ($.common.isNotEmpty(value) && value.length>columnLength && labelType!="editor"){
                 $(input).focus();
                 $.modal.msgError(propertyName+"最多"+columnLength+"字");
-                return;
+                return ;
             }
 
             if (number){
@@ -252,7 +253,7 @@ function getTempJson() {
         }
         var json = "{"+array.join(",")+"}";
         console.log(json)
-        return json;
+        callback(json);
     }
-    return "";
+
 }
