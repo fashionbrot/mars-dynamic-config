@@ -1,7 +1,10 @@
 package com.github.fashionbrot.service.impl;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.fashionbrot.entity.DynamicDataEntity;
 import com.github.fashionbrot.entity.DynamicDataLogEntity;
@@ -10,8 +13,10 @@ import com.github.fashionbrot.enums.ReleaseTypeEnum;
 import com.github.fashionbrot.mapper.DynamicDataLogMapper;
 import com.github.fashionbrot.mapper.DynamicDataMapper;
 import com.github.fashionbrot.mapper.DynamicDataValueMapper;
+import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.DynamicDataReq;
 import com.github.fashionbrot.service.DynamicDataService;
+import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.ConvertUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
@@ -21,6 +26,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,11 +45,22 @@ public class DynamicDataServiceImpl  extends ServiceImpl<DynamicDataMapper, Dyna
     private DynamicDataValueMapper dynamicDataValueMapper;
     @Autowired
     private DynamicDataLogMapper dynamicDataLogMapper;
+    @Autowired
+    private UserLoginService userLoginService;
 
     @Override
     public Object pageReq(DynamicDataReq req) {
         Page<?> page = PageHelper.startPage(req.getPageNum(),req.getPageSize());
-        List<DynamicDataEntity> listByMap = baseMapper.pageReq(req);
+        List<Map<String, Object>> listByMap = baseMapper.pageReq2(req);
+
+        if (CollectionUtils.isNotEmpty(listByMap)){
+            for (Map<String, Object> map : listByMap) {
+                if (map.containsKey("json")){
+                    String json = (String)map.get("json");
+                    map.putAll(JSON.parseObject(json));
+                }
+            }
+        }
 
         return PageVo.builder()
                 .rows(listByMap)
@@ -70,6 +88,10 @@ public class DynamicDataServiceImpl  extends ServiceImpl<DynamicDataMapper, Dyna
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void add(DynamicDataEntity entity) {
+        LoginModel login = userLoginService.getLogin();
+        entity.setUpdateId(login.getUserId());
+        entity.setUpdateDate(new Date());
+
         entity.setReleaseType(ReleaseTypeEnum.ADD.getCode());
         baseMapper.insert(entity);
         dynamicDataValueMapper.insert(DynamicDataValueEntity.builder()

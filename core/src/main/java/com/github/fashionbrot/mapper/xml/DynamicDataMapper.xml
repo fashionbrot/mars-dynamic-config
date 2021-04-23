@@ -71,6 +71,38 @@
         order by a.priority asc
 
     </select>
+
+    <select id="pageReq2" parameterType="com.github.fashionbrot.req.DynamicDataReq" resultType="java.util.Map" >
+        select
+        a.id,
+        a.env_code as envCode,
+        a.app_code as appCode,
+        a.template_key as templateKey,
+        a.status,
+        a.data_desc as dataDesc,
+        a.priority,
+        a.release_type as releaseType,
+        DATE_FORMAT(a.update_date,"%Y-%m-%d %H:%i:%s") as updateDate,
+        c.user_name as updateName,
+        b.json,
+        b.temp_json
+
+        from m_dynamic_data a
+        left join m_dynamic_data_value b on a.id = b.data_id and b.del_flag=0
+        left join sys_user c on c.id = a.create_id and c.del_flag=0
+        where a.del_flag=0
+        <if test="envCode!=null and envCode!=''">
+            and a.env_code=#{envCode}
+        </if>
+        <if test="appCode!=null and appCode!=''">
+            and a.app_code=#{appCode}
+        </if>
+        <if test="templateKey!=null and templateKey!=''">
+            and a.template_key=#{templateKey}
+        </if>
+        order by a.priority asc
+
+    </select>
     
 
 </mapper>
