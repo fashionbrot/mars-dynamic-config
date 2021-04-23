@@ -102,6 +102,27 @@ function loadMenuLevel(id,selectId,level) {
 }
 
 var common={
+    loadEnv:function (id,selectId) {
+        var prefix = ctx + "m/env";
+        $.operate.get2(prefix + "/queryList",function (data) {
+            if (data.code==0){
+                var rows=data.data;
+                var html="<option value=''>请选择环境</option>";
+                for(var i=0;i<rows.length;i++){
+                    var row=rows[i];
+                    if (selectId && row.envCode==selectId){
+                        html+="<option selected='selected' value='"+row.envCode+"'>"+row.envDesc+"</option>";
+                    }else{
+                        html+="<option value='"+row.envCode+"'>"+row.envDesc+"</option>";
+                    }
+                }
+                $("#"+id).html(html);
+                $('#'+id).select2({
+                    allowClear: false
+                });
+            }
+        });
+    },
     loadApp:function (id,selectId) {
         var prefix = ctx + "m/app";
         $.operate.get2(prefix + "/queryList",function (data) {
@@ -118,7 +139,6 @@ var common={
                 }
                 $("#"+id).html(html);
                 $('#'+id).select2({
-                    placeholder: "请选择",
                     allowClear: false
                 });
             }
@@ -143,7 +163,6 @@ var common={
                 }
                 $("#"+id).html(html);
                 $('#'+id).select2({
-                    placeholder: "请选择",
                     allowClear: false
                 });
             }
@@ -155,7 +174,7 @@ var common={
         $.operate.get2(prefix,function (data) {
             if (data.code==0){
                 var rows=data.data;
-                var html="<option value=''>请选择模板</option>";
+                var html="<option value=''>请选择</option>";
                 for(var i=0;i<rows.length;i++){
                     var row=rows[i];
                     if (selectId && row.variableKey==selectId){
@@ -166,7 +185,6 @@ var common={
                 }
                 $("#"+id).html(html);
                 $('#'+id).select2({
-                    placeholder: "请选择",
                     allowClear: false
                 });
             }

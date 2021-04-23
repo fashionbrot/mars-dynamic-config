@@ -3,7 +3,10 @@ package com.github.fashionbrot.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.fashionbrot.entity.DynamicDataEntity;
+import com.github.fashionbrot.req.DynamicDataReq;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * 动态配置表
@@ -15,7 +18,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DynamicDataMapper extends BaseMapper<DynamicDataEntity> {
 
-    
 
-
+    List<DynamicDataEntity> pageReq(DynamicDataReq req);
 }

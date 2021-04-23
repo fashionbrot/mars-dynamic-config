@@ -88,15 +88,16 @@ public class DynamicDataController  {
     @PostMapping("/selectById")
     @ResponseBody
     public RespVo selectById(Long id){
-        return RespVo.success(service.getById(id));
+        return RespVo.success(service.selectById(id));
     }
+    
 
     @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
     @ResponseBody
     public RespVo add(@RequestBody DynamicDataEntity entity){
-        service.save(entity);
+        service.add(entity);
         return RespVo.success();
     }
 
@@ -106,7 +107,7 @@ public class DynamicDataController  {
     @PostMapping("/updateById")
     @ResponseBody
     public RespVo updateById(@RequestBody DynamicDataEntity entity){
-        service.updateById(entity);
+        service.edit(entity);
         return RespVo.success();
     }
 
@@ -116,7 +117,7 @@ public class DynamicDataController  {
     @PostMapping("/deleteById")
     @ResponseBody
     public RespVo deleteById(Long id){
-        service.removeById(id);
+        service.deleteById(id);
         return RespVo.success();
     }
 

@@ -15,4 +15,11 @@ public interface DynamicDataService  extends IService<DynamicDataEntity> {
 
     Object pageReq(DynamicDataReq req);
 
+    void add(DynamicDataEntity entity);
+
+    void edit(DynamicDataEntity entity);
+
+    void deleteById(Long id);
+
+    Object selectById(Long id);
 }

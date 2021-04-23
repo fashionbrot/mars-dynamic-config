@@ -1,40 +1,65 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('编辑应用')" />
+    <th:block th:include="include :: header('新增数据配置')" />
     <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: summernote-css" />
 </head>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
 
-    <form class="form-horizontal m" id="editForm"  style="border: 0px solid red;">
+    <form class="form-horizontal m" id="addForm"  style="border: 0px solid red;">
 
-        <input type="hidden" name="id" />
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">环境：</label>
+            <label class="col-sm-3 control-label is-required">优先级：</label>
             <div class="col-sm-9">
-                <input type="text" disabled="disabled" name="envCode" class="form-control" placeholder="请输入环境">
+                <input type="text" name="priority" class="form-control" placeholder="请输入优先级" value="1">
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">环境名称：</label>
+            <label class="col-sm-3 control-label is-required">描述：</label>
             <div class="col-sm-9">
-                <input type="text" name="envDesc" class="form-control" placeholder="请输入环境名称">
+                <input type="text" name="dataDesc" class="form-control" placeholder="请输入描述">
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态：</label>
+            <div class="col-sm-9">
+                <select id="status" name="status" class="form-control-select" style="width: 100%;">
+                    <option value="1">开启</option>
+                    <option value="0">关闭</option>
+                </select>
+            </div>
+        </div>
+
+
+        <input type="hidden" name="id"  >
+        <input type="hidden" name="envCode"  >
+        <input type="hidden" name="appCode"  >
+        <input type="hidden" name="templateKey"  >
+
+        <div id="dynamicDiv">
+
+        </div>
+
+        <div  style="height: 50px;border: 0px;">
+        </div>
 
     </form>
 </div>
 
 <th:block th:include="include :: footer" />
 <th:block th:include="include :: select2-js" />
-
+<th:block th:include="include :: datetimepicker-js" />
+<th:block th:include="include :: summernote-js" />
+<script th:src="@{/js/dynamic-data.js}"></script>
 <script type="text/javascript">
-    var prefix = ctx + "m/env";
 
+    var prefix = ctx + "m/dynamic/data/";
     var id = getQuery("id");
     $.operate.post2(prefix+"/selectById",{"id":id},function (data) {
         if (data.code==0){
@@ -43,10 +68,12 @@
                 $.each(row,function (k,v) {
                     $("[name="+k+"]").attr("value",v);
                 })
+                $("#status").val(row.status);
+
+                initProperty(row.appCode,row.templateKey,row.json);
             }
         }
     })
-
 
 
     $("#addForm").validate({
@@ -54,10 +81,19 @@
         rules: {
             envCode:{
                 required: true,
-                minlength: 2,
-                maxlength:32
             },
-            envDesc:{
+            appCode:{
+                required: true,
+            },
+            templateKey:{
+                required: true,
+            },
+            priority:{
+                required: true,
+                number: true,
+                maxlength:4
+            },
+            dataDesc:{
                 required: true,
                 minlength: 2,
                 maxlength:32
@@ -71,7 +107,8 @@
 
     function submitHandler() {
         if ($.validate.form()) {
-            var data = $("#editForm").serializeJson();
+            var data = $("#addForm").serializeJson();
+            data.tempJson = getTempJson();
 
             $.operate.save(prefix + "/updateById", data,null,true);
         }

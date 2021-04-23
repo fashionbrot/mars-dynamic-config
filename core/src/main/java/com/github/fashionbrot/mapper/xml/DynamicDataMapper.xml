@@ -39,6 +39,38 @@
         id,env_code,app_code,template_key,status,data_desc,priority,release_type,create_id,create_date,update_id,update_date,del_flag
     </sql>
 
+    <select id="pageReq" parameterType="com.github.fashionbrot.req.DynamicDataReq" resultType="com.github.fashionbrot.entity.DynamicDataEntity" >
+        select
+        a.id,
+        a.env_code,
+        a.app_code,
+        a.template_key,
+        a.status,
+        a.data_desc,
+        a.priority,
+        a.release_type,
+        a.create_id,
+        a.create_date,
+        a.update_id,
+        a.update_date,
+        b.json,
+        b.temp_json
+
+        from m_dynamic_data a
+        left join m_dynamic_data_value b on a.id = b.data_id and b.del_flag=0
+        where a.del_flag=0
+        <if test="envCode!=null and envCode!=''">
+            and a.env_code=#{envCode}
+        </if>
+        <if test="appCode!=null and appCode!=''">
+            and a.app_code=#{appCode}
+        </if>
+        <if test="templateKey!=null and templateKey!=''">
+            and a.template_key=#{templateKey}
+        </if>
+        order by a.priority asc
+
+    </select>
     
 
 </mapper>

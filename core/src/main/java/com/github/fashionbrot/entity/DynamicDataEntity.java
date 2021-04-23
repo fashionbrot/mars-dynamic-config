@@ -86,5 +86,11 @@ public class DynamicDataEntity implements Serializable {
 	@TableField(value = "del_flag",fill = FieldFill.INSERT)
 	private Integer delFlag;
 
+	@ApiModelProperty(value = "实例json")
+	@TableField(exist = false)
+	private String json;
 
+	@ApiModelProperty(value = "temp json")
+	@TableField(exist = false)
+	private String tempJson;
 }

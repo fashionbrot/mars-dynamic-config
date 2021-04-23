@@ -24,7 +24,11 @@
 									<i class="fa fa-plus"></i> 新增
 								</a>
 							</li>
-
+							<li>
+								<label>环境：</label>
+								<select id="envCode" name="envCode"  style="width: 100px;">
+								</select>
+							</li>
 							<li>
 								<label>应用：</label>
 								<select id="appCode" name="appCode"  style="width: 100px;">
@@ -32,7 +36,7 @@
 							</li>
 							<li>
 								<label>模板：</label>
-								<select id="templateKey" name="templateKey"  style="width: 100px;">
+								<select id="templateKey" name="templateKey"  style="width: 100px;" class="form-control-select">
 								</select>
 							</li>
 
@@ -54,6 +58,10 @@
 <th:block th:include="include :: select2-js" />
 	<script th:inline="javascript">
 
+		common.loadEnv("envCode","");
+		$("#envCode").on("change",function () {
+			searchPre();
+		});
 
 		function xinzeng(){
 			var appCode = $("#appCode").val();
