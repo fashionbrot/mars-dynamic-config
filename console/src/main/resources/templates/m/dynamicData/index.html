@@ -22,6 +22,15 @@
 			user-select: none;
 			-webkit-user-select: none;
 		}
+		.search-collapse, .select-table {
+			width: 100%;
+			background: #fff;
+			border-radius: 6px;
+			margin-top: 10px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			box-shadow: 1px 1px 3px rgb(0 0 0 / 20%);
+		}
 	</style>
 </head>
 <body class="gray-bg">
@@ -29,11 +38,7 @@
 <div class="container-div">
 	<div class="row">
 
-		<!--<div class="col-sm-12 search-collapse">
-
-		</div>-->
-
-		<div class="btn-group-sm" id="toolbar" role="group">
+		<div class="col-sm-12 search-collapse">
 			<form id="searchForm">
 				<div style="border: 0px solid red;width: 800px;height:32px;display: flex;">
 					<div style="width:90px">
@@ -69,13 +74,21 @@
 							</select>
 						</div>
 					</div>
+					<div style="width:65px">
+						<a class="btn btn-primary btn-rounded btn-sm" onclick="query()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+					</div>
+
 				</div>
 
 			</form>
+		</div>
+
+		<div class="btn-group-sm" id="toolbar" role="group">
+
 
 		</div>
 
-		<div class="col-sm-12 select-table table-condensed " style="height:98%;">
+		<div class="col-sm-12 select-table table-condensed " style="height:98%;" id="tableId">
 			<table id="bootstrap-table"></table>
 		</div>
 
@@ -134,8 +147,79 @@
 				common.loadTemplate("templateKey","",appCode);
 			})
 			$("#templateKey").on("change",function () {
-				searchPre();
+				// searchPre();
+				query();
+
+
+
+
 			});
+			
+			function query() {
+				var appCode = $("#appCode").val();
+				var templateKey = $("#templateKey").val();
+				var propertyRows = common.getProperty(appCode,templateKey,1);
+
+				if (propertyRows){
+					$("#tableId").html('<table id="bootstrap-table"></table>');
+
+					var columnGroup=[];
+
+					columnGroup.push({
+						field: 'priority',
+						title: '优先级',
+						align: 'center'
+					});
+					columnGroup.push(
+							{
+								field: 'status',
+								title: '状态',
+								align: 'center',
+								formatter: function(value, row, index) {
+									return statusTools(row);
+								}
+							}
+					);
+					columnGroup.push(
+							{
+								field: 'releaseType',
+								title: '状态',
+								align: 'center',
+								formatter: function(value, row, index) {
+									if (value==4){
+										return "<span style=\"color: red;\">已修改</span>"
+									}else if (value==5){
+										return "已发布"
+									}else if (value==6){
+										return "<span style=\"color: red;\">已删除</span>"
+									}else if (value==7){
+										return "<span style=\"color: red;\">新增</span>"
+									}
+									return "未知";
+								}
+							}
+					);
+					columnGroup.push(
+							{
+								field: 'dataDesc',
+								title: '描述',
+								align: 'center'
+							}
+					);
+
+					for(var i=0;i<propertyRows.length;i++){
+						var property = propertyRows[i];
+						columnGroup.push({
+							field : property.propertyKey,
+							title : property.propertyName
+						})
+					}
+
+					initTable(columnGroup);
+				}
+			}
+
+
 
 
 		    var options = {
@@ -164,7 +248,7 @@
 					},
 					{
 						field: 'releaseType',
-						title: '状态',
+						title: '发布状态',
 						align: 'center',
 						formatter: function(value, row, index) {
 							if (value==0){
@@ -208,9 +292,57 @@
 						}
 					}]
 		    };
-		    $.table.init(options);
+		    //$.table.init(options);
 
 		});
+
+		function initTable(columnGroup) {
+
+
+			columnGroup.push(
+					{
+						field: 'updateName',
+						title: '操作人',
+						sortable: false,
+						align: "center"
+					}
+			);
+			columnGroup.push(
+					{
+						field: 'updateDate',
+						title: '创建时间',
+						sortable: false,
+						align: "center"
+					}
+			);
+			columnGroup.push(
+					{
+						title: '操作',
+						align: 'center',
+						formatter: function(value, row, index) {
+							var actions = [];
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+							actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+							return actions.join('');
+						}
+					}
+			);
+			console.log(columnGroup);
+			var options1 = {
+				url: prefix + "/page",
+				createUrl: prefix + "/add",
+				updateUrl: prefix + "/edit?id={id}",
+				removeUrl: prefix + "/deleteById",
+				exportUrl: prefix + "/export",
+				modalName: "环境",
+				sortName: "createDate",
+				sortOrder: "desc",
+				method:"get",
+				columns:columnGroup
+			};
+			$.table.init(options1);
+		}
+
 
 		function queryParams(params) {
 			var search = $.table.queryParams(params);

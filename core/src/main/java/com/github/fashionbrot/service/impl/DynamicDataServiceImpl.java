@@ -55,9 +55,18 @@ public class DynamicDataServiceImpl  extends ServiceImpl<DynamicDataMapper, Dyna
 
         if (CollectionUtils.isNotEmpty(listByMap)){
             for (Map<String, Object> map : listByMap) {
-                if (map.containsKey("json")){
-                    String json = (String)map.get("json");
-                    map.putAll(JSON.parseObject(json));
+                Object releaseType = map.get("releaseType");
+
+                if ((ReleaseTypeEnum.RELEASE.getCode()+"").equals(releaseType+"")){
+                    if (map.containsKey("json")){
+                        String json = (String)map.get("json");
+                        map.putAll(JSON.parseObject(json));
+                    }
+                }else{
+                    if (map.containsKey("tempJson")){
+                        String json = (String)map.get("tempJson");
+                        map.putAll(JSON.parseObject(json));
+                    }
                 }
             }
         }

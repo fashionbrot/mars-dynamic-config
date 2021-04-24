@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public enum ReleaseTypeEnum {
 
-    UPDATE(0,"已修改"),
-    RELEASE(1,"已发布"),
-    DELETE(2,"已删除"),
-    ADD(3,"新增"),
+    UPDATE(4,"已修改"),
+    RELEASE(5,"已发布"),
+    DELETE(6,"已删除"),
+    ADD(7,"新增"),
     ;
 
     private int code;

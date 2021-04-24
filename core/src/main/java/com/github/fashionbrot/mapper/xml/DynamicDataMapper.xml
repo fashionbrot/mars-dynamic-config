@@ -85,7 +85,7 @@
         DATE_FORMAT(a.update_date,"%Y-%m-%d %H:%i:%s") as updateDate,
         c.user_name as updateName,
         b.json,
-        b.temp_json
+        b.temp_json as tempJson
 
         from m_dynamic_data a
         left join m_dynamic_data_value b on a.id = b.data_id and b.del_flag=0
