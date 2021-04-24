@@ -100,7 +100,7 @@
         <if test="templateKey!=null and templateKey!=''">
             and a.template_key=#{templateKey}
         </if>
-        order by a.priority asc
+        order by a.priority desc
 
     </select>
     

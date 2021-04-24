@@ -1,6 +1,7 @@
 package com.github.fashionbrot.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.fashionbrot.entity.PropertyEntity;
 import com.github.fashionbrot.mapper.PropertyMapper;
@@ -31,19 +32,37 @@ public class PropertyServiceImpl  extends ServiceImpl<PropertyMapper, PropertyEn
     @Override
     public Object pageReq(PropertyReq req) {
         Page<?> page = PageHelper.startPage(req.getPageNum(),req.getPageSize());
-        Map<String,Object> map = new HashMap<>();
+        QueryWrapper q =new QueryWrapper();
         if (StringUtils.isNotEmpty(req.getAppCode())){
-            map.put("app_code",req.getAppCode());
+            q.eq("app_code",req.getAppCode());
             if (StringUtils.isNotEmpty(req.getTemplateKey())){
-                map.put("template_key",req.getTemplateKey());
+                q.eq("template_key",req.getTemplateKey());
             }
         }
-        List<PropertyEntity> listByMap = baseMapper.selectByMap(map);
+        q.orderByDesc("priority");
+
+        List<PropertyEntity> listByMap = baseMapper.selectList(q);
 
         return PageVo.builder()
                 .rows(listByMap)
                 .total(page.getTotal())
                 .build();
+    }
+
+    @Override
+    public Object queryList(PropertyReq req) {
+        QueryWrapper q =new QueryWrapper();
+        if (StringUtils.isNotEmpty(req.getAppCode())){
+            q.eq("app_code",req.getAppCode());
+            if (StringUtils.isNotEmpty(req.getTemplateKey())){
+                q.eq("template_key",req.getTemplateKey());
+            }
+        }
+        if (req.getShowTable()!=null){
+            q.eq("show_table",req.getShowTable());
+        }
+        q.orderByDesc("priority");
+        return baseMapper.selectList(q);
     }
 
 }

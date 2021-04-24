@@ -181,8 +181,11 @@ var common={
             }
         });
     },
-    getProperty:function(appCode,templateKey) {
-        var prefix = ctx + "m/property/queryList?app_code="+appCode+"&template_key="+templateKey;
+    getProperty:function(appCode,templateKey,showTable) {
+        var prefix = ctx + "m/property/queryList?appCode="+appCode+"&templateKey="+templateKey;
+        if (showTable){
+            prefix+="&showTable="+showTable;
+        }
         var rows;
         $.ajax({
             url: prefix,

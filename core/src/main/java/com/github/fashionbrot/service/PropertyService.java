@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.fashionbrot.entity.PropertyEntity;
 import com.github.fashionbrot.req.PropertyReq;
 
+import java.util.Map;
+
 /**
  * 属性表
  *
@@ -15,4 +17,5 @@ public interface PropertyService  extends IService<PropertyEntity> {
 
     Object pageReq(PropertyReq req);
 
+    Object queryList(PropertyReq params);
 }

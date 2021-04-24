@@ -9,4 +9,5 @@ public class PropertyReq extends PageReq {
 
     private String templateKey;
 
+    private Integer showTable;
 }

@@ -6,6 +6,7 @@ import com.github.fashionbrot.entity.PropertyEntity;
 import com.github.fashionbrot.req.PropertyReq;
 import com.github.fashionbrot.service.PropertyService;
 import com.github.fashionbrot.vo.RespVo;
+import com.github.pagehelper.PageHelper;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -77,8 +78,9 @@ public class PropertyController  {
     @ApiOperation("数据列表")
     @GetMapping("/queryList")
     @ResponseBody
-    public RespVo queryList(@RequestParam Map<String, Object> params){
-        return  RespVo.success(service.listByMap(params));
+    public RespVo queryList(PropertyReq req){
+
+        return  RespVo.success(service.queryList(req));
     }
 
 
