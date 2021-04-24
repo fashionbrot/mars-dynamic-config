@@ -14,7 +14,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label is-required">优先级：</label>
             <div class="col-sm-9">
-                <input type="text" name="priority" class="form-control" value="1" placeholder="请输入优先级">
+                <input type="text" name="priority" class="form-control" value="1" placeholder="请输入优先级" />
             </div>
         </div>
 
@@ -46,14 +46,14 @@
         <div class="form-group">
             <label class="col-sm-3 control-label is-required">属性名称：</label>
             <div class="col-sm-9">
-                <input type="text" name="propertyName" class="form-control" placeholder="请输入属性名称">
+                <input type="text" name="propertyName" class="form-control" placeholder="请输入属性名称" />
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-sm-3 control-label is-required">属性key：</label>
             <div class="col-sm-9">
-                <input type="text" name="propertyKey" class="form-control" placeholder="请输入属性key">
+                <input type="text" name="propertyKey" class="form-control" placeholder="请输入属性key" />
             </div>
         </div>
 
@@ -80,7 +80,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">标签默认值：</label>
             <div class="col-sm-9">
-                <input type="text" name="defaultValue" class="form-control" placeholder="请输入标签默认值">
+                <input type="text" name="defaultValue" class="form-control" placeholder="请输入标签默认值" />
             </div>
         </div>
 
@@ -99,7 +99,7 @@
         <div class="form-group">
             <label class="col-sm-3 control-label">属性长度：</label>
             <div class="col-sm-9">
-                <input type="text" name="columnLength" id="columnLength" class="form-control" placeholder="请输入属性长度">
+                <input type="text" name="columnLength" id="columnLength" class="form-control" placeholder="请输入属性长度"/>
             </div>
         </div>
         <div class="form-group">
@@ -134,14 +134,8 @@
 <th:block th:include="include :: footer" />
 <th:block th:include="include :: select2-js" />
 <th:block th:include="include :: summernote-js" />
-
+<script th:src="@{/js/property.js?v=1}"></script>
 <script type="text/javascript">
-    function groupHide(id) {
-        $("#"+id).parent().parent().hide();
-    }
-    function groupShow(id) {
-        $("#"+id).parent().parent().show();
-    }
 
     groupShow("appCode");
     groupShow("templateKey");
@@ -169,67 +163,7 @@
     var prefix = ctx + "m/property";
     common.loadVariable("variableKey","");
 
-
-
-    function loadLabelType(type){
-
-        if (type!='input'){
-            groupHide("propertyType");
-            // groupHide("columnLength");
-            groupHide("variableKey");
-        }else{
-            groupShow("propertyType");
-            // groupShow("columnLength");
-            groupShow("variableKey");
-        }
-
-        var html="";
-        if (type=='input'){
-            html =  "<input type=\"text\"  class=\"form-control\" >";
-        }else if (type=='textarea'){
-            html =  "<textarea  class=\"form-control\" ></textarea>";
-        }else if (type=='select'){
-            html = selectHtml("","");
-        }else if (type=='editor'){
-            html = "<div class=\"summernote\"></div>";
-        }
-        $("#labelTypeDiv").html(html);
-        if (type=='editor'){
-            $('.summernote').summernote({
-                lang: 'zh-CN'
-            });
-        }
-    }
-    function selectHtml(key,value) {
-        var propertyHtml="<div style='margin-top:5px;display: flex;line-height:34px;' class='propertyGroupValue' > ";
-        if(value!=null && value!=''){
-            propertyHtml+="属性名称：<input class='form-control key' placeholder='中文名称' onkeyup=\"value=value.replace(/[^\\w\u4E00-\u9FA5]/g,'')\" value='"+key+"' style='width:31%;' /> ";
-        }else{
-            propertyHtml+="属性名称：<input class='form-control key' placeholder='中文名称' onkeyup=\"value=value.replace(/[^\\w\u4E00-\u9FA5]/g,'')\" style='width:31%;' /> ";
-        }
-        if (key!=null && key!=''){
-            propertyHtml+="属性值:<input class='form-control value' placeholder='对应值' onKeyUp=\"value=value.replace(/[\\W]/g,'')\" value='"+value+"'  style='width:31%;' /> ";
-        }else{
-            propertyHtml+="属性值:<input class='form-control value'  placeholder='对应值' onKeyUp=\"value=value.replace(/[\\W]/g,'')\"  style='width:31%;' /> ";
-        }
-        propertyHtml+="&nbsp;";
-        propertyHtml+="<button type='button' class='btn-xs btn-success' onclick='addPropertyButton(\""+"labelTypeDiv"+"\")' >添加</button>";
-        propertyHtml+="&nbsp;";
-        propertyHtml+="<button type='button' class='btn-xs btn-warning' onclick='$(this).parent().remove();' >删除</button>";
-        propertyHtml+="</div>";
-        return propertyHtml;
-    }
-    function addPropertyButton(divClass) {
-        $("#"+divClass).append(selectHtml('',''));
-    }
-    loadLabelType('input')
-    $("#labelType").on("change",function () {
-        var labelType = $("#labelType").val();
-
-        loadLabelType(labelType);
-
-    });
-
+    loadLabelType('input',"")
 
     $("#addForm").validate({
         onkeyup: false,
@@ -270,25 +204,7 @@
     function submitHandler() {
         if ($.validate.form()) {
             var data = $("#addForm").serializeJson();
-            var select = $(".propertyGroupValue");
-            if (select){
-                var json="";
-                for(var i=0;i<select.length;i++){
-                    var key =  $(select[i]).find(".key").val();
-                    var value =  $(select[i]).find(".value").val();
-                    if (json==''){
-                        json = "'"+key+"':'"+value+"'";
-                    }else{
-                        json =json+ ",'"+key+"':'"+value+"'";
-                    }
-                }
-                if (json!=""){
-                    data.labelValue= "{"+json+"}";
-                }else{
-                    data.labelValue= "";
-                }
-            }
-            console.log(data.labelValue)
+            data.labelValue = getSelectOptionValue();
             $.operate.save(prefix + "/insert", data,null,true);
         }
     }

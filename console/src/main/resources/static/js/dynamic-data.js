@@ -220,6 +220,9 @@ function getTempJson(callback) {
                 if (variableKey!='undefined' && variableKey!="" && variableKey!=null){
                     array.push("\""+propertyKey+"Variable"+"\":"+"\""+variableKey+"\"") ;
                 }
+                if (propertyType=="bigint" || propertyType=="decimal"){
+                    number=true;
+                }
             }else if (labelType=="textarea"){
 
             }else if (labelType=="editor"){
@@ -229,19 +232,25 @@ function getTempJson(callback) {
             }else if (labelType=="select"){
 
             }
-            console.log(propertyType,propertyKey,columnLength,labelRequired,labelType,variableKey,value,propertyName);
-            if (labelRequired=="1"){
-                console.log(propertyKey,value);
-                if ($.common.isEmpty(value)){
-                    $(input).focus();
-                    $.modal.msgError(propertyName+"必填");
-                    return ;
+            // console.log(propertyType,propertyKey,columnLength,labelRequired,labelType,variableKey,value,propertyName);
+            if (labelType=="input" || labelType=="textarea" ||labelType=="editor"){
+                if (labelRequired=="1"){
+                    console.log(propertyKey,value);
+                    if ($.common.isEmpty(value)){
+                        $(input).focus();
+                        $.modal.msgError(propertyName+"必填");
+                        return ;
+                    }
                 }
             }
-            if ($.common.isNotEmpty(value) && value.length>columnLength && labelType!="editor"){
-                $(input).focus();
-                $.modal.msgError(propertyName+"最多"+columnLength+"字");
-                return ;
+            if (labelType=="input" || labelType=="textarea" ){
+                if (propertyType=="varchar" || propertyType=="bigint" || propertyType=="decimal"){
+                    if ($.common.isNotEmpty(value) && value.length>columnLength ){
+                        $(input).focus();
+                        $.modal.msgError(propertyName+"最多"+columnLength+"字");
+                        return ;
+                    }
+                }
             }
 
             if (number){
