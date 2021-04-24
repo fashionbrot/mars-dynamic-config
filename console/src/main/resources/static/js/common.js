@@ -117,9 +117,6 @@ var common={
                     }
                 }
                 $("#"+id).html(html);
-                $('#'+id).select2({
-                    allowClear: false
-                });
             }
         });
     },
@@ -138,9 +135,6 @@ var common={
                     }
                 }
                 $("#"+id).html(html);
-                $('#'+id).select2({
-                    allowClear: false
-                });
             }
         });
     },
@@ -162,9 +156,6 @@ var common={
                     }
                 }
                 $("#"+id).html(html);
-                $('#'+id).select2({
-                    allowClear: false
-                });
             }
         });
     },
@@ -190,7 +181,7 @@ var common={
             }
         });
     },
-    getProperty(appCode, templateKey) {
+    getProperty:function(appCode,templateKey) {
         var prefix = ctx + "m/property/queryList?app_code="+appCode+"&template_key="+templateKey;
         var rows;
         $.ajax({
@@ -207,7 +198,7 @@ var common={
         });
         return rows;
     },
-    getVariable() {
+    getVariable:function() {
         var prefix = ctx + "m/env/variable/queryList";
         var rows;
         $.ajax({

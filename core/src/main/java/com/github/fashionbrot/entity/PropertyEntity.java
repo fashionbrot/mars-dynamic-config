@@ -84,6 +84,10 @@ public class PropertyEntity implements Serializable {
 	@TableField("priority")
 	private Integer priority;
 
+	@ApiModelProperty(value = "是否在table页展示 1展示 0 不展示")
+	@TableField("show_table")
+	private Integer showTable;
+
 	@ApiModelProperty(value = "创建者id")
 	@TableField(value="create_id",fill = FieldFill.INSERT)
 	private Long createId;

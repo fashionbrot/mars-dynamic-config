@@ -6,13 +6,10 @@ import com.github.fashionbrot.entity.PropertyEntity;
 import com.github.fashionbrot.mapper.PropertyMapper;
 import com.github.fashionbrot.req.PropertyReq;
 import com.github.fashionbrot.service.PropertyService;
-import com.github.fashionbrot.util.ConvertUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import jdk.internal.org.objectweb.asm.Handle;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

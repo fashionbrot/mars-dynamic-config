@@ -199,6 +199,7 @@ CREATE TABLE `m_property` (
   `template_key` varchar(32) DEFAULT NULL COMMENT '模板key ，公共属性为空，指定模板属性不为空',
   `attribute_type` tinyint(2)  DEFAULT '0' COMMENT '属性类别 0 公共属性 1 模板属性',
   `priority` tinyint(5) NOT NULL DEFAULT '0' COMMENT '显示优先级',
+  `show_table` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否在table页展示 1展示 0 不展示',
   `create_id` bigint(11) NOT NULL COMMENT '创建者id',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',

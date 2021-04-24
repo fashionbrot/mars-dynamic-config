@@ -7075,6 +7075,11 @@ nav .logo {
     padding: 3px 6px 4px;
     -webkit-transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-    height: 31px;
+    height: 32px;
     font-size: 14px;
+}
+
+.mars-btn{
+    height: 32px !important;
+    line-height: 19px;
 }

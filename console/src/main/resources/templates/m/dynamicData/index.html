@@ -4,6 +4,25 @@
 	<th:block th:include="include :: header('数据配置列表')" />
 	<th:block th:include="include :: layout-latest-css" />
 	<th:block th:include="include :: select2-css" />
+	<style>
+		.select-list .select2-container--bootstrap {
+			width:120px!important;
+			display: inline-block;
+		}
+		.select2-container--bootstrap .select2-selection--single {
+			height: 30px;
+			line-height: 1.42857143;
+			padding: 4px 6px 4px;
+		}
+		.select2-container .select2-selection--single {
+			box-sizing: border-box;
+			cursor: pointer;
+			display: block;
+			height: 30px;
+			user-select: none;
+			-webkit-user-select: none;
+		}
+	</style>
 </head>
 <body class="gray-bg">
 
@@ -16,33 +35,42 @@
 
 		<div class="btn-group-sm" id="toolbar" role="group">
 			<form id="searchForm">
-				<div class="col-sm-12">
-					<div class="select-list">
-						<ul>
-							<li>
-								<a class="btn btn-success" onclick="xinzeng()" >
-									<i class="fa fa-plus"></i> 新增
-								</a>
-							</li>
-							<li>
-								<label>环境：</label>
-								<select id="envCode" name="envCode"  style="width: 100px;">
-								</select>
-							</li>
-							<li>
-								<label>应用：</label>
-								<select id="appCode" name="appCode"  style="width: 100px;">
-								</select>
-							</li>
-							<li>
-								<label>模板：</label>
-								<select id="templateKey" name="templateKey"  style="width: 100px;" class="form-control-select">
-								</select>
-							</li>
-
-						</ul>
+				<div style="border: 0px solid red;width: 800px;height:32px;display: flex;">
+					<div style="width:90px">
+						<button type="button" class="btn btn-primary btn-sm" onclick="xinzeng()" >
+							<i class="fa fa-plus"></i> 新增
+						</button>
+					</div>
+					<div style="width:200px;display: inline-flex;">
+						<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+							环境：
+						</div>
+						<div>
+							<select id="envCode" name="envCode"  >
+							</select>
+						</div>
+					</div>
+					<div style="width:200px;display: inline-flex;">
+						<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+							应用：
+						</div>
+						<div>
+							<select id="appCode" name="appCode"  style="width: 100px;">
+							</select>
+						</div>
+					</div>
+					<div style="width:210px;display: inline-flex;">
+						<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+							模板：
+						</div>
+						<div>
+							<select id="templateKey" name="templateKey"  style="width: 155px;" >
+								<option value="">请选择</option>
+							</select>
+						</div>
 					</div>
 				</div>
+
 			</form>
 
 		</div>
@@ -58,10 +86,7 @@
 <th:block th:include="include :: select2-js" />
 	<script th:inline="javascript">
 
-		common.loadEnv("envCode","");
-		$("#envCode").on("change",function () {
-			searchPre();
-		});
+
 
 		function xinzeng(){
 			var appCode = $("#appCode").val();
@@ -72,16 +97,6 @@
 			$.operate.openAdd("","","?appCode="+appCode+"&templateKey="+templateKey);
 		}
 
-		common.loadApp("appCode","");
-		$("#appCode").on("change",function () {
-			var appCode = $("#appCode").val();
-			common.loadTemplate("templateKey","",appCode);
-		})
-		$("#templateKey").on("change",function () {
-			searchPre();
-		});
-
-
 
 
 
@@ -91,6 +106,38 @@
 
 
 		$(function() {
+
+			common.loadEnv("envCode","");
+			$('#envCode').select2({
+				allowClear: false,
+				width:"120",
+				height:"30"
+			});
+			$("#envCode").on("change",function () {
+				searchPre();
+			});
+
+
+
+			common.loadApp("appCode","");
+			$('#appCode').select2({
+				allowClear: false,
+				width:"120"
+			});
+
+			$('#templateKey').select2({
+				allowClear: false,
+				width:"155"
+			});
+			$("#appCode").on("change",function () {
+				var appCode = $("#appCode").val();
+				common.loadTemplate("templateKey","",appCode);
+			})
+			$("#templateKey").on("change",function () {
+				searchPre();
+			});
+
+
 		    var options = {
 		        url: prefix + "/page",
 		        createUrl: prefix + "/add",
