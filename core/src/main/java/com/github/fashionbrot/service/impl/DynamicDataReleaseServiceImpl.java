@@ -64,7 +64,7 @@ public class DynamicDataReleaseServiceImpl  extends ServiceImpl<DynamicDataRelea
         if (StringUtil.isNotEmpty(req.getTemplateKeys())){
             q.eq("template_key",req.getTemplateKeys());
         }
-        q.in("release_type", Arrays.asList(4,6,7));
+        q.in("release_type", Arrays.asList(4,6,7,8));
         List<DynamicDataEntity> list = dynamicDataMapper.selectList(q);
 
         List<String> templateKeys = new ArrayList<>();

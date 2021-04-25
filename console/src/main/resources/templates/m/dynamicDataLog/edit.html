@@ -79,7 +79,7 @@
 
     function submitHandler() {
         $.modal.confirm("确定要回滚当前数据吗？",function () {
-            $.operate.save(prefix + "/rollback",{"id":$("#id").val()},null,true);
+            $.operate.save(prefix + "/rollback",{"id":$("#id").val()},null,false);
         })
 
     }

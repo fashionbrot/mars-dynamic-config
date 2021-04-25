@@ -62,15 +62,20 @@ public class DynamicDataLogServiceImpl  extends ServiceImpl<DynamicDataLogMapper
                 if (dynamicDataValueEntity==null){
                     throw new MarsException("您要回滚的配置已删除");
                 }
-                dynamicDataValueEntity.setTempJson(entity.getJson());
-                dynamicDataValueEntity.setDelFlag(0);
-                dynamicDataValueMapper.updateById(dynamicDataValueEntity);
-
-
                 DynamicDataEntity dynamicDataEntity = dynamicDataMapper.selectDelById(dynamicDataValueEntity.getDataId());
                 if (dynamicDataEntity==null){
                     throw new MarsException("您要回滚的配置或许已删除");
                 }
+                if (dynamicDataEntity.getReleaseType().intValue()==ReleaseTypeEnum.RELEASE.getCode()){
+                    dynamicDataValueEntity.setTempJson(entity.getJson());
+                }else{
+                    dynamicDataValueEntity.setTempJson(entity.getTempJson());
+                }
+                dynamicDataValueEntity.setDelFlag(0);
+                dynamicDataValueMapper.updateById(dynamicDataValueEntity);
+
+
+
                 dynamicDataEntity.setDelFlag(0);
                 dynamicDataEntity.setReleaseType(ReleaseTypeEnum.ROLLBACK.getCode());
                 dynamicDataMapper.updateById(dynamicDataEntity);
