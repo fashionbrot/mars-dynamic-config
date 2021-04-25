@@ -52,6 +52,9 @@
     var prefix = ctx + "m/template";
 
     common.loadApp("appCode","");
+    $('#appCode').select2({
+        allowClear: false
+    });
 
     $("#addForm").validate({
         onkeyup: false,

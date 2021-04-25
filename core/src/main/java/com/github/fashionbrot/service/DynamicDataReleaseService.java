@@ -15,4 +15,5 @@ public interface DynamicDataReleaseService  extends IService<DynamicDataReleaseE
 
     Object pageReq(DynamicDataReleaseReq req);
 
+    void release(DynamicDataReleaseEntity releaseEntity);
 }

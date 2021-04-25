@@ -117,4 +117,16 @@ public class DynamicDataReleaseController  {
 
 
 
+    @MarsPermission(":release")
+    @ApiOperation("发布")
+    @PostMapping("/release")
+    @ResponseBody
+    public RespVo release( DynamicDataReleaseEntity releaseEntity){
+        service.release(releaseEntity);
+        return RespVo.success();
+    }
+
+
+
+
 }

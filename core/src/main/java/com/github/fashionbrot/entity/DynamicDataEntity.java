@@ -57,7 +57,8 @@ public class DynamicDataEntity implements Serializable {
 	@TableField("priority")
 	private Integer priority;
 
-	@ApiModelProperty(value = "发布状态 1已发布 0修改 2已删除 3新增")
+
+	@ApiModelProperty(value = "发布状态 5已发布 4修改 6已删除 7新增")
 	@TableField("release_type")
 	private Integer releaseType;
 

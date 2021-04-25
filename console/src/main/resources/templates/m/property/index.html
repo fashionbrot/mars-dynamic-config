@@ -10,30 +10,35 @@
 <div class="container-div">
 	<div class="row">
 
-		<div class="btn-group-sm" id="toolbar" role="group">
-			<form id="searchForm">
-			<div class="col-sm-12">
-				<div class="select-list">
-					<ul>
-						<li>
-							<a class="btn btn-success" onclick="xinzeng()" >
-								<i class="fa fa-plus"></i> 新增
-							</a>
-						</li>
-						<li>
-							<label>应用：</label>
-							<select id="appCode" name="appCode"  style="width: 100px;">
-							</select>
-						</li>
-						<li>
-							<label>模板：</label>
-							<select id="templateKey" name="templateKey"  style="width: 100px;" class="form-control-select">
-							</select>
-						</li>
-					</ul>
-				</div>
+		<div class="btn-group-sm" id="toolbar" role="group" style="display: inline-flex">
+
+			<div style="width:90px">
+				<button type="button" class="btn btn-primary btn-sm" onclick="xinzeng()" >
+					<i class="fa fa-plus"></i> 新增
+				</button>
 			</div>
+			<form id="searchForm">
+				<div style="width:200px;display: inline-flex;">
+					<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+						应用：
+					</div>
+					<div>
+						<select id="appCode" name="appCode"  style="width: 100px;">
+						</select>
+					</div>
+				</div>
+				<div style="width:210px;display: inline-flex;">
+					<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+						模板：
+					</div>
+					<div>
+						<select id="templateKey" name="templateKey"  style="width: 155px;" >
+							<option value="">请选择</option>
+						</select>
+					</div>
+				</div>
 			</form>
+
 		</div>
 
 		<div class="col-sm-12 select-table table-condensed " style="height:98%;">
@@ -69,10 +74,22 @@
 		}
 
 		common.loadApp("appCode","");
+		$('#appCode').select2({
+			allowClear: false,
+			width:"120"
+		});
+		$('#templateKey').select2({
+			allowClear: false,
+			width:"130"
+		});
 
 		$("#appCode").on("change",function () {
 			var appCode = $("#appCode").val();
 			common.loadTemplate("templateKey","",appCode);
+			$('#templateKey').select2({
+				allowClear: false,
+				width:"130"
+			});
 		})
 		$("#templateKey").on("change",function () {
 			searchPre();

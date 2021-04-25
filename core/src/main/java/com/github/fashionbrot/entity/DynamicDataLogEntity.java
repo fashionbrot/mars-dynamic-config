@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -49,9 +50,13 @@ public class DynamicDataLogEntity implements Serializable {
 	@TableField("description")
 	private String description;
 
-	@ApiModelProperty(value = "发布状态 1已发布 0修改 2已删除 3新增")
-	@TableField("release_type")
-	private Integer releaseType;
+	@ApiModelProperty(value = "操作类型 1修改 2删除 ")
+	@TableField("operation_type")
+	private Integer operationType;
+
+	@ApiModelProperty("配置id")
+	@TableField("data_value_id")
+	private Long dataValueId;
 
 	@ApiModelProperty(value = "实例json")
 	@TableField("json")
@@ -65,6 +70,7 @@ public class DynamicDataLogEntity implements Serializable {
 	@TableField(value="create_id",fill = FieldFill.INSERT)
 	private Long createId;
 
+
 	@ApiModelProperty(value = "创建时间")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
@@ -77,4 +83,7 @@ public class DynamicDataLogEntity implements Serializable {
 	private Integer delFlag;
 
 
+	@ApiModelProperty(value = "创建者")
+	@TableField(exist = false)
+	private String createName;
 }

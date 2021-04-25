@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.fashionbrot.entity.DynamicDataValueEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Map;
+
 /**
  * 动态配置数据表
  *
@@ -15,7 +17,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface DynamicDataValueMapper extends BaseMapper<DynamicDataValueEntity> {
 
-    
 
+    int updateRelease(Map<String, Object> map);
 
+    DynamicDataValueEntity selectDelById(Long dataValueId);
 }

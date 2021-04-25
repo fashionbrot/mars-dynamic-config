@@ -10,25 +10,27 @@
 <div class="container-div">
 	<div class="row">
 
-		<div class="btn-group-sm" id="toolbar" role="group">
-			<form id="searchForm">
+		<div class="col-sm-12 search-collapse">
 
-			<div class="col-sm-12">
-				<div class="select-list">
-					<ul>
-						<li>
-							<a class="btn btn-success" onclick="$.operate.openAdd(800,450)" >
-								<i class="fa fa-plus"></i> 新增
-							</a>
-						</li>
-						<li>
-							<label>应用：</label>
-							<select id="appCode" name="appCode"  style="width: 100px;height: 34px">
-							</select>
-						</li>
-					</ul>
-				</div>
+		</div>
+
+		<div class="btn-group-sm" id="toolbar" role="group" style="display: inline-flex">
+
+			<div style="width:90px">
+				<button type="button" class="btn btn-primary btn-sm" onclick="$.operate.openAdd(800,450)" >
+					<i class="fa fa-plus"></i> 新增
+				</button>
 			</div>
+			<form id="searchForm">
+				<div style="width:200px;display: inline-flex;">
+					<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+						应用：
+					</div>
+					<div>
+						<select id="appCode" name="appCode"  style="width: 100px;">
+						</select>
+					</div>
+				</div>
 			</form>
 		</div>
 
@@ -46,6 +48,10 @@
 		var prefix = ctx + "m/template";
 
 		common.loadApp("appCode","");
+		$('#appCode').select2({
+			allowClear: false,
+			width:"120"
+		});
 		$("#appCode").on("change",function () {
 			searchPre();
 		})
@@ -58,6 +64,10 @@
 
 		function searchPre() {
 			$.table.search('searchForm', 'bootstrap-table');
+			$('#appCode').select2({
+				allowClear: false,
+				width:"120"
+			});
 		}
 
 

@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.fashionbrot.entity.DynamicDataEntity;
 import com.github.fashionbrot.entity.DynamicDataLogEntity;
 import com.github.fashionbrot.entity.DynamicDataValueEntity;
+import com.github.fashionbrot.enums.OperationTypeEnum;
 import com.github.fashionbrot.enums.ReleaseTypeEnum;
 import com.github.fashionbrot.mapper.DynamicDataLogMapper;
 import com.github.fashionbrot.mapper.DynamicDataMapper;
@@ -121,10 +122,14 @@ public class DynamicDataServiceImpl  extends ServiceImpl<DynamicDataMapper, Dyna
             dynamicDataValueMapper.updateById(data);
         }
 
+
         DynamicDataLogEntity log= DynamicDataLogEntity.builder().build();
         BeanUtils.copyProperties(entity,log);
+        log.setOperationType(OperationTypeEnum.EDIT.getCode());
+        log.setDescription(entity.getDataDesc());
         log.setJson(data.getTempJson());
         log.setTempJson(data.getJson());
+        log.setDataValueId(data.getId());
         dynamicDataLogMapper.insert(log);
     }
 
@@ -137,8 +142,11 @@ public class DynamicDataServiceImpl  extends ServiceImpl<DynamicDataMapper, Dyna
 
         DynamicDataLogEntity log= DynamicDataLogEntity.builder().build();
         BeanUtils.copyProperties(entity,log);
+        log.setOperationType(OperationTypeEnum.DEL.getCode());
+        log.setDescription(entity.getDataDesc());
         log.setJson("");
         log.setTempJson(data.getJson());
+        log.setDataValueId(data.getId());
         dynamicDataLogMapper.insert(log);
 
         baseMapper.deleteById(id);

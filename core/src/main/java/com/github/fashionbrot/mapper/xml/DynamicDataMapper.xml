@@ -103,6 +103,21 @@
         order by a.priority desc
 
     </select>
-    
+
+
+    <update id="updateRelease" parameterType="java.util.Map">
+        update m_dynamic_data set release_type=#{releaseType}
+        where
+        <if test="dataIds != null and dataIds.size()>0">
+             id in
+            <foreach collection="dataIds" item="listItem" open="(" close=")" separator=",">
+                #{listItem}
+            </foreach>
+        </if>
+    </update>
+
+    <select id="selectDelById" parameterType="java.lang.Long" resultType="com.github.fashionbrot.entity.DynamicDataEntity">
+        select * from m_dynamic_data where id=#{id}
+    </select>
 
 </mapper>

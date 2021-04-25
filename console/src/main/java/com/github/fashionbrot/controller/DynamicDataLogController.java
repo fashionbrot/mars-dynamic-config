@@ -119,12 +119,12 @@ public class DynamicDataLogController  {
     }
 
 
-    @MarsPermission(":deleteByIds")
-    @ApiOperation("批量删除")
-    @PostMapping("/deleteByIds")
+    @MarsPermission(":rollback")
+    @ApiOperation("回滚")
+    @PostMapping("/rollback")
     @ResponseBody
-    public RespVo delete(@RequestBody Long[] ids){
-        service.removeByIds(Arrays.asList(ids));
+    public RespVo rollback(Long id){
+        service.rollback(id);
         return RespVo.success();
     }
 

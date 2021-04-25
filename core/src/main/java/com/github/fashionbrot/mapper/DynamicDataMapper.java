@@ -23,4 +23,8 @@ public interface DynamicDataMapper extends BaseMapper<DynamicDataEntity> {
     List<DynamicDataEntity> pageReq(DynamicDataReq req);
 
     List<Map<String,Object>> pageReq2(DynamicDataReq req);
+
+    int updateRelease(Map<String, Object> map);
+
+    DynamicDataEntity selectDelById(Long dataId);
 }

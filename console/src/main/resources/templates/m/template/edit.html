@@ -59,6 +59,9 @@
                     $("[name="+k+"]").attr("value",v);
                 })
                 common.loadApp("appCode",row.appCode);
+                $('#appCode').select2({
+                    allowClear: false
+                });
             }
         }
     })

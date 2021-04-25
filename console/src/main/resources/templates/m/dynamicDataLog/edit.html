@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('新增数据配置')" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: datetimepicker-css" />
+    <th:block th:include="include :: summernote-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+
+    <div style="border: 1px solid red;width:50%;float: left"; >
+        <div class="form-horizontal m"   style="border: 0px solid red;">
+            <div class="form-group" style="text-align: center;height: 40px;line-height: 40px;font-weight: bold">
+                修改后
+            </div>
+
+
+
+            <input type="hidden" name="id" id="id" >
+
+
+            <div id="dynamicDiv">
+
+            </div>
+
+            <div  style="height: 50px;border: 0px;">
+            </div>
+        </div>
+    </div>
+
+    <div style="border: 1px solid red;width:50%;float: left"; >
+        <div class="form-horizontal m"   style="border: 0px solid red;">
+            <div class="form-group" style="text-align: center;height: 40px;line-height: 40px;font-weight: bold">
+                修改前
+            </div>
+
+            <div id="dynamicDiv2">
+
+            </div>
+
+            <div  style="height: 50px;border: 0px;">
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+<th:block th:include="include :: datetimepicker-js" />
+<th:block th:include="include :: summernote-js" />
+<script th:src="@{/js/dynamic-data.js}"></script>
+<script type="text/javascript">
+    $(".layui-layer-btn0").html("回滚到修改前");
+    var prefix = ctx + "m/dynamic/data/log/";
+    var id = getQuery("id");
+    $.operate.post2(prefix+"/selectById",{"id":id},function (data) {
+        if (data.code==0){
+            var row = data.data;
+            if (row){
+                /*$.each(row,function (k,v) {
+                    $("[name="+k+"2]").attr("value",v);
+                })*/
+                $("#id").val(row.id);
+                initProperty(row.appCode,row.templateKey,row.json,"dynamicDiv");
+                initProperty(row.appCode,row.templateKey,row.tempJson,"dynamicDiv2");
+
+
+            }
+        }
+    })
+
+
+
+
+    function submitHandler() {
+        $.modal.confirm("确定要回滚当前数据吗？",function () {
+            $.operate.save(prefix + "/rollback",{"id":$("#id").val()},null,true);
+        })
+
+    }
+
+</script>
+</body>
+</html>

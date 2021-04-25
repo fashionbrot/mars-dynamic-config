@@ -4,11 +4,11 @@
 $("#templateKey").on("change",function () {
     var appCode = $("#appCode").val();
     var templateKey = $("#templateKey").val();
-    initProperty(appCode,templateKey,"");
+    initProperty(appCode,templateKey,"","dynamicDiv");
 })
 
-function initProperty(appCode,templateKey,databaseValue) {
-    $("#dynamicDiv").html('');
+function initProperty(appCode,templateKey,databaseValue,viewDivId) {
+    $("#"+viewDivId).html('');
     var databaseValueJson;
     if (databaseValue){
         databaseValueJson = eval('(' + databaseValue + ')');
@@ -25,7 +25,7 @@ function initProperty(appCode,templateKey,databaseValue) {
                 var property = propertyRows[i];
                 html +=initPropertyHtml(property,variableRows,databaseValueJson);
             }
-            $("#dynamicDiv").html(html);
+            $("#"+viewDivId).html(html);
         }
         initDate();
         initEditor();

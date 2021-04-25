@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-	<th:block th:include="include :: header('数据配置列表')" />
+	<th:block th:include="include :: header('数据配置记录列表')" />
 	<th:block th:include="include :: layout-latest-css" />
 	<th:block th:include="include :: select2-css" />
 	<style>
@@ -41,16 +41,8 @@
 		<div class="col-sm-12 search-collapse">
 			<form id="searchForm">
 				<div style="border: 0px solid red;width: 800px;height:32px;display: flex;">
-					<div style="width:90px">
-						<button type="button" class="btn btn-primary btn-sm" onclick="xinzeng()" >
-							<i class="fa fa-plus"></i> 新增
-						</button>
-					</div>
-					<div style="width:70px">
-						<button type="button" class="btn btn-info btn-success btn-sm" onclick="release()">
-							<i class="glyphicon glyphicon-send"></i> &nbsp;发布
-						</button>
-					</div>
+
+
 					<div style="width:200px;display: inline-flex;">
 						<div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
 							环境：
@@ -108,21 +100,11 @@
 
 
 
-		function xinzeng(){
-			var appCode = $("#appCode").val();
-			var templateKey = $("#templateKey").val();
-			if (templateKey==null){
-				templateKey="";
-			}
-			$.operate.openAdd("","","?appCode="+appCode+"&templateKey="+templateKey);
-		}
-
-
 
 
 		var editFlag ;
 		var removeFlag ;
-		var prefix = ctx + "m/dynamic/data";
+		var prefix = ctx + "m/dynamic/data/log";
 
 
 		$(function() {
@@ -160,105 +142,93 @@
 
 
 
-
-
 		});
 
 		var propertyRowsAll;
 		function query() {
 			var appCode = $("#appCode").val();
 			var templateKey = $("#templateKey").val();
-			var propertyRows = common.getProperty(appCode,templateKey,1);
 
-			if (propertyRows){
-				propertyRowsAll = propertyRows;
-				var columnGroup=[];
 
-				columnGroup.push({
-					field: 'priority',
-					title: '优先级',
-					align: 'center'
-				});
-				columnGroup.push(
-						{
-							field: 'status',
-							title: '状态',
-							align: 'center',
-							formatter: function(value, row, index) {
-								return statusTools(row);
-							}
-						}
-				);
-				columnGroup.push(
-						{
-							field: 'releaseType',
-							title: '发布状态',
-							align: 'center',
-							formatter: function(value, row, index) {
-								if (value==4){
-									return "<span style=\"color: red;\">已修改</span>"
-								}else if (value==5){
-									return "已发布"
-								}else if (value==6){
-									return "<span style=\"color: red;\">已删除</span>"
-								}else if (value==7){
-									return "<span style=\"color: red;\">新增</span>"
-								}
-								return "未知";
-							}
-						}
-				);
-				columnGroup.push(
-						{
-							field: 'dataDesc',
-							title: '描述',
-							align: 'center'
-						}
-				);
+			var columnGroup=[];
 
-				for(var i=0;i<propertyRows.length;i++){
-					var property = propertyRows[i];
-					columnGroup.push({
-						field : property.propertyKey,
-						title : property.propertyName
-					})
+			columnGroup.push({
+				field: 'envCode',
+				title: '环境',
+				align: 'center'
+			});
+			columnGroup.push({
+				field: 'appCode',
+				title: '应用',
+				align: 'center'
+			});
+			columnGroup.push({
+				field: 'templateKey',
+				title: '模板',
+				align: 'center'
+			});
+			columnGroup.push(
+				{
+					field: 'operationType',
+					title: '操作类型',
+					align: 'center',
+					formatter: function(value, row, index) {
+						if (value==1){
+							return "<span style=\"color: red;\">修改</span>"
+						}else if (value==2){
+							return "<span style=\"color: red;\">删除</span>"
+						}else if (value==3){
+							return "<span style=\"color: red;\">回滚</span>"
+						}
+						return "未知";
+					}
 				}
+			);
 
-				columnGroup.push(
-						{
-							field: 'updateName',
-							title: '操作人',
-							sortable: false,
-							align: "center"
-						}
-				);
-				columnGroup.push(
-						{
-							field: 'updateDate',
-							title: '创建时间',
-							sortable: false,
-							align: "center"
-						}
-				);
-				columnGroup.push(
-						{
-							title: '操作',
-							align: 'center',
-							formatter: function(value, row, index) {
-								var actions = [];
-								actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-								actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
-								return actions.join('');
-							}
-						}
-				);
 
-				if(!table.get(table.options.id)){
-					initTable(columnGroup);
-				} else {
-					refreshTable(columnGroup);
-				}
+			columnGroup.push(
+					{
+						field: 'description',
+						title: '描述',
+						align: 'center'
+					}
+			);
+
+			columnGroup.push(
+					{
+						field: 'createName',
+						title: '操作人',
+						sortable: false,
+						align: "center"
+					}
+			);
+			columnGroup.push(
+					{
+						field: 'createDate',
+						title: '创建时间',
+						sortable: false,
+						align: "center"
+					}
+			);
+			columnGroup.push(
+					{
+						title: '操作',
+						align: 'center',
+						formatter: function(value, row, index) {
+							var actions = [];
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editFull2(\'' + row.id + '\',\'回滚到修改前\',\'取消\')"><i class="fa fa-edit"></i>查看详情</a> ');
+							actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+							return actions.join('');
+						}
+					}
+			);
+
+			if(!table.get(table.options.id)){
+				initTable(columnGroup);
+			} else {
+				refreshTable(columnGroup);
 			}
+
 		}
 
 		// 刷新表格
@@ -269,7 +239,7 @@
 				updateUrl: prefix + "/edit?id={id}",
 				removeUrl: prefix + "/deleteById",
 				exportUrl: prefix + "/export",
-				modalName: "环境",
+				modalName: "",
 				sortName: "createDate",
 				sortOrder: "desc",
 				method:"get",
@@ -287,7 +257,7 @@
 				updateUrl: prefix + "/edit?id={id}",
 				removeUrl: prefix + "/deleteById",
 				exportUrl: prefix + "/export",
-				modalName: "环境",
+				modalName: "",
 				sortName: "createDate",
 				sortOrder: "desc",
 				method:"get",
@@ -343,37 +313,6 @@
 			}
 		}
 
-
-		function release() {
-			var envCode = $("#envCode").val();
-			if (!envCode){
-				$("#envCode").focus();
-				$.modal.msgError("请选择要发布的环境");
-				return;
-			}
-			var appCode = $("#appCode").val();
-			if (!appCode){
-				$("#appCode").focus();
-				$.modal.msgError("请选择要发布的应用");
-				return;
-			}
-			var templateKey = $("#templateKey").val();
-
-			var msg = "["+envCode+"环境]"+"["+appCode+"应用]";
-			if (templateKey){
-				msg += "["+templateKey+"]";
-			}
-
-			$.modal.confirm("确定要发布"+msg,function () {
-				var url = ctx + "m/dynamic/data/release/release";
-				var data = $("#searchForm").serializeJson();
-				data.templateKeys = templateKey;
-				$.operate.post2(url, data,function () {
-					query();
-				});
-			})
-
-		}
 
 	</script>
 </body>

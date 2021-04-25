@@ -15,4 +15,5 @@ public interface DynamicDataLogService  extends IService<DynamicDataLogEntity> {
 
     Object pageReq(DynamicDataLogReq req);
 
+    void rollback(Long id);
 }

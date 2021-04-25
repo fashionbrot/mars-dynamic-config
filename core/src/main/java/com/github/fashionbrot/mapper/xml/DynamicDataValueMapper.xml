@@ -23,6 +23,20 @@
         id,data_id,json,temp_json,del_flag
     </sql>
 
-    
+
+    <update id="updateRelease" parameterType="java.util.Map">
+        update m_dynamic_data_value set json = temp_json
+        where
+        <if test="dataIds != null and dataIds.size()>0">
+             data_id in
+            <foreach collection="dataIds" item="listItem" open="(" close=")" separator=",">
+                #{listItem}
+            </foreach>
+        </if>
+    </update>
+
+    <select id="selectDelById" resultType="com.github.fashionbrot.entity.DynamicDataValueEntity" parameterType="java.lang.Long">
+        select * from m_dynamic_data_value where  id = #{id}
+    </select>
 
 </mapper>
