@@ -48,16 +48,19 @@ public class DynamicDataController  {
     @Autowired
     public DynamicDataService service;
 
+    @MarsPermission(":/index")
     @GetMapping("/index")
     public String index(){
         return "/m/dynamicData/index";
     }
 
+    @MarsPermission(":/add")
     @GetMapping("/add")
     public String add(){
         return "/m/dynamicData/add";
     }
 
+    @MarsPermission(":/edit")
     @GetMapping("/edit")
     public String edit(){
         return "/m/dynamicData/edit";
@@ -65,7 +68,7 @@ public class DynamicDataController  {
 
 
 
-    @MarsPermission(":page")
+    @MarsPermission(":index")
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody
@@ -74,7 +77,7 @@ public class DynamicDataController  {
     }
 
 
-    @MarsPermission(":queryList")
+
     @ApiOperation("数据列表")
     @GetMapping("/queryList")
     @ResponseBody
@@ -83,7 +86,7 @@ public class DynamicDataController  {
     }
 
 
-    @MarsPermission(":selectById")
+
     @ApiOperation("根据id查询")
     @PostMapping("/selectById")
     @ResponseBody
@@ -122,14 +125,6 @@ public class DynamicDataController  {
     }
 
 
-    @MarsPermission(":deleteByIds")
-    @ApiOperation("批量删除")
-    @PostMapping("/deleteByIds")
-    @ResponseBody
-    public RespVo delete(@RequestBody Long[] ids){
-        service.removeByIds(Arrays.asList(ids));
-        return RespVo.success();
-    }
 
 
 

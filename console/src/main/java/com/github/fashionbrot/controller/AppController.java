@@ -48,16 +48,19 @@ public class AppController  {
     @Autowired
     public AppService service;
 
+    @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
         return "/m/app/index";
     }
 
+    @MarsPermission(":add")
     @GetMapping("/add")
     public String add(){
         return "/m/app/add";
     }
 
+    @MarsPermission(":edit")
     @GetMapping("/edit")
     public String edit(){
         return "/m/app/edit";
@@ -65,7 +68,6 @@ public class AppController  {
 
 
 
-    @MarsPermission(":page")
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody
@@ -74,7 +76,6 @@ public class AppController  {
     }
 
 
-    @MarsPermission(":queryList")
     @ApiOperation("数据列表")
     @GetMapping("/queryList")
     @ResponseBody
@@ -83,7 +84,6 @@ public class AppController  {
     }
 
 
-    @MarsPermission(":selectById")
     @ApiOperation("根据id查询")
     @PostMapping("/selectById")
     @ResponseBody
@@ -117,16 +117,6 @@ public class AppController  {
     @ResponseBody
     public RespVo deleteById(Long id){
         service.removeById(id);
-        return RespVo.success();
-    }
-
-
-    @MarsPermission(":deleteByIds")
-    @ApiOperation("批量删除")
-    @PostMapping("/deleteByIds")
-    @ResponseBody
-    public RespVo delete(@RequestBody Long[] ids){
-        service.removeByIds(Arrays.asList(ids));
         return RespVo.success();
     }
 

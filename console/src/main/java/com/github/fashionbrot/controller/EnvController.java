@@ -48,16 +48,19 @@ public class EnvController  {
     @Autowired
     public EnvService service;
 
+    @MarsPermission(":/index")
     @GetMapping("/index")
     public String index(){
         return "/m/env/index";
     }
 
+    @MarsPermission(":/add")
     @GetMapping("/add")
     public String add(){
         return "/m/env/add";
     }
 
+    @MarsPermission(":/edit")
     @GetMapping("/edit")
     public String edit(){
         return "/m/env/edit";
@@ -65,7 +68,6 @@ public class EnvController  {
 
 
 
-    @MarsPermission(":page")
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody
@@ -74,7 +76,6 @@ public class EnvController  {
     }
 
 
-    @MarsPermission(":queryList")
     @ApiOperation("数据列表")
     @GetMapping("/queryList")
     @ResponseBody
@@ -83,13 +84,14 @@ public class EnvController  {
     }
 
 
-    @MarsPermission(":selectById")
     @ApiOperation("根据id查询")
     @PostMapping("/selectById")
     @ResponseBody
     public RespVo selectById(Long id){
         return RespVo.success(service.getById(id));
     }
+
+
 
     @MarsPermission(":insert")
     @ApiOperation("新增")
@@ -121,14 +123,6 @@ public class EnvController  {
     }
 
 
-    @MarsPermission(":deleteByIds")
-    @ApiOperation("批量删除")
-    @PostMapping("/deleteByIds")
-    @ResponseBody
-    public RespVo delete(@RequestBody Long[] ids){
-        service.removeByIds(Arrays.asList(ids));
-        return RespVo.success();
-    }
 
 
 

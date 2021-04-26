@@ -48,24 +48,26 @@ public class EnvVariableController  {
     @Autowired
     public EnvVariableService service;
 
-
+    @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
         return "/m/variable/index";
     }
 
+    @MarsPermission(":add")
     @GetMapping("/add")
     public String add(){
         return "/m/variable/add";
     }
 
+    @MarsPermission(":edit")
     @GetMapping("/edit")
     public String edit(){
         return "/m/variable/edit";
     }
 
 
-    @MarsPermission(":page")
+    @MarsPermission(":index")
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody
@@ -74,7 +76,7 @@ public class EnvVariableController  {
     }
 
 
-    @MarsPermission(":queryList")
+
     @ApiOperation("数据列表")
     @GetMapping("/queryList")
     @ResponseBody
@@ -83,13 +85,14 @@ public class EnvVariableController  {
     }
 
 
-    @MarsPermission(":selectById")
+
     @ApiOperation("根据id查询")
     @PostMapping("/selectById")
     @ResponseBody
     public RespVo selectById(Long id){
         return RespVo.success(service.getById(id));
     }
+
 
     @MarsPermission(":insert")
     @ApiOperation("新增")

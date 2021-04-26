@@ -14,6 +14,7 @@ import com.github.fashionbrot.service.SysUserService;
 import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.CaffeineCacheUtil;
 import com.github.fashionbrot.util.ConvertUtil;
+import com.github.fashionbrot.validated.util.StringUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -66,12 +67,16 @@ public class SysMenuServiceImpl  extends ServiceImpl<SysMenuMapper, SysMenuEntit
             MarsPermission classAnnotation = method.getDeclaringClass().getAnnotation(MarsPermission.class);
             if (classAnnotation!=null){
                 MarsPermission methodAnnotation = method.getAnnotation(MarsPermission.class);
+                if (methodAnnotation==null){ //方法没有权限直接返回
+                    return true;
+                }
                 permission = classAnnotation.value() + methodAnnotation.value();
             }else{
                 MarsPermission methodAnnotation = method.getAnnotation(MarsPermission.class);
-                if (methodAnnotation!=null){
-                    permission =  methodAnnotation.value();
+                if (methodAnnotation ==null){ //方法没有权限直接返回
+                    return true;
                 }
+                permission =  methodAnnotation.value();
             }
 
             if (permission!=null) {
@@ -79,7 +84,7 @@ public class SysMenuServiceImpl  extends ServiceImpl<SysMenuMapper, SysMenuEntit
                 if (CollectionUtils.isNotEmpty(menuBarList)) {
                     for (SysMenuEntity m : menuBarList) {
                         //验证菜单是否有权限
-                        if ( (m.getMenuLevel() == 2 || m.getMenuLevel() == 3) && m.getPermission().equals(permission)) {
+                        if ( (m.getMenuLevel() == 2 ) && StringUtil.isNotEmpty(m.getPermission()) && m.getPermission().contains(permission)) {
                             return true;
                         }
                     }

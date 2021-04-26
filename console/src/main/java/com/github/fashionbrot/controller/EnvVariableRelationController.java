@@ -38,7 +38,6 @@ public class EnvVariableRelationController {
 
 
 
-    @MarsPermission(":queryList")
     @ApiOperation("数据列表")
     @GetMapping("/queryList")
     @ResponseBody
@@ -47,7 +46,6 @@ public class EnvVariableRelationController {
     }
 
 
-    @MarsPermission(":selectById")
     @ApiOperation("根据id查询")
     @PostMapping("/selectById")
     @ResponseBody
@@ -55,7 +53,6 @@ public class EnvVariableRelationController {
         return RespVo.success(service.getById(id));
     }
 
-    @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
     @ResponseBody
@@ -65,7 +62,6 @@ public class EnvVariableRelationController {
     }
 
 
-    @MarsPermission(":updateById")
     @ApiOperation("修改")
     @PostMapping("/updateById")
     @ResponseBody
@@ -75,7 +71,6 @@ public class EnvVariableRelationController {
     }
 
 
-    @MarsPermission(":deleteById")
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
     @ResponseBody
@@ -84,15 +79,6 @@ public class EnvVariableRelationController {
         return RespVo.success();
     }
 
-
-    @MarsPermission(":deleteByIds")
-    @ApiOperation("批量删除")
-    @PostMapping("/deleteByIds")
-    @ResponseBody
-    public RespVo delete(@RequestBody Long[] ids){
-        service.removeByIds(Arrays.asList(ids));
-        return RespVo.success();
-    }
 
 
 

@@ -48,6 +48,7 @@ public class DynamicDataLogController  {
     @Autowired
     public DynamicDataLogService service;
 
+    @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
         return "/m/dynamicDataLog/index";
@@ -63,7 +64,7 @@ public class DynamicDataLogController  {
         return "/m/dynamicDataLog/edit";
     }
 
-    @MarsPermission(":page")
+    @MarsPermission(":index")
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody
@@ -72,7 +73,7 @@ public class DynamicDataLogController  {
     }
 
 
-    @MarsPermission(":queryList")
+
     @ApiOperation("数据列表")
     @GetMapping("/queryList")
     @ResponseBody
@@ -81,7 +82,7 @@ public class DynamicDataLogController  {
     }
 
 
-    @MarsPermission(":selectById")
+
     @ApiOperation("根据id查询")
     @PostMapping("/selectById")
     @ResponseBody
@@ -89,7 +90,7 @@ public class DynamicDataLogController  {
         return RespVo.success(service.getById(id));
     }
 
-    @MarsPermission(":insert")
+
     @ApiOperation("新增")
     @PostMapping("/insert")
     @ResponseBody
@@ -99,7 +100,7 @@ public class DynamicDataLogController  {
     }
 
 
-    @MarsPermission(":updateById")
+
     @ApiOperation("修改")
     @PostMapping("/updateById")
     @ResponseBody
@@ -109,7 +110,7 @@ public class DynamicDataLogController  {
     }
 
 
-    @MarsPermission(":deleteById")
+
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
     @ResponseBody
