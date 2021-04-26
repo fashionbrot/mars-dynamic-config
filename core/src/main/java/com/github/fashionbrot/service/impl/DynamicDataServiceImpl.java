@@ -19,6 +19,7 @@ import com.github.fashionbrot.req.DynamicDataReq;
 import com.github.fashionbrot.service.DynamicDataService;
 import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.ConvertUtil;
+import com.github.fashionbrot.validated.util.StringUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -39,6 +40,7 @@ import java.util.Map;
  * @email fashionbrot@163.com
  * @date 2021-04-22
  */
+@SuppressWarnings("ALL")
 @Service
 public class DynamicDataServiceImpl  extends ServiceImpl<DynamicDataMapper, DynamicDataEntity> implements DynamicDataService {
 
@@ -140,11 +142,12 @@ public class DynamicDataServiceImpl  extends ServiceImpl<DynamicDataMapper, Dyna
         DynamicDataEntity entity = baseMapper.selectById(id);
         DynamicDataValueEntity data = dynamicDataValueMapper.selectOne(new QueryWrapper<DynamicDataValueEntity>().eq("data_id", entity.getId()));
 
+
         DynamicDataLogEntity log= DynamicDataLogEntity.builder().build();
         BeanUtils.copyProperties(entity,log);
         log.setOperationType(OperationTypeEnum.DEL.getCode());
         log.setDescription(entity.getDataDesc());
-        log.setJson(data.getJson());
+        log.setJson(StringUtil.isNotEmpty(data.getJson())?data.getJson():data.getTempJson());
         log.setTempJson("");
         log.setDataValueId(data.getId());
         dynamicDataLogMapper.insert(log);
