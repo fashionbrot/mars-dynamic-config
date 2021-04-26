@@ -3,13 +3,16 @@ package com.github.fashionbrot.controller;
 
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.PropertyEntity;
+import com.github.fashionbrot.req.CopyPropertyReq;
 import com.github.fashionbrot.req.PropertyReq;
 import com.github.fashionbrot.service.PropertyService;
+import com.github.fashionbrot.validated.annotation.Validated;
 import com.github.fashionbrot.vo.RespVo;
 import com.github.pagehelper.PageHelper;
 import com.github.xiaoymin.knife4j.annotations.ApiSort;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +67,10 @@ public class PropertyController  {
         return "/m/property/edit";
     }
 
+    @GetMapping("/copyProperty")
+    public String copyProperty(){
+        return "/m/property/copyProperty";
+    }
 
     @MarsPermission(":page")
     @ApiOperation("分页列表")
@@ -131,6 +138,15 @@ public class PropertyController  {
         return RespVo.success();
     }
 
+    @MarsPermission(":copyProperty")
+    @ApiOperation("复制属性")
+    @PostMapping("/copyProperty")
+    @ResponseBody
+    @Validated
+    public RespVo copyProperty(CopyPropertyReq req){
+        service.copyProperty(req);
+        return RespVo.success();
+    }
 
 
 }

@@ -4,6 +4,8 @@ package com.github.fashionbrot.config;
 import com.github.fashionbrot.enums.RespEnum;
 import com.github.fashionbrot.exception.CurdException;
 import com.github.fashionbrot.exception.MarsException;
+import com.github.fashionbrot.validated.constraint.MarsViolation;
+import com.github.fashionbrot.validated.exception.ValidatedException;
 import com.github.fashionbrot.vo.RespVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @RestControllerAdvice
@@ -33,6 +36,12 @@ public class GlobalExceptionHandler {
         return RespVo.fail(e.getMsg(), e.getCode());
     }
 
+    @ExceptionHandler(ValidatedException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public RespVo ValidatedException(ValidatedException e) {
+        List<MarsViolation> violations = e.getViolations();
+        return RespVo.fail(violations.get(0).getMsg(),RespVo.FAILED);
+    }
 
     @ExceptionHandler(Exception.class)
     public Object globalException(HttpServletRequest request, HandlerMethod handlerMethod, Exception ex) {

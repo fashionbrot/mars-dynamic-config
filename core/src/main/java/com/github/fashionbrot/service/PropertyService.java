@@ -2,6 +2,7 @@ package com.github.fashionbrot.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.fashionbrot.entity.PropertyEntity;
+import com.github.fashionbrot.req.CopyPropertyReq;
 import com.github.fashionbrot.req.PropertyReq;
 
 import java.util.Map;
@@ -18,4 +19,6 @@ public interface PropertyService  extends IService<PropertyEntity> {
     Object pageReq(PropertyReq req);
 
     Object queryList(PropertyReq params);
+
+    void copyProperty(CopyPropertyReq req);
 }

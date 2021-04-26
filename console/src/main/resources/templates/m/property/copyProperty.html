@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('属性复制')" />
+    <th:block th:include="include :: layout-latest-css" />
+    <th:block th:include="include :: select2-css" />
+</head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+
+        <div class="btn-group-sm" id="toolbar" role="group" style="display: inline-flex;">
+            <form id="searchForm">
+                <div style="width:200px;display: inline-flex;">
+                    <div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+                        应用：
+                    </div>
+                    <div>
+                        <select id="appCode" name="appCode"  style="width: 100px;">
+                        </select>
+                    </div>
+                </div>
+                <div style="width:210px;display: inline-flex;">
+                    <div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+                        模板：
+                    </div>
+                    <div>
+                        <select id="templateKey" name="templateKey"  style="width: 155px;" >
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar2" role="group" style="display: inline-flex;">
+            <form id="searchForm2">
+                <div style="width:200px;display: inline-flex;">
+                    <div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+                        应用：
+                    </div>
+                    <div>
+                        <select id="appCode2" name="appCode"  style="width: 100px;">
+                        </select>
+                    </div>
+                </div>
+                <div style="width:210px;display: inline-flex;">
+                    <div style="width: 70px;height: 32px;line-height: 32px;text-align: right">
+                        模板：
+                    </div>
+                    <div>
+                        <select id="templateKey2" name="templateKey"  style="width: 155px;" >
+                            <option value="">请选择</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div style="width: 100%;">
+            <div style="width:100%;height: 40px;line-height: 40px;text-align: center;">
+                <button type="button" class="btn btn-primary btn-sm" onclick="copyProperty()" >
+                    <i class="fa fa-copy"></i> 复制左侧属性到右侧
+                </button>
+            </div>
+            <div class="col-sm-6 select-table table-condensed " style="height:98%;width: 50%;float: left;">
+                <table id="bootstrap-table1"></table>
+            </div>
+            <div class="col-sm-6 select-table table-condensed " style="height:98%;width: 50%;float: right;">
+                <table id="bootstrap-table2"></table>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+
+<script th:inline="javascript">
+
+    var prefix = ctx + "m/property";
+    $(function() {
+        common.loadApp("appCode","",true);
+        common.loadApp("appCode2","",true);
+        $('#appCode').select2({
+            allowClear: false,
+            width:"80"
+        });
+        $('#appCode2').select2({
+            allowClear: false,
+            width:"80"
+        });
+        loadTemplate();
+        loadTemplate2();
+
+        $("#appCode").on("change",function () {
+            loadTemplate();
+        })
+
+        $("#appCode2").on("change",function () {
+            loadTemplate2();
+        })
+    });
+
+    function loadTemplate() {
+        var appCode = $("#appCode").val();
+        common.loadTemplate("templateKey","",appCode);
+
+        $('#templateKey').select2({
+            allowClear: false,
+            width:"100"
+        });
+        $("#templateKey").on("change",function () {
+            $.table.search('searchForm', 'bootstrap-table1');
+        })
+    }
+    function loadTemplate2() {
+        var appCode = $("#appCode2").val();
+        common.loadTemplate("templateKey2","",appCode);
+        $('#templateKey2').select2({
+            allowClear: false,
+            width:"100"
+        });
+        $("#templateKey2").on("change",function () {
+            $.table.search('searchForm2', 'bootstrap-table2');
+        })
+    }
+
+
+
+    function queryParams(params) {
+        var search = $.table.queryParams(params);
+        return search;
+    }
+
+    function initTable(id,toolbar,formId) {
+        var options = {
+            id:id,
+            url: prefix + "/page",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit?id={id}",
+            removeUrl: prefix + "/deleteById",
+            exportUrl: prefix + "/export",
+            modalName: "属性",
+            sortName: "createDate",
+            sortOrder: "desc",
+            method:"get",
+            toolbar:toolbar,
+            formId:formId,
+            showSearch: false,
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            queryParams:queryParams,
+            columns: [
+                {
+                    checkbox: true
+                },
+                {
+                    field: 'priority',
+                    title: '优先级',
+                    align: 'center'
+                },
+                {
+                    field: 'attributeType',
+                    title: '模板',
+                    align: 'center',
+                    formatter:function (value, row, index) {
+                        if (value==0){
+                            return "<span style='color: red;'>公共属性</span>";
+                        }else if (value==1){
+                            return row.templateKey+"模板";
+                        }
+                        return "未知";
+                    }
+                },
+                {
+                    field: 'propertyName',
+                    title: '属性名称',
+                    align: 'center'
+                },
+                {
+                    field: 'propertyKey',
+                    title: '属性key',
+                    align: 'center'
+                },
+
+
+                {
+                    field: 'labelType',
+                    title: '标签类型',
+                    align: 'center'
+                },
+                {
+                    field: 'propertyType',
+                    title: '属性类型',
+                    align: 'center'
+                }/*,
+                {
+                    field: 'columnLength',
+                    title: '属性长度',
+                    align: 'center'
+                },
+                {
+                    field: 'labelRequired',
+                    title: '是否必填',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        if (value==1){
+                            return "<span style='color: red'>必填</span>"
+                        }else {
+                            return "非必填"
+                        }
+                    }
+                },
+                {
+                    field: 'defaultValue',
+                    title: '默认值',
+                    align: 'center'
+                },
+                {
+                    field: 'variableKey',
+                    title: '常量key',
+                    align: 'center'
+                },
+                {
+                    field: 'showTable',
+                    title: 'table页',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        if (value==1){
+                            return "<span style='color: #1a7bb9;font-weight: bold'>显示</span>"
+                        }else {
+                            return "不显示"
+                        }
+                    }
+                }*/
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function initTable2(id,toolbar,formId) {
+        var options = {
+            id:id,
+            url: prefix + "/page",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit?id={id}",
+            removeUrl: prefix + "/deleteById",
+            exportUrl: prefix + "/export",
+            modalName: "属性",
+            sortName: "createDate",
+            sortOrder: "desc",
+            method:"get",
+            toolbar:toolbar,
+            formId:formId,
+            showSearch: false,
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            queryParams:queryParams,
+            columns: [
+                {
+                    field: 'priority',
+                    title: '优先级',
+                    align: 'center'
+                },
+                {
+                    field: 'attributeType',
+                    title: '模板',
+                    align: 'center',
+                    formatter:function (value, row, index) {
+                        if (value==0){
+                            return "<span style='color: red;'>公共属性</span>";
+                        }else if (value==1){
+                            return row.templateKey+"模板";
+                        }
+                        return "未知";
+                    }
+                },
+                {
+                    field: 'propertyName',
+                    title: '属性名称',
+                    align: 'center'
+                },
+                {
+                    field: 'propertyKey',
+                    title: '属性key',
+                    align: 'center'
+                },
+
+
+                {
+                    field: 'labelType',
+                    title: '标签类型',
+                    align: 'center'
+                },
+                {
+                    field: 'propertyType',
+                    title: '属性类型',
+                    align: 'center'
+                }/*,
+                {
+                    field: 'columnLength',
+                    title: '属性长度',
+                    align: 'center'
+                },
+                {
+                    field: 'labelRequired',
+                    title: '是否必填',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        if (value==1){
+                            return "<span style='color: red'>必填</span>"
+                        }else {
+                            return "非必填"
+                        }
+                    }
+                },
+                {
+                    field: 'defaultValue',
+                    title: '默认值',
+                    align: 'center'
+                },
+                {
+                    field: 'variableKey',
+                    title: '常量key',
+                    align: 'center'
+                },
+                {
+                    field: 'showTable',
+                    title: 'table页',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        if (value==1){
+                            return "<span style='color: #1a7bb9;font-weight: bold'>显示</span>"
+                        }else {
+                            return "不显示"
+                        }
+                    }
+                }*/
+            ]
+        };
+        $.table.init(options);
+    }
+
+    initTable("bootstrap-table1","toolbar","searchForm");
+    initTable2("bootstrap-table2","toolbar2","searchForm2")
+
+
+    function copyProperty() {
+        var getSelectRows = $("#bootstrap-table1").bootstrapTable('getSelections', function (row) {
+            return row;
+        });
+        var sourceIds="";
+        for(var i=0;i<getSelectRows.length;i++){
+            var row = getSelectRows[i];
+            if (sourceIds==""){
+                sourceIds = row.id;
+            }else{
+                sourceIds+=","+row.id;
+            }
+        }
+        var targetAppCode = $("#appCode2").val();
+        var targetTemplateKey = $("#templateKey2").val();
+        var data = new Object();
+        data.sourceIds = sourceIds;
+        data.targetAppCode = targetAppCode;
+        data.targetTemplateKey = targetTemplateKey;
+
+        $.operate.post2(prefix + "/copyProperty", data,function () {
+            $.table.search('searchForm2', 'bootstrap-table2');
+        });
+    }
+    function submitHandler (obj,test) {
+
+        $(test[0]).find(".layui-layer-btn1")[0].click();
+    }
+
+</script>
+</body>
+</html>

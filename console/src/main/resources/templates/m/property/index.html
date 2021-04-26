@@ -10,11 +10,16 @@
 <div class="container-div">
 	<div class="row">
 
-		<div class="btn-group-sm" id="toolbar" role="group" style="display: inline-flex">
+		<div class="btn-group-sm" id="toolbar" role="group" style="display: inline-flex;width: 800px;">
 
 			<div style="width:90px">
 				<button type="button" class="btn btn-primary btn-sm" onclick="xinzeng()" >
 					<i class="fa fa-plus"></i> 新增
+				</button>
+			</div>
+			<div style="width:90px">
+				<button type="button" class="btn btn-primary btn-sm" onclick="copyProperty()" >
+					<i class="fa fa-copy"></i> 复制模板
 				</button>
 			</div>
 			<form id="searchForm">
@@ -37,7 +42,9 @@
 						</select>
 					</div>
 				</div>
+
 			</form>
+
 
 		</div>
 
@@ -209,6 +216,11 @@
 		    };
 		    $.table.init(options);
 		});
+
+		function copyProperty() {
+
+			$.modal.openFull("属性复制",prefix+"/copyProperty","","");
+		}
 
 	</script>
 </body>
