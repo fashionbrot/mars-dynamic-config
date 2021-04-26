@@ -80,40 +80,29 @@ public class SysMenuServiceImpl  extends ServiceImpl<SysMenuMapper, SysMenuEntit
             }
 
             if (permission!=null) {
-                List<SysMenuEntity> menuBarList = getMenus(model);
-                if (CollectionUtils.isNotEmpty(menuBarList)) {
-                    for (SysMenuEntity m : menuBarList) {
-                        //验证菜单是否有权限
-                        if ( (m.getMenuLevel() == 2 ) && StringUtil.isNotEmpty(m.getPermission()) && m.getPermission().contains(permission)) {
-                            return true;
-                        }
-                    }
+                String databasePermission = getPermission(model);
+                if (databasePermission.contains(permission)){
+                    return true;
                 }
                 return false;
             }
+
             return true;
         }
 
         return false;
     }
 
-    public List<SysMenuEntity> getMenus(LoginModel model) {
+    public String getPermission(LoginModel model) {
         Long userId = model.getUserId();
-        List<SysMenuEntity> menuBarList = (List<SysMenuEntity>) CaffeineCacheUtil.getCache(userId);
-
-        if (CollectionUtils.isNotEmpty(menuBarList)) {
-            return menuBarList;
-        } else {
-            if (model.isSuperAdmin()){
-                menuBarList = baseMapper.selectList(null);
-            }else{
-                Map<String,Object> map =new HashMap<>();
-                map.put("roleId",model.getRoleId());
-                menuBarList = baseMapper.selectMenuRoleByUser(map);
-            }
-            CaffeineCacheUtil.setCache(userId,menuBarList);
+        String permission = (String) CaffeineCacheUtil.getCache(userId);
+        if (StringUtil.isNotEmpty(permission)){
+            return permission;
+        }else{
+            permission = baseMapper.selectMenuPermission(model.getRoleId());
+            CaffeineCacheUtil.setCache(userId,permission);
         }
-        return menuBarList;
+        return permission;
     }
 
     @Override
@@ -201,7 +190,7 @@ public class SysMenuServiceImpl  extends ServiceImpl<SysMenuMapper, SysMenuEntit
             }
         }
 
-        List<SysMenuEntity> list = baseMapper.selectList(new QueryWrapper<SysMenuEntity>().orderByAsc("priority"));
+        List<SysMenuEntity> list = baseMapper.selectList(new QueryWrapper<SysMenuEntity>().eq("visible",0).orderByAsc("priority"));
         if (CollectionUtils.isNotEmpty(list)) {
             return loadChildMenuNotStructure(list, checkedMap);
         }

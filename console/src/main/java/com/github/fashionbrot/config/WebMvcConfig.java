@@ -61,6 +61,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/i18n/**")
                 .excludePathPatterns("/favicon.ico")
                 .excludePathPatterns("/build")
+                .excludePathPatterns("/401")
+                .excludePathPatterns("/error")
         ;
     }
 

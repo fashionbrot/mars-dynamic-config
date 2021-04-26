@@ -47,7 +47,7 @@
         FROM  sys_menu a
         INNER JOIN  sys_menu_role_relation b on a.id=b.menu_id
         INNER JOIN  sys_role c on c.id=b.role_id  and c.del_flag=0
-        WHERE    a.del_flag=0
+        WHERE    a.del_flag=0 and a.menu_level in (1,2)
         <if test="roleId!=null">
             and b.role_id=#{roleId}
         </if>
@@ -64,6 +64,14 @@
     </select>
 
 
+    <select id="selectMenuPermission" parameterType="java.lang.Long" resultType="java.lang.String">
+        SELECT GROUP_CONCAT(e.permission)
+        FROM   sys_role c
+        INNER JOIN sys_menu_role_relation d on d.role_id=c.id
+        INNER JOIN sys_menu e on e.id=d.menu_id   and e.del_flag=0
+        WHERE c.del_flag=0 and c.status=1 and e.menu_level in (2,3) and c.id = #{roleId}
+        ORDER BY e.priority ASC
+    </select>
 
 
 </mapper>

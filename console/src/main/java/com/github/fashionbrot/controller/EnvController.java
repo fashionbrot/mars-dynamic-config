@@ -48,19 +48,19 @@ public class EnvController  {
     @Autowired
     public EnvService service;
 
-    @MarsPermission(":/index")
+    @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
         return "/m/env/index";
     }
 
-    @MarsPermission(":/add")
+    @MarsPermission(":add")
     @GetMapping("/add")
     public String add(){
         return "/m/env/add";
     }
 
-    @MarsPermission(":/edit")
+    @MarsPermission(":edit")
     @GetMapping("/edit")
     public String edit(){
         return "/m/env/edit";

@@ -61,6 +61,8 @@ public class BackstageInterceptor implements HandlerInterceptor {
                             .msg(RespEnum.NOT_PERMISSION_ERROR.getMsg())
                             .build());
                     return false;
+                }else{
+                    response.sendRedirect(url(request)+"/401?requestUrl="+request.getRequestURI());
                 }
             }else{
                 response.sendRedirect(url(request)+"/401?requestUrl="+request.getRequestURI());

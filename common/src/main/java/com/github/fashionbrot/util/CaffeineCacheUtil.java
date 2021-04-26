@@ -12,7 +12,7 @@ public class CaffeineCacheUtil {
 
     static Cache<Long, Object> cache = Caffeine.newBuilder()
             // 数量上限
-            .maximumSize(1024*10)
+            .maximumSize(1024*15)
             // 过期机制
             .expireAfterWrite(30, TimeUnit.MINUTES)
             // 弱引用key
