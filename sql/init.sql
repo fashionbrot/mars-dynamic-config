@@ -122,6 +122,7 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_men
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('56', '环境变量', '2', 'm/env/variable/index', '53', '703', '', 'menuItem', '0', '1', 'fa fa-trademark', '2021-04-20 02:24:49', NULL, '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('57', '动态数据配置', '1', '', '0', '800', NULL, 'menuItem', '0', '1', 'fa fa-cubes', '2021-04-22 12:23:07', NULL, '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('58', '动态配置列表', '2', '/m/dynamic/data/index', '57', '801', NULL, 'menuItem', '0', '1', 'fa fa-cube', '2021-04-22 12:23:58', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('59', '动态配置记录列表', '2', '/m/dynamic/data/log/index', '57', '802', '', 'menuItem', '0', '1', 'fa fa-random', '2021-04-25 06:45:30', '2021-04-26 01:59:46', '0');
 
 
 DROP TABLE IF EXISTS `m_app`;
@@ -207,9 +208,6 @@ CREATE TABLE `m_property` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='属性表';
 
 
-INSERT INTO `m_property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`,  `del_flag`, `priority`) VALUES (32, '标题', 'title', 'varchar', 'input', '', '-1', '', '-1', '0', '1', '2020-10-14 14:56:59', '0', '1');
-INSERT INTO `m_property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`, `del_flag`, `priority`) VALUES (0,'开始时间', 'startDate', 'datetime', 'input', '', '-1', '', '-1', '0', '1', '2020-10-14 14:58:03', '0', '2');
-INSERT INTO `m_property` (`column_length`,`property_name`, `property_key`, `property_type`, `label_type`, `label_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `create_id`, `create_date`,  `del_flag`, `priority`) VALUES (0, '结束时间', 'endDate', 'datetime', 'input', '', '-1', '', '-1', '0', '1', '2020-10-14 14:58:47', '0', '3');
 
 
 DROP TABLE IF EXISTS `m_dynamic_data`;
@@ -275,3 +273,22 @@ CREATE TABLE `m_dynamic_data_release` (
   PRIMARY KEY (`id`),
   KEY `index_envCode_appName` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='配置数据发布表';
+
+
+
+INSERT INTO `m_app` ( `app_code`, `app_desc`, `create_id`, `create_date`, `del_flag`) VALUES ( 'app', 'app', '1', '2021-04-25 02:03:50', '0');
+
+INSERT INTO `m_env` ( `env_code`, `env_desc`, `create_id`, `create_date`, `del_flag`) VALUES ( 'beta', 'beta', '1', '2021-04-25 02:04:22', '0');
+INSERT INTO `m_env` ( `env_code`, `env_desc`, `create_id`, `create_date`, `del_flag`) VALUES ( 'betaB', 'betaB', '1', '2021-04-25 02:04:32', '0');
+
+INSERT INTO `m_template` ( `app_code`, `template_key`, `template_name`, `template_desc`, `create_id`, `create_date`, `del_flag`) VALUES ('app', 'banner', 'banner', '', '1', '2021-04-25 02:13:51', '0');
+
+INSERT INTO `m_property` ( `property_name`, `property_key`, `property_type`, `column_length`, `label_type`, `label_value`, `label_required`, `default_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `priority`, `show_table`, `create_id`, `create_date`, `del_flag`) VALUES ( '标题', 'title', 'varchar', '10', 'input', '', '0', '测试标题', 'app', '', 'banner', '1', '1', '1', '1', '2021-04-25 02:16:10', '0');
+INSERT INTO `m_property` ( `property_name`, `property_key`, `property_type`, `column_length`, `label_type`, `label_value`, `label_required`, `default_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `priority`, `show_table`, `create_id`, `create_date`, `del_flag`) VALUES ( '跳转地址', 'jumpUrl', 'varchar', '32', 'input', '', '1', '', 'app', 'appDomain', 'banner', '1', '1', '1', '1', '2021-04-25 02:16:50', '0');
+INSERT INTO `m_property` ( `property_name`, `property_key`, `property_type`, `column_length`, `label_type`, `label_value`, `label_required`, `default_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `priority`, `show_table`, `create_id`, `create_date`, `del_flag`) VALUES ( '标题', 'title', 'varchar', '22', 'input', '', '0', '', 'hzzy', '', 'banner', '1', '1', '1', '1', '2021-04-25 03:45:44', '0');
+
+
+INSERT INTO `m_env_variable` ( `variable_name`, `variable_desc`, `variable_key`, `create_id`, `create_date`, `del_flag`) VALUES ( 'app域名', '', 'appDomain', '1', '2021-04-25 02:17:23', '0');
+
+INSERT INTO `m_env_variable_relation` ( `env_code`, `variable_value`, `variable_key`) VALUES ( 'beta', 'http://1', 'appDomain');
+INSERT INTO `m_env_variable_relation` ( `env_code`, `variable_value`, `variable_key`) VALUES ( 'betaB', 'http://2', 'appDomain');

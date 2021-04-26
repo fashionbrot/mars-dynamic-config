@@ -144,12 +144,12 @@ public class DynamicDataServiceImpl  extends ServiceImpl<DynamicDataMapper, Dyna
         BeanUtils.copyProperties(entity,log);
         log.setOperationType(OperationTypeEnum.DEL.getCode());
         log.setDescription(entity.getDataDesc());
-        log.setJson("");
-        log.setTempJson(data.getJson());
+        log.setJson(data.getJson());
+        log.setTempJson("");
         log.setDataValueId(data.getId());
         dynamicDataLogMapper.insert(log);
 
         baseMapper.deleteById(id);
-        dynamicDataValueMapper.selectOne(new QueryWrapper<DynamicDataValueEntity>().eq("data_id", id));
+        dynamicDataValueMapper.delete(new QueryWrapper<DynamicDataValueEntity>().eq("data_id", id));
     }
 }

@@ -10,7 +10,7 @@
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
 
 
-    <div style="border: 1px solid red;width:50%;float: left"; >
+    <div id="div1" style="border: 1px solid #3c8dbc;width:50%;float: left"; >
         <div class="form-horizontal m"   style="border: 0px solid red;">
             <div class="form-group" style="text-align: center;height: 40px;line-height: 40px;font-weight: bold">
                 修改后
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <div style="border: 1px solid red;width:50%;float: left"; >
+    <div  id="div2" style="border: 1px solid #3c8dbc;width:50%;float: left"; >
         <div class="form-horizontal m"   style="border: 0px solid red;">
             <div class="form-group" style="text-align: center;height: 40px;line-height: 40px;font-weight: bold">
                 修改前
@@ -45,6 +45,20 @@
         </div>
     </div>
 
+    <div id="div3" >
+        <div class="form-horizontal m"   style="border: 0px solid red;">
+            <div class="form-group" style="text-align: center;height: 40px;line-height: 40px;font-weight: bold">
+                删除前
+            </div>
+
+            <div id="dynamicDiv3">
+
+            </div>
+
+            <div  style="height: 50px;border: 0px;">
+            </div>
+        </div>
+    </div>
 
 
 </div>
@@ -66,10 +80,18 @@
                     $("[name="+k+"2]").attr("value",v);
                 })*/
                 $("#id").val(row.id);
-                initProperty(row.appCode,row.templateKey,row.json,"dynamicDiv");
-                initProperty(row.appCode,row.templateKey,row.tempJson,"dynamicDiv2");
-
-
+                if(row.operationType==2){
+                    $("#div3").show();
+                    $("#div1").hide();
+                    $("#div2").hide();
+                    initProperty(row.appCode,row.templateKey,row.json,"dynamicDiv3");
+                }else if (row.operationType==1){
+                    $("#div3").hide();
+                    $("#div1").show();
+                    $("#div2").show();
+                    initProperty(row.appCode,row.templateKey,row.json,"dynamicDiv");
+                    initProperty(row.appCode,row.templateKey,row.tempJson,"dynamicDiv2");
+                }
             }
         }
     })

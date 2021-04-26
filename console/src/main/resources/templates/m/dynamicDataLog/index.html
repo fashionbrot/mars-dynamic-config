@@ -109,7 +109,7 @@
 
 		$(function() {
 
-			common.loadEnv("envCode","");
+			common.loadEnv("envCode","",true);
 			$('#envCode').select2({
 				allowClear: false,
 				width:"120",
@@ -121,19 +121,15 @@
 
 
 
-			common.loadApp("appCode","");
+			common.loadApp("appCode","",true);
 			$('#appCode').select2({
 				allowClear: false,
 				width:"120"
 			});
+			loadTemplate();
 
-			$('#templateKey').select2({
-				allowClear: false,
-				width:"155"
-			});
 			$("#appCode").on("change",function () {
-				var appCode = $("#appCode").val();
-				common.loadTemplate("templateKey","",appCode);
+				loadTemplate();
 			})
 			$("#templateKey").on("change",function () {
 				// searchPre();
@@ -143,6 +139,15 @@
 
 
 		});
+		function loadTemplate() {
+			var appCode = $("#appCode").val();
+			common.loadTemplate("templateKey","",appCode);
+
+			$('#templateKey').select2({
+				allowClear: false,
+				width:"155"
+			});
+		}
 
 		var propertyRowsAll;
 		function query() {
@@ -216,7 +221,8 @@
 						align: 'center',
 						formatter: function(value, row, index) {
 							var actions = [];
-							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editFull2(\'' + row.id + '\',\'回滚到修改前\',\'取消\')"><i class="fa fa-edit"></i>查看详情</a> ');
+
+							actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editFull2(\'' + row.id + '\',\'查看详情\',\'回滚到修改前\',\'取消\',1000,\'\')"><i class="fa fa-edit"></i>查看详情</a> ');
 							actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
 							return actions.join('');
 						}

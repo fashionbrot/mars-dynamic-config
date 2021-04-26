@@ -1217,7 +1217,7 @@ var table = {
             	$.modal.openFull("修改" + table.options.modalName, url);
             },
             // 修改信息 全屏
-            editFull2: function(id,btn1,btn2) {
+            editFull2: function(id,title,btn1,btn2,width,height) {
                 table.set();
                 var url = "/404.html";
                 if ($.common.isNotEmpty(id)) {
@@ -1239,7 +1239,7 @@ var table = {
                         url = table.options.updateUrl.replace("{id}", row);
                     }
                 }
-                $.modal.openFull2("修改" + table.options.modalName, url,"","",btn1,btn2);
+                $.modal.openFull2(title, url,width,height,btn1,btn2);
             },
             // 修改访问地址
             editUrl: function(id) {

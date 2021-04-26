@@ -127,7 +127,7 @@
 
 		$(function() {
 
-			common.loadEnv("envCode","");
+			common.loadEnv("envCode","",true);
 			$('#envCode').select2({
 				allowClear: false,
 				width:"120",
@@ -139,11 +139,13 @@
 
 
 
-			common.loadApp("appCode","");
+			common.loadApp("appCode","",true);
 			$('#appCode').select2({
 				allowClear: false,
 				width:"120"
 			});
+			var appCode = $("#appCode").val();
+			common.loadTemplate("templateKey","",appCode);
 
 			$('#templateKey').select2({
 				allowClear: false,

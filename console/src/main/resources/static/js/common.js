@@ -102,12 +102,15 @@ function loadMenuLevel(id,selectId,level) {
 }
 
 var common={
-    loadEnv:function (id,selectId) {
+    loadEnv:function (id,selectId,selectFirst) {
         var prefix = ctx + "m/env";
         $.operate.get2(prefix + "/queryList",function (data) {
             if (data.code==0){
                 var rows=data.data;
                 var html="<option value=''>请选择环境</option>";
+                if (selectFirst){
+                    html="";
+                }
                 for(var i=0;i<rows.length;i++){
                     var row=rows[i];
                     if (selectId && row.envCode==selectId){
@@ -120,12 +123,15 @@ var common={
             }
         });
     },
-    loadApp:function (id,selectId) {
+    loadApp:function (id,selectId,selectFirst) {
         var prefix = ctx + "m/app";
         $.operate.get2(prefix + "/queryList",function (data) {
             if (data.code==0){
                 var rows=data.data;
                 var html="<option value=''>请选择应用</option>";
+                if (selectFirst){
+                    html = "";
+                }
                 for(var i=0;i<rows.length;i++){
                     var row=rows[i];
                     if (selectId && row.appCode==selectId){

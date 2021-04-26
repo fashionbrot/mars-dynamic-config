@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.fashionbrot.entity.DynamicDataEntity;
 import com.github.fashionbrot.req.DynamicDataReq;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +29,7 @@ public interface DynamicDataMapper extends BaseMapper<DynamicDataEntity> {
     int updateRelease(Map<String, Object> map);
 
     DynamicDataEntity selectDelById(Long dataId);
+
+    @Update("update m_dynamic_data set del_flag=#{el.delFlag} , release_type=#{el.releaseType} where id=#{el.id}")
+    int updateDelFlagAndReleaseTypeById(@Param("el") DynamicDataEntity dynamicDataEntity);
 }

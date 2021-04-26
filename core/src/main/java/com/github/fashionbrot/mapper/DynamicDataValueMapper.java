@@ -4,6 +4,8 @@ package com.github.fashionbrot.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.github.fashionbrot.entity.DynamicDataValueEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.Map;
 
@@ -21,4 +23,7 @@ public interface DynamicDataValueMapper extends BaseMapper<DynamicDataValueEntit
     int updateRelease(Map<String, Object> map);
 
     DynamicDataValueEntity selectDelById(Long dataValueId);
+
+    @Update("update m_dynamic_data_value set del_flag=#{delFlag}  where id =#{id}")
+    int updateDelFlag(@Param("id") Long id,@Param("delFlag") int delFlag);
 }
