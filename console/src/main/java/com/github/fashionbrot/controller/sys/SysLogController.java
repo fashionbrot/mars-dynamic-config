@@ -61,6 +61,7 @@ public class SysLogController {
     }
 
 
+    @ApiOperation("查看日志详情")
     @MarsPermission(":index:detail")
     @GetMapping("/index/detail")
     public String detail( Long id, ModelMap modelMap){

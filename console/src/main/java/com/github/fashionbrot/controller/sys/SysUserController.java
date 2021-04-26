@@ -91,6 +91,7 @@ public class SysUserController {
         return RespVo.success(service.login(account, password));
     }
 
+
     @ApiOperation("退出登录")
     @RequestMapping(value = {"/logout"})
     public String logout(HttpServletRequest request, HttpServletResponse response) {
@@ -99,11 +100,11 @@ public class SysUserController {
     }
 
 
+    @MarsPermission(":resetPwd")
     @ApiOperation("修改密码")
     @MarsLog
     @RequestMapping("/resetPwd")
     @ResponseBody
-    @MarsPermission("system:user:updatePwd")
     public RespVo updatePwd(String oldPassword, String newPassword) {
         service.updatePwd(oldPassword, newPassword);
         return RespVo.success();
@@ -119,7 +120,7 @@ public class SysUserController {
     }
 
 
-    @MarsPermission(":queryList")
+
     @ApiOperation("数据列表")
     @GetMapping("/queryList")
     @ResponseBody

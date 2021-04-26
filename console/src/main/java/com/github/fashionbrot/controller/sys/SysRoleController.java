@@ -80,7 +80,7 @@ public class SysRoleController  {
     }
 
 
-    @MarsPermission(":queryList")
+
     @ApiOperation("数据列表")
     @GetMapping("/queryList")
     @ResponseBody
