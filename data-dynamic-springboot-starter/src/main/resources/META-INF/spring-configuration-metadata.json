@@ -1,0 +1,43 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.github.fashionbrot.MarsDataDynamicConfigurationProperties",
+      "name": "mars.data.dynamic",
+      "type": "com.github.fashionbrot.MarsDataDynamicConfigurationProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.github.fashionbrot.MarsDataDynamicConfigurationProperties",
+      "name": "mars.data.dynamic.app-code",
+      "description": "应用code",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.github.fashionbrot.MarsDataDynamicConfigurationProperties",
+      "name": "mars.data.dynamic.cluster",
+      "description": "集群配置\n @return",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.github.fashionbrot.MarsDataDynamicConfigurationProperties",
+      "name": "mars.data.dynamic.env-code",
+      "description": "环境code",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.github.fashionbrot.MarsDataDynamicConfigurationProperties",
+      "defaultValue": 10000,
+      "name": "mars.data.dynamic.listen-long-poll-ms",
+      "description": "客户端轮训毫秒数",
+      "type": "java.lang.Long"
+    },
+    {
+      "sourceType": "com.github.fashionbrot.MarsDataDynamicConfigurationProperties",
+      "name": "mars.data.dynamic.server-address",
+      "description": "服务器地址 多个逗号分隔",
+      "type": "java.lang.String"
+    }
+  ]
+}
