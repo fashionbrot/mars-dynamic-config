@@ -328,3 +328,75 @@ INSERT INTO `m_env_variable` ( `variable_name`, `variable_desc`, `variable_key`,
 
 INSERT INTO `m_env_variable_relation` ( `env_code`, `variable_value`, `variable_key`) VALUES ( 'beta', 'http://1', 'appDomain');
 INSERT INTO `m_env_variable_relation` ( `env_code`, `variable_value`, `variable_key`) VALUES ( 'betaB', 'http://2', 'appDomain');
+
+
+
+
+DROP TABLE IF EXISTS `m_system_config`;
+CREATE TABLE `m_system_config` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `app_code` varchar(32) NOT NULL COMMENT '应用名称',
+  `env_code` varchar(32) NOT NULL COMMENT '环境code',
+  `modifier` varchar(32) DEFAULT NULL COMMENT '修改人',
+  `file_name` varchar(32) NOT NULL COMMENT '文件名称',
+  `file_desc` varchar(255) DEFAULT NULL COMMENT '文件描述',
+  `file_type` varchar(16) NOT NULL DEFAULT '5' COMMENT '文件类型 TEXT JSON XML YAML HTML Properties',
+  `json` text DEFAULT NULL COMMENT '配置文件内容',
+  `temp_json` text DEFAULT NULL COMMENT '临时数据',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态 1新增 2更新 3删除 4已发布',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`),
+  KEY `idx_envcode_appname` (`env_code`,`app_name`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='应用系统配置表';
+ALTER TABLE m_system_config ADD INDEX index_del_flag (del_flag);
+
+
+DROP TABLE IF EXISTS `m_system_config_history`;
+CREATE TABLE `m_system_config_history` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `file_id` bigint(11) unsigned NOT NULL COMMENT '文件id',
+  `file_name` varchar(32) NOT NULL COMMENT '文件名称',
+  `app_name` varchar(32) NOT NULL COMMENT '应用名称',
+  `env_code` varchar(32) NOT NULL COMMENT '环境code',
+  `json` text DEFAULT NULL COMMENT '配置文件内容-修改前',
+  `pre_json` text DEFAULT NULL COMMENT '配置文件内容-修改后',
+  `operation_type` int(2) unsigned NOT NULL COMMENT '操作类型',
+  `file_type` varchar(32) NOT NULL COMMENT '文件类型',
+  `modifier` varchar(32) DEFAULT NULL COMMENT '修改人',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`),
+  KEY `idx_envcode_appname` (`env_code`,`app_name`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='应用系统配置历史表';
+ALTER TABLE m_system_config_history ADD INDEX index_del_flag (del_flag);
+
+
+
+DROP TABLE IF EXISTS `m_system_config_role_relation`;
+CREATE TABLE `m_system_config_role_relation` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+  `system_config_id` bigint(20) NOT NULL COMMENT '动态配置ID',
+  `permission` tinyint(4) NOT NULL COMMENT '权限 1111 代表 增删改查 都有权限',
+  `create_id` bigint(11) NOT NULL COMMENT '创建者id',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `update_id` bigint(11) DEFAULT NULL COMMENT '最近更新者id',
+  `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
+  `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='动态配置-角色关系表';
+ALTER TABLE m_system_config_role_relation ADD INDEX index_del_flag (del_flag);
+
+
+CREATE TABLE `m_system_release` (
+  `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
+  `env_code` varchar(32) NOT NULL COMMENT '环境code',
+  `app_name` varchar(32) NOT NULL COMMENT '应用名',
+  `files` varchar(255) DEFAULT NULL COMMENT '模板keys',
+  `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
+  `release_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  PRIMARY KEY (`id`),
+  KEY `index_envCode_appName` (`env_code`,`app_name`) USING BTREE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置发布表';
