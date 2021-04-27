@@ -63,6 +63,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/build")
                 .excludePathPatterns("/401")
                 .excludePathPatterns("/error")
+                .excludePathPatterns("/open/**")
         ;
     }
 

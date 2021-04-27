@@ -13,17 +13,22 @@ import com.github.fashionbrot.mapper.DynamicDataReleaseMapper;
 import com.github.fashionbrot.mapper.DynamicDataValueMapper;
 import com.github.fashionbrot.req.DynamicDataReleaseReq;
 import com.github.fashionbrot.service.DynamicDataReleaseService;
+import com.github.fashionbrot.service.DynamicDataService;
+import com.github.fashionbrot.tool.HttpClientUtil;
+import com.github.fashionbrot.tool.HttpResult;
 import com.github.fashionbrot.util.ConvertUtil;
-import com.github.fashionbrot.validated.util.StringUtil;
+import com.github.fashionbrot.util.StringUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * 配置数据发布表
@@ -53,6 +58,27 @@ public class DynamicDataReleaseServiceImpl  extends ServiceImpl<DynamicDataRelea
                 .total(page.getTotal())
                 .build();
     }
+
+    @Autowired
+    private DynamicDataService dynamicDataService;
+
+    @Autowired
+    private Environment environment;
+
+    private static final String CLUSTER="mars.cluster.address";
+    private static final String SYNC_RETRY = "mars.cluster.sync.retry";
+
+    private ExecutorService executorService = new ThreadPoolExecutor(5, 5, 0L, TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<Runnable>(5),
+            new RejectedExecutionHandler() {
+                @Override
+                public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                    if (!executor.isShutdown()) {
+                        //再尝试入队
+                        executor.execute(r);
+                    }
+                }
+            });
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -87,6 +113,73 @@ public class DynamicDataReleaseServiceImpl  extends ServiceImpl<DynamicDataRelea
 
         req.setTemplateKeys(Strings.join(templateKeys, ','));
         baseMapper.insert(req);
+
+        dynamicDataService.setVersionCache(req.getEnvCode(),req.getAppCode(),req.getId());
+
+
+        if (environment.containsProperty(CLUSTER)){
+
+            String cluster = environment.getProperty(CLUSTER);
+            if (StringUtil.isEmpty(cluster)){
+                return;
+            }
+            final int retry ;
+            if (environment.containsProperty(SYNC_RETRY)){
+                retry = StringUtil.parseInteger(environment.getProperty(SYNC_RETRY),3);
+            }else{
+                retry = 3;
+            }
+
+            List<String> serverList = getServerList(cluster,"/open/data/dynamic/cluster/sync");
+            if (serverList.size() <= 0){
+                return;
+            }
+
+            List<String> params = new ArrayList<>();
+            params.add("envCode");
+            params.add(req.getEnvCode());
+            params.add("appCode");
+            params.add(req.getAppCode());
+            params.add("version");
+            params.add(req.getId()+"");
+
+            for (String s : serverList) {
+                executorService.submit(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < retry; i++) {
+                            HttpResult httpResult = HttpClientUtil.httpPost(s, null, params, "UTF-8", 2000, 2000);
+                            if (httpResult.isSuccess() && (req.getId().longValue() + "").equals(httpResult.getResponseBody())) {
+                                break;
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    public static List<String> getServerList(String serverAddress,String url){
+
+        String[] server = serverAddress.split(",");
+        List<String> serverList=new ArrayList<>(server.length);
+        if (StringUtil.isNotEmpty(serverAddress)) {
+            for (String s : server) {
+                String[] svr = s.split(":");
+                int port = 80;
+                if (svr.length == 2) {
+                    port = StringUtil.parseInteger(svr[1], 80);
+                }
+                String ip = svr[0];
+                if (!ip.startsWith("http")){
+                    ip="http://"+ip;
+                }
+                ip = ip+":"+port+url;
+                serverList.add(ip);
+            }
+            return serverList;
+        }
+        return serverList;
     }
 
 }

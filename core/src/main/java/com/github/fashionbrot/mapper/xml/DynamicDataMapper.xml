@@ -120,4 +120,38 @@
         select * from m_dynamic_data where id=#{id}
     </select>
 
+
+
+    <resultMap type="com.github.fashionbrot.vo.DataDynamicVo" id="dtoMap2">
+        <result property="templateKey" column="template_key"/>
+        <collection property="jsonList" ofType="com.github.fashionbrot.vo.DataDynamicJsonVo">
+            <result property="json" column="json" />
+        </collection>
+    </resultMap>
+
+
+    <select id="selectJsonByReq" resultMap="dtoMap2" parameterType="java.util.Map">
+        select
+        a.template_key,
+        b.json
+        from m_dynamic_data a
+        left join m_dynamic_data_value b on a.id = b.data_id and b.del_flag=0
+        where a.del_flag=0 and a.`status`= 1
+        <if test="envCode!=null and envCode!=''">
+            and a.env_code=#{envCode}
+        </if>
+        <if test="appCode!=null and appCode!=''">
+            and a.app_code=#{appCode}
+        </if>
+
+        <if test="templateKeyList != null and templateKeyList.size()>0">
+            and a.template_key in
+            <foreach collection="templateKeyList" item="key" open="(" close=")" separator=",">
+                #{key}
+            </foreach>
+        </if>
+
+        order by a.template_key,a.priority desc
+    </select>
+
 </mapper>

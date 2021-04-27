@@ -12,6 +12,7 @@
         <module>core</module>
         <module>common</module>
         <module>console</module>
+        <module>demo</module>
     </modules>
 
     <properties>

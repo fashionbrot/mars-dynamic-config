@@ -2,7 +2,9 @@ package com.github.fashionbrot.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.fashionbrot.entity.DynamicDataEntity;
+import com.github.fashionbrot.req.DataDynamicApiReq;
 import com.github.fashionbrot.req.DynamicDataReq;
+import com.github.fashionbrot.vo.ApiRespVo;
 
 /**
  * 动态配置表
@@ -22,4 +24,12 @@ public interface DynamicDataService  extends IService<DynamicDataEntity> {
     void deleteById(Long id);
 
     Object selectById(Long id);
+
+    Object checkVersion(DataDynamicApiReq req);
+
+    ApiRespVo getData(DataDynamicApiReq req);
+
+    Long clusterSync(DataDynamicApiReq req);
+
+    void setVersionCache(String envCode,String appCode,Long releaseId);
 }

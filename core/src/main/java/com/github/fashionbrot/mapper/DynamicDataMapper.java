@@ -2,8 +2,10 @@
 package com.github.fashionbrot.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.fashionbrot.dto.DataDynamicJsonDTO;
 import com.github.fashionbrot.entity.DynamicDataEntity;
 import com.github.fashionbrot.req.DynamicDataReq;
+import com.github.fashionbrot.vo.DataDynamicVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
@@ -32,4 +34,6 @@ public interface DynamicDataMapper extends BaseMapper<DynamicDataEntity> {
 
     @Update("update m_dynamic_data set del_flag=#{el.delFlag} , release_type=#{el.releaseType} where id=#{el.id}")
     int updateDelFlagAndReleaseTypeById(@Param("el") DynamicDataEntity dynamicDataEntity);
+
+    List<DataDynamicVo> selectJsonByReq(Map<String, Object> map);
 }
