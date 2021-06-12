@@ -1,6 +1,7 @@
 package com.github.fashionbrot.controller;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.DynamicDataReleaseEntity;
 import com.github.fashionbrot.req.DynamicDataReleaseReq;
@@ -76,6 +77,7 @@ public class DynamicDataReleaseController  {
         return RespVo.success(service.getById(id));
     }
 
+    @MarsLog
     @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
@@ -85,7 +87,7 @@ public class DynamicDataReleaseController  {
         return RespVo.success();
     }
 
-
+    @MarsLog
     @MarsPermission(":updateById")
     @ApiOperation("修改")
     @PostMapping("/updateById")
@@ -95,7 +97,7 @@ public class DynamicDataReleaseController  {
         return RespVo.success();
     }
 
-
+    @MarsLog
     @MarsPermission(":deleteById")
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
@@ -106,6 +108,7 @@ public class DynamicDataReleaseController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":deleteByIds")
     @ApiOperation("批量删除")
     @PostMapping("/deleteByIds")
@@ -116,7 +119,7 @@ public class DynamicDataReleaseController  {
     }
 
 
-
+    @MarsLog
     @MarsPermission(":release")
     @ApiOperation("发布")
     @PostMapping("/release")

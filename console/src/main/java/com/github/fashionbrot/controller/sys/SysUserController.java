@@ -92,6 +92,7 @@ public class SysUserController {
     }
 
 
+    @MarsLog
     @ApiOperation("退出登录")
     @RequestMapping(value = {"/logout"})
     public String logout(HttpServletRequest request, HttpServletResponse response) {

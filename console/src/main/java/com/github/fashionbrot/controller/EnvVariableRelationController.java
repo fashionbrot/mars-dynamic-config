@@ -1,6 +1,7 @@
 package com.github.fashionbrot.controller;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.EnvVariableRelationEntity;
 import com.github.fashionbrot.service.EnvVariableRelationService;
@@ -53,6 +54,7 @@ public class EnvVariableRelationController {
         return RespVo.success(service.getById(id));
     }
 
+    @MarsLog
     @ApiOperation("新增")
     @PostMapping("/insert")
     @ResponseBody
@@ -62,6 +64,7 @@ public class EnvVariableRelationController {
     }
 
 
+    @MarsLog
     @ApiOperation("修改")
     @PostMapping("/updateById")
     @ResponseBody
@@ -71,6 +74,7 @@ public class EnvVariableRelationController {
     }
 
 
+    @MarsLog
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
     @ResponseBody

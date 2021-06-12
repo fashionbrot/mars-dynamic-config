@@ -1,6 +1,7 @@
 package com.github.fashionbrot.controller;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.EnvEntity;
 import com.github.fashionbrot.req.EnvReq;
@@ -93,6 +94,7 @@ public class EnvController  {
 
 
 
+    @MarsLog
     @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
@@ -103,6 +105,7 @@ public class EnvController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":updateById")
     @ApiOperation("修改")
     @PostMapping("/updateById")
@@ -113,6 +116,7 @@ public class EnvController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":deleteById")
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")

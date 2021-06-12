@@ -1,6 +1,7 @@
 package com.github.fashionbrot.controller;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.DynamicDataEntity;
 import com.github.fashionbrot.req.DynamicDataReq;
@@ -93,8 +94,9 @@ public class DynamicDataController  {
     public RespVo selectById(Long id){
         return RespVo.success(service.selectById(id));
     }
-    
 
+
+    @MarsLog
     @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
@@ -105,6 +107,7 @@ public class DynamicDataController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":updateById")
     @ApiOperation("修改")
     @PostMapping("/updateById")
@@ -115,6 +118,7 @@ public class DynamicDataController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":deleteById")
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")

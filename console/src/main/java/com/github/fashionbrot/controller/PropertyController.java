@@ -1,6 +1,7 @@
 package com.github.fashionbrot.controller;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.PropertyEntity;
 import com.github.fashionbrot.req.CopyPropertyReq;
@@ -105,6 +106,7 @@ public class PropertyController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":insert")
     @ApiOperation("新增")
     @PostMapping("/insert")
@@ -115,6 +117,7 @@ public class PropertyController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":updateById")
     @ApiOperation("修改")
     @PostMapping("/updateById")
@@ -125,6 +128,7 @@ public class PropertyController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":deleteById")
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
@@ -137,6 +141,7 @@ public class PropertyController  {
 
 
 
+    @MarsLog
     @MarsPermission(":copyProperty")
     @ApiOperation("复制属性")
     @PostMapping("/copyProperty")

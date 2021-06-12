@@ -1,6 +1,7 @@
 package com.github.fashionbrot.controller;
 
 
+import com.github.fashionbrot.annotation.MarsLog;
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.DynamicDataLogEntity;
 import com.github.fashionbrot.req.DynamicDataLogReq;
@@ -91,6 +92,7 @@ public class DynamicDataLogController  {
     }
 
 
+    @MarsLog
     @ApiOperation("新增")
     @PostMapping("/insert")
     @ResponseBody
@@ -101,6 +103,7 @@ public class DynamicDataLogController  {
 
 
 
+    @MarsLog
     @ApiOperation("修改")
     @PostMapping("/updateById")
     @ResponseBody
@@ -111,6 +114,7 @@ public class DynamicDataLogController  {
 
 
 
+    @MarsLog
     @ApiOperation("根据id删除")
     @PostMapping("/deleteById")
     @ResponseBody
@@ -120,6 +124,7 @@ public class DynamicDataLogController  {
     }
 
 
+    @MarsLog
     @MarsPermission(":rollback")
     @ApiOperation("回滚")
     @PostMapping("/rollback")
