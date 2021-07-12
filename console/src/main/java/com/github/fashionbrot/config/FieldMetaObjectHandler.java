@@ -1,10 +1,7 @@
 package com.github.fashionbrot.config;
 
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.baomidou.mybatisplus.core.metadata.TableInfo;
-import com.github.fashionbrot.entity.SysLogEntity;
 import com.github.fashionbrot.model.LoginModel;
-import com.github.fashionbrot.service.SysUserService;
 import com.github.fashionbrot.service.UserLoginService;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.beans.BeansException;
@@ -31,19 +28,10 @@ public class FieldMetaObjectHandler implements MetaObjectHandler, BeanFactoryAwa
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        if (metaObject.getOriginalObject() instanceof SysLogEntity){
-            return;
-        }
-        if (hasFiled(CREATE_ID,metaObject)) {
-            setFieldValByName(CREATE_ID, getUserId(), metaObject);
-        }
-        if (hasFiled(CREATE_DATE,metaObject)) {
-            Date date = new Date();
-            setFieldValByName(CREATE_DATE, date, metaObject);
-        }
-        if (hasFiled(DEL_FLAG,metaObject)) {
-            setFieldValByName(DEL_FLAG, 0, metaObject);
-        }
+
+        this.strictInsertFill(metaObject,CREATE_ID,Long.class,getUserId());
+        this.strictInsertFill(metaObject,CREATE_DATE,Date.class,new Date());
+        this.strictInsertFill(metaObject,DEL_FLAG,Integer.class,0);
     }
 
     /**
@@ -52,21 +40,8 @@ public class FieldMetaObjectHandler implements MetaObjectHandler, BeanFactoryAwa
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-
-        if (hasFiled(UPDATE_ID,metaObject)) {
-            setFieldValByName(UPDATE_ID,getUserId(),metaObject);
-        }
-        if (hasFiled(UPDATE_DATE,metaObject)) {
-            Date date = new Date();
-            setFieldValByName(UPDATE_DATE, date, metaObject);
-        }
-    }
-
-    public boolean hasFiled(String filed, MetaObject metaObject){
-        if (metaObject.hasGetter(filed) || metaObject.hasGetter("et."+filed)) {
-            return true;
-        }
-        return false;
+        this.strictUpdateFill(metaObject,UPDATE_ID,Long.class,getUserId());
+        this.strictUpdateFill(metaObject,UPDATE_DATE,Date.class,new Date());
     }
 
     private Long getUserId(){

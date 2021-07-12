@@ -312,23 +312,6 @@ CREATE TABLE `m_dynamic_data_release` (
 
 
 
-INSERT INTO `m_app` ( `app_code`, `app_desc`, `create_id`, `create_date`, `del_flag`) VALUES ( 'app', 'app', '1', '2021-04-25 02:03:50', '0');
-
-INSERT INTO `m_env` ( `env_code`, `env_desc`, `create_id`, `create_date`, `del_flag`) VALUES ( 'beta', 'beta', '1', '2021-04-25 02:04:22', '0');
-INSERT INTO `m_env` ( `env_code`, `env_desc`, `create_id`, `create_date`, `del_flag`) VALUES ( 'betaB', 'betaB', '1', '2021-04-25 02:04:32', '0');
-
-INSERT INTO `m_template` ( `app_code`, `template_key`, `template_name`, `template_desc`, `create_id`, `create_date`, `del_flag`) VALUES ('app', 'banner', 'banner', '', '1', '2021-04-25 02:13:51', '0');
-
-INSERT INTO `m_property` ( `property_name`, `property_key`, `property_type`, `column_length`, `label_type`, `label_value`, `label_required`, `default_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `priority`, `show_table`, `create_id`, `create_date`, `del_flag`) VALUES ( '标题', 'title', 'varchar', '10', 'input', '', '0', '测试标题', 'app', '', 'banner', '1', '1', '1', '1', '2021-04-25 02:16:10', '0');
-INSERT INTO `m_property` ( `property_name`, `property_key`, `property_type`, `column_length`, `label_type`, `label_value`, `label_required`, `default_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `priority`, `show_table`, `create_id`, `create_date`, `del_flag`) VALUES ( '跳转地址', 'jumpUrl', 'varchar', '32', 'input', '', '1', '', 'app', 'appDomain', 'banner', '1', '1', '1', '1', '2021-04-25 02:16:50', '0');
-INSERT INTO `m_property` ( `property_name`, `property_key`, `property_type`, `column_length`, `label_type`, `label_value`, `label_required`, `default_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `priority`, `show_table`, `create_id`, `create_date`, `del_flag`) VALUES ( '标题', 'title', 'varchar', '22', 'input', '', '0', '', 'hzzy', '', 'banner', '1', '1', '1', '1', '2021-04-25 03:45:44', '0');
-
-
-INSERT INTO `m_env_variable` ( `variable_name`, `variable_desc`, `variable_key`, `create_id`, `create_date`, `del_flag`) VALUES ( 'app域名', '', 'appDomain', '1', '2021-04-25 02:17:23', '0');
-
-INSERT INTO `m_env_variable_relation` ( `env_code`, `variable_value`, `variable_key`) VALUES ( 'beta', 'http://1', 'appDomain');
-INSERT INTO `m_env_variable_relation` ( `env_code`, `variable_value`, `variable_key`) VALUES ( 'betaB', 'http://2', 'appDomain');
-
 
 
 
@@ -340,15 +323,15 @@ CREATE TABLE `m_system_config` (
   `modifier` varchar(32) DEFAULT NULL COMMENT '修改人',
   `file_name` varchar(32) NOT NULL COMMENT '文件名称',
   `file_desc` varchar(255) DEFAULT NULL COMMENT '文件描述',
-  `file_type` varchar(16) NOT NULL DEFAULT '5' COMMENT '文件类型 TEXT JSON XML YAML HTML Properties',
+  `file_type` varchar(16) NOT NULL DEFAULT 'PROPERTIES' COMMENT '文件类型 TEXT YAML  PROPERTIES',
   `json` text DEFAULT NULL COMMENT '配置文件内容',
   `temp_json` text DEFAULT NULL COMMENT '临时数据',
-  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态 1新增 2更新 3删除 4已发布',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 1新增 2更新 3删除 4已发布',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
   PRIMARY KEY (`id`),
-  KEY `idx_envcode_appname` (`env_code`,`app_name`) USING BTREE
+  KEY `idx_envcode_appcode` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='应用系统配置表';
 ALTER TABLE m_system_config ADD INDEX index_del_flag (del_flag);
 
@@ -400,3 +383,17 @@ CREATE TABLE `m_system_release` (
   PRIMARY KEY (`id`),
   KEY `index_envCode_appName` (`env_code`,`app_name`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置发布表';
+
+
+
+-- 测试数据
+INSERT INTO `m_app` ( `app_code`, `app_desc`, `create_id`, `create_date`, `del_flag`) VALUES ( 'app', 'app', '1', '2021-04-25 02:03:50', '0');
+INSERT INTO `m_env` ( `env_code`, `env_desc`, `create_id`, `create_date`, `del_flag`) VALUES ( 'beta', 'beta', '1', '2021-04-25 02:04:22', '0');
+INSERT INTO `m_env` ( `env_code`, `env_desc`, `create_id`, `create_date`, `del_flag`) VALUES ( 'betaB', 'betaB', '1', '2021-04-25 02:04:32', '0');
+INSERT INTO `m_template` ( `app_code`, `template_key`, `template_name`, `template_desc`, `create_id`, `create_date`, `del_flag`) VALUES ('app', 'banner', 'banner', '', '1', '2021-04-25 02:13:51', '0');
+INSERT INTO `m_property` ( `property_name`, `property_key`, `property_type`, `column_length`, `label_type`, `label_value`, `label_required`, `default_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `priority`, `show_table`, `create_id`, `create_date`, `del_flag`) VALUES ( '标题', 'title', 'varchar', '10', 'input', '', '0', '测试标题', 'app', '', 'banner', '1', '1', '1', '1', '2021-04-25 02:16:10', '0');
+INSERT INTO `m_property` ( `property_name`, `property_key`, `property_type`, `column_length`, `label_type`, `label_value`, `label_required`, `default_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `priority`, `show_table`, `create_id`, `create_date`, `del_flag`) VALUES ( '跳转地址', 'jumpUrl', 'varchar', '32', 'input', '', '1', '', 'app', 'appDomain', 'banner', '1', '1', '1', '1', '2021-04-25 02:16:50', '0');
+INSERT INTO `m_property` ( `property_name`, `property_key`, `property_type`, `column_length`, `label_type`, `label_value`, `label_required`, `default_value`, `app_code`, `variable_key`, `template_key`, `attribute_type`, `priority`, `show_table`, `create_id`, `create_date`, `del_flag`) VALUES ( '标题', 'title', 'varchar', '22', 'input', '', '0', '', 'hzzy', '', 'banner', '1', '1', '1', '1', '2021-04-25 03:45:44', '0');
+INSERT INTO `m_env_variable` ( `variable_name`, `variable_desc`, `variable_key`, `create_id`, `create_date`, `del_flag`) VALUES ( 'app域名', '', 'appDomain', '1', '2021-04-25 02:17:23', '0');
+INSERT INTO `m_env_variable_relation` ( `env_code`, `variable_value`, `variable_key`) VALUES ( 'beta', 'http://1', 'appDomain');
+INSERT INTO `m_env_variable_relation` ( `env_code`, `variable_value`, `variable_key`) VALUES ( 'betaB', 'http://2', 'appDomain');

@@ -215,3 +215,19 @@
 <div th:fragment="bootstrap-table-print-js">
 	<script th:src="@{/ajax/libs/bootstrap-table/extensions/print/bootstrap-table-print.min.js?v=20200729}"></script>
 </div>
+
+<!-- codemirror -->
+<div th:fragment="codemirror-js">
+	<script th:src="@{/ajax/libs/codemirror/codemirror.js?v=20210712}"></script>
+	<script th:src="@{/ajax/libs/codemirror/model/properties.js?v=20210712}"></script>
+	<script th:src="@{/ajax/libs/codemirror/model/yaml.js?v=20210712}"></script>
+	<script th:src="@{/ajax/libs/codemirror/keymap/emacs.js?v=20210712}"></script>
+	<script th:src="@{/ajax/libs/codemirror/keymap/sublime.js?v=20210712}"></script>
+	<script th:src="@{/ajax/libs/codemirror/keymap/vim.js?v=20210712}"></script>
+</div>
+<div th:fragment="codemirror-css">
+	<link th:href="@{/ajax/libs/codemirror/codemirror.css?v=20210712}" rel="stylesheet"/>
+	<link th:href="@{/ajax/libs/codemirror/theme/3024-day.css?v=20210712}" rel="stylesheet"/>
+	<link th:href="@{/ajax/libs/codemirror/theme/3024-night.css?v=20210712}" rel="stylesheet"/>
+	<link th:href="@{/ajax/libs/codemirror/theme/abcdef.css?v=20210712}" rel="stylesheet"/>
+</div>
