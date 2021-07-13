@@ -4,10 +4,10 @@ $(function() {
     validateRule();
 
     if ($.cookie(dm+'rememberme') == 'true') {
-
+        $("input[name='rememberme']").attr("checked",true);
         $(".uname").val(decodeURIComponent($.cookie(dm+'usrname')));
         $(".pword").val(decodeURIComponent($.cookie(dm+'pwd'))).focus();
-        $("input[name='rememberme']").attr("checked",true);
+
     } else {
         $(".uname").val('').focus();
         $(".pword").val('');

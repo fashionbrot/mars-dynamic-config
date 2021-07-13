@@ -63,6 +63,13 @@ public class SystemConfigController {
         return "/m/systemConfig/edit";
     }
 
+    @GetMapping("/clone")
+    public String clone(){
+        return "/m/systemConfig/clone";
+    }
+
+
+
 
     @MarsPermission(":page")
     @ApiOperation("分页列表")
@@ -87,7 +94,7 @@ public class SystemConfigController {
     @PostMapping("/selectById")
     @ResponseBody
     public RespVo selectById(Long id){
-        return RespVo.success(service.getById(id));
+        return RespVo.success(service.selectById(id));
     }
 
     @MarsPermission(":insert")
@@ -95,7 +102,7 @@ public class SystemConfigController {
     @PostMapping("/insert")
     @ResponseBody
     public RespVo add(@RequestBody SystemConfigEntity entity){
-        service.save(entity);
+        service.add(entity);
         return RespVo.success();
     }
 
@@ -105,7 +112,7 @@ public class SystemConfigController {
     @PostMapping("/updateById")
     @ResponseBody
     public RespVo updateById(@RequestBody SystemConfigEntity entity){
-        service.updateById(entity);
+        service.edit(entity);
         return RespVo.success();
     }
 
@@ -115,7 +122,16 @@ public class SystemConfigController {
     @PostMapping("/deleteById")
     @ResponseBody
     public RespVo deleteById(Long id){
-        service.removeById(id);
+        service.deleteById(id);
+        return RespVo.success();
+    }
+
+    @MarsPermission(":unDel")
+    @ApiOperation("撤销删除")
+    @PostMapping("/unDel")
+    @ResponseBody
+    public RespVo undel(Long id){
+        service.undel(id);
         return RespVo.success();
     }
 

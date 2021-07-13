@@ -99,9 +99,9 @@
 		        url: prefix + "/page",
 		        createUrl: prefix + "/add",
 		        updateUrl: prefix + "/edit?id={id}",
-		        removeUrl: prefix + "/deleteById",
+		        removeUrl: prefix + "/deleteById?id={id}",
 		        exportUrl: prefix + "/export",
-		        modalName: "环境",
+		        modalName: "",
 				sortName: "createDate",
 				sortOrder: "desc",
 				method:"get",
@@ -112,6 +112,11 @@
 		            title: '文件名称',
 					align: 'center'
 		        },
+				{
+					field: 'fileType',
+					title: '文件类型',
+					align: 'center'
+				},
 				{
 					field: 'status',
 					title: '状态',
@@ -150,9 +155,15 @@
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		                var actions = [];
-		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\',780,450)"><i class="fa fa-edit"></i>编辑</a> ');
+
+						actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="clone(\'' + row.id + '\')"><i class="glyphicon glyphicon-transfer"></i>克隆 </a> ');
+		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\',null,null)"><i class="fa fa-edit"></i>编辑</a> ');
 						actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
-		                return actions.join('');
+						if (row.status==2 || row.status==3){
+							actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="undel(\'' + row.id + '\')"><i class="glyphicon glyphicon-star-empty"></i>撤销</a> ');
+						}
+
+						return actions.join('');
 		            }
 		        }]
 		    };
@@ -166,6 +177,14 @@
 
 		function searchForm() {
 			$.table.search('searchForm', 'bootstrap-table');
+		}
+		function undel(id) {
+			$.operate.post2(prefix+"/unDel",{id:id},function (data) {
+				$.operate.ajaxSuccess(data);
+			})
+		}
+		function clone(id) {
+			$.modal.open("克隆",prefix+"/clone?id="+id,null,null,null);
 		}
 	</script>
 </body>

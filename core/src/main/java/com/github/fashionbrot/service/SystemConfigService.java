@@ -15,4 +15,13 @@ public interface SystemConfigService extends IService<SystemConfigEntity> {
 
     Object pageReq(SystemConfigReq req);
 
+    void add(SystemConfigEntity entity);
+
+    void edit(SystemConfigEntity entity);
+
+    void deleteById(Long id);
+
+    Object selectById(Long id);
+
+    void undel(Long id);
 }

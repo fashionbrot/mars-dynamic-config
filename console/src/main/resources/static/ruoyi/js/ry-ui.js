@@ -722,6 +722,7 @@ var table = {
                     icon: $.modal.icon(type),
                     title: "系统提示",
                     btn: ['确认'],
+                    time: 1500,
                     btnclass: ['btn btn-primary'],
                 });
             },

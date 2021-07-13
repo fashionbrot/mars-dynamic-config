@@ -12,37 +12,37 @@
 
 
         <div class="form-group">
-            <label class="col-sm-3 control-label is-required">环境：</label>
-            <div class="col-sm-9">
+            <label class="col-sm-2 control-label is-required">环境：</label>
+            <div class="col-sm-10">
                 <select  name="envCode" id="envCode" class="form-control" >
                 </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label is-required">应用：</label>
-            <div class="col-sm-9">
+            <label class="col-sm-2 control-label is-required">应用：</label>
+            <div class="col-sm-10">
                 <select  name="appCode" id="appCode" class="form-control" >
                 </select>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label is-required">文件名：</label>
-            <div class="col-sm-9">
+            <label class="col-sm-2 control-label is-required">文件名：</label>
+            <div class="col-sm-10">
                 <input type="text"  name="fileName" id="fileName" class="form-control" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label ">文件描述：</label>
-            <div class="col-sm-9">
+            <label class="col-sm-2 control-label ">文件描述：</label>
+            <div class="col-sm-10">
                 <textarea type="text"  name="fileDesc" rows="2" id="fileDesc" class="form-control" ></textarea>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label ">文件类型：</label>
-            <div class="col-sm-9">
+            <label class="col-sm-2 control-label ">文件类型：</label>
+            <div class="col-sm-10">
                 <label class="radio-box">
                     <input type="radio" checked value="PROPERTIES"  name="fileType"  />PROPERTIES
                 </label>
@@ -55,10 +55,79 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-sm-3 control-label ">配置：</label>
-            <div class="col-sm-9">
+            <label class="col-sm-2 control-label ">配置：</label>
+            <div class="col-sm-10">
                 <div style="width: 100%;font-size: 11px;background: black;color: #ffffff;">
-                    <div>F10全屏 Esc恢复</div>
+                    <div>F10全屏 Esc恢复 Ctrl+F 查找
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        主题 <select style="background: black;color: #ffffff;" id="theme">
+                            <option>abcdef</option>
+                            <option>3024-day</option>
+                            <option>3024-night</option>
+                            <option>abbott</option>
+                            <option>ambiance</option>
+                            <option>ayu-dark</option>
+                            <option>ayu-mirage</option>
+                            <option>base16-dark</option>
+                            <option>base16-light</option>
+                            <option>bespin</option>
+                            <option>blackboard</option>
+                            <option>cobalt</option>
+                            <option>colorforth</option>
+                            <option>darcula</option>
+                            <option>dracula</option>
+                            <option>duotone-dark</option>
+                            <option>duotone-light</option>
+                            <option>eclipse</option>
+                            <option>elegant</option>
+                            <option>erlang-dark</option>
+                            <option>gruvbox-dark</option>
+                            <option>hopscotch</option>
+                            <option>icecoder</option>
+                            <option>idea</option>
+                            <option>isotope</option>
+                            <option>juejin</option>
+                            <option>lesser-dark</option>
+                            <option>liquibyte</option>
+                            <option>lucario</option>
+                            <option>material</option>
+                            <option>material-darker</option>
+                            <option>material-palenight</option>
+                            <option>material-ocean</option>
+                            <option>mbo</option>
+                            <option>mdn-like</option>
+                            <option>midnight</option>
+                            <option>monokai</option>
+                            <option>moxer</option>
+                            <option>neat</option>
+                            <option>neo</option>
+                            <option>night</option>
+                            <option>nord</option>
+                            <option>oceanic-next</option>
+                            <option>panda-syntax</option>
+                            <option>paraiso-dark</option>
+                            <option>paraiso-light</option>
+                            <option>pastel-on-dark</option>
+                            <option>railscasts</option>
+                            <option>rubyblue</option>
+                            <option>seti</option>
+                            <option>shadowfox</option>
+                            <option>solarized dark</option>
+                            <option>solarized light</option>
+                            <option>the-matrix</option>
+                            <option>tomorrow-night-bright</option>
+                            <option>tomorrow-night-eighties</option>
+                            <option>ttcn</option>
+                            <option>twilight</option>
+                            <option>vibrant-ink</option>
+                            <option>xq-dark</option>
+                            <option>xq-light</option>
+                            <option>yeti</option>
+                            <option>yonce</option>
+                            <option>zenburn</option>
+                        </select>
+                    </div>
+
                 </div>
                 <textarea type="text"  rows="2" name="tempJson"  id="tempJson" class="form-control" placeholder="" ></textarea>
             </div>
@@ -106,7 +175,7 @@
     function submitHandler() {
         if ($.validate.form()) {
             var data = $("#addForm").serializeJson();
-
+            data.tempJson = editor.getValue();
             $.operate.save(prefix + "/insert", data,null,true);
         }
     }
@@ -129,9 +198,9 @@
             "Esc": function(cm) {
                 if (cm.getOption("fullScreen")){
                     cm.setOption("fullScreen", false);
+                    cm.setSize(null,'400px'); //设置代码框大小
                 }
             }
-            ,"Alt-F":"findPersistent"
         }
     });
     // editor.setSize('600px','400px'); //设置代码框大小
@@ -149,6 +218,23 @@
             editor.setOption("mode", "text/x-textile");
         }
     });
+
+    $("#theme").on("change",function () {
+        var input = document.getElementById("theme");
+        var theme = input.options[input.selectedIndex].textContent;
+
+
+        $('head').children(':last').attr({
+            rel: "stylesheet",
+            type: 'text/css',
+            href: ctx+"ajax/libs/codemirror/theme/"+theme+".css?v="+(new Date().getTime()),
+        });
+
+        console.log(theme)
+        editor.setOption("theme", theme);
+        location.hash = "#" + theme;
+    });
+
 
 
 </script>

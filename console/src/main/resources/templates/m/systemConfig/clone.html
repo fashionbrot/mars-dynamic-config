@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('编辑')" />
+    <th:block th:include="include :: header('克隆')" />
     <th:block th:include="include :: select2-css" />
     <th:block th:include="include :: codemirror-css" />
 </head>
@@ -10,8 +10,21 @@
 
     <form class="form-horizontal m" id="editForm"  style="border: 0px solid red;">
 
-        <input type="hidden" name="id" id="id" />
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">环境：</label>
+            <div class="col-sm-10">
+                <select  name="envCode" id="envCode" class="form-control" >
+                </select>
+            </div>
+        </div>
 
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">应用：</label>
+            <div class="col-sm-10">
+                <select  name="appCode" id="appCode" class="form-control" >
+                </select>
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="col-sm-2 control-label is-required">文件名：</label>
@@ -130,6 +143,9 @@
 <script type="text/javascript">
     var prefix = ctx + "m/system/config";
 
+    common.loadEnv("envCode",null,null);
+    common.loadApp("appCode",null,null);
+
     var editor;
     var id = getQuery("id");
     $.operate.post2(prefix+"/selectById",{"id":id},function (data) {
@@ -137,11 +153,11 @@
             var row = data.data;
             if (row){
 
-                $("#fileName").val(row.fileName);
+                /*$("#fileName").val(row.fileName);
                 $("#fileDesc").val(row.fileDesc);
-                $("#id").val(row.id);
+                $("#id").val(row.id);*/
 
-                // $('input[name=fileType].'+row.fileType).iCheck('check');
+
                 $('input[name=fileType].'+row.fileType).iCheck('check');
 
                 editor = CodeMirror.fromTextArea(document.getElementById("tempJson"), {
@@ -215,7 +231,7 @@
 
 
 
-    $("#addForm").validate({
+    $("#editForm").validate({
         onkeyup: false,
         rules: {
             envCode:{
@@ -244,7 +260,7 @@
             var data = $("#editForm").serializeJson();
             data.tempJson = editor.getValue();
             // data.fileType = $('input[name=fileType].'+row.fileType).iCheck('check');
-            $.operate.save(prefix + "/updateById", data,null,true);
+            $.operate.save(prefix + "/insert", data,null,true);
         }
     }
 </script>
