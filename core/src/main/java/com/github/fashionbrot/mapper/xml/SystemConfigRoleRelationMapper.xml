@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.SystemConfigRoleRelationMapper">
+
+
+    <resultMap type="com.github.fashionbrot.entity.SystemConfigRoleRelationEntity" id="systemConfigRoleRelationMap">
+            <result property="id" column="id"/>
+            <result property="roleId" column="role_id"/>
+            <result property="systemConfigId" column="system_config_id"/>
+            <result property="permission" column="permission"/>
+            <result property="createDate" column="create_date"/>
+            <result property="updateId" column="update_id"/>
+            <result property="updateDate" column="update_date"/>
+            <result property="delFlag" column="del_flag"/>
+    </resultMap>
+
+
+    <sql id="allSql">
+        id,role_id,system_config_id,permission,create_date,update_id,update_date,del_flag
+    </sql>
+
+    <sql id="allSql2">
+        a.id,a.role_id,a.system_config_id,a.permission,a.create_date,a.update_id,a.update_date,a.del_flag
+    </sql>
+
+    
+
+</mapper>

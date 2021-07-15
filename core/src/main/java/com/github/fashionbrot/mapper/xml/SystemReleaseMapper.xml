@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.github.fashionbrot.mapper.SystemReleaseMapper">
+
+
+    <resultMap type="com.github.fashionbrot.entity.SystemReleaseEntity" id="systemReleaseMap">
+            <result property="id" column="id"/>
+            <result property="envCode" column="env_code"/>
+            <result property="appCode" column="app_code"/>
+            <result property="files" column="files"/>
+            <result property="updateDate" column="update_date"/>
+            <result property="releaseFlag" column="release_flag"/>
+    </resultMap>
+
+
+    <sql id="allSql">
+        id,env_code,app_code,files,update_date,release_flag
+    </sql>
+
+    <sql id="allSql2">
+        a.id,a.env_code,a.app_code,a.files,a.update_date,a.release_flag
+    </sql>
+
+    
+
+</mapper>

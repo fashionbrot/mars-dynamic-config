@@ -146,5 +146,14 @@ public class SystemConfigController {
     }
 
 
+    @MarsPermission(":releaseConfig")
+    @RequestMapping(value = "releaseConfig")
+    @ResponseBody
+    public RespVo releaseConfig(SystemConfigEntity req) {
+        service.releaseConfig(req);
+        return RespVo.success();
+    }
+
+
 
 }

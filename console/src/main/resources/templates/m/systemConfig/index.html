@@ -186,6 +186,33 @@
 		function clone(id) {
 			$.modal.open("克隆",prefix+"/clone?id="+id,null,null,null);
 		}
+
+		function release() {
+			var envCode = $("#envCode").val();
+			if (!envCode){
+				$("#envCode").focus();
+				$.modal.msgError("请选择要发布的环境");
+				return;
+			}
+			var appCode = $("#appCode").val();
+			if (!appCode){
+				$("#appCode").focus();
+				$.modal.msgError("请选择要发布的应用");
+				return;
+			}
+			var msg = "["+envCode+"环境]"+"["+appCode+"应用]";
+
+
+			$.modal.confirm("确定要发布"+msg,function () {
+				var url = prefix + "/releaseConfig";
+				var data = $("#searchForm").serializeJson();
+				$.operate.post2(url, data,function (r) {
+					$.operate.successCallback(r);
+					searchForm();
+				});
+			})
+
+		}
 	</script>
 </body>
 </html>

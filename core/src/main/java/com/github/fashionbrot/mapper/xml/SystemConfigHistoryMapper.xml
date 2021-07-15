@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.github.fashionbrot.mapper.SystemConfigMapper">
+<mapper namespace="com.github.fashionbrot.mapper.SystemConfigHistoryMapper">
 
 
-    <resultMap type="com.github.fashionbrot.entity.SystemConfigEntity" id="systemConfigMap">
+    <resultMap type="com.github.fashionbrot.entity.SystemConfigHistoryEntity" id="systemConfigHistoryMap">
             <result property="id" column="id"/>
             <result property="appCode" column="app_code"/>
             <result property="envCode" column="env_code"/>
@@ -29,17 +29,6 @@
         a.id,a.app_code,a.env_code,a.modifier,a.file_name,a.file_desc,a.file_type,a.json,a.temp_json,a.status,a.create_date,a.update_date,a.del_flag
     </sql>
 
-
-    <update id="updateRelease" parameterType="com.github.fashionbrot.dto.SystemConfigDto">
-        update m_system_config set json=temp_json , status=#{updateReleaseStatus},temp_json=''
-        where env_code=#{envCode} and app_code=#{appCode}
-        <if test="whereReleaseStatus != null and whereReleaseStatus.size()>0">
-            and status in
-            <foreach collection="whereReleaseStatus" item="key" open="(" close=")" separator=",">
-                #{key}
-            </foreach>
-        </if>
-    </update>
-
+    
 
 </mapper>

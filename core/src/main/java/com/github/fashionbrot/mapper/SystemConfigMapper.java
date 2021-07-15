@@ -2,6 +2,7 @@
 package com.github.fashionbrot.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.github.fashionbrot.dto.SystemConfigDto;
 import com.github.fashionbrot.entity.SystemConfigEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,7 +16,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface SystemConfigMapper extends BaseMapper<SystemConfigEntity> {
 
-    
 
-
+    int updateRelease(SystemConfigDto build);
 }

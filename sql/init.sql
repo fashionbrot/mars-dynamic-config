@@ -158,6 +158,8 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_men
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('92', '查看详情', '3', '', '59', '811', 'm:dynamic:data:log:edit', 'menuItem', '0', '1', '', '2021-04-26 07:55:33', '2021-04-26 07:56:49', '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('93', '删除记录', '3', '', '59', '812', 'm:dynamic:data:log:deleteById', 'menuItem', '0', '1', '', '2021-04-26 07:57:24', '2021-04-26 07:57:47', '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('94', '数据回滚', '3', '', '59', '813', 'm:dynamic:data:log:rollback', 'menuItem', '0', '1', '', '2021-04-26 07:57:24', '2021-04-26 07:57:47', '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('95', '系统配置管理', '1', '', '0', '900', '', 'menuItem', '0', '1', 'fa fa-database', '2021-07-15 13:55:18', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('96', '系统配置列表', '2', '/m/system/config/index', '95', '901', 'm:system:config:index', 'menuItem', '0', '1', 'fa fa-database', '2021-07-15 13:56:49', NULL, '0');
 
 
 
@@ -339,19 +341,20 @@ ALTER TABLE m_system_config ADD INDEX index_del_flag (del_flag);
 DROP TABLE IF EXISTS `m_system_config_history`;
 CREATE TABLE `m_system_config_history` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `file_id` bigint(11) unsigned NOT NULL COMMENT '文件id',
-  `file_name` varchar(32) NOT NULL COMMENT '文件名称',
-  `app_name` varchar(32) NOT NULL COMMENT '应用名称',
+  `app_code` varchar(32) NOT NULL COMMENT '应用名称',
   `env_code` varchar(32) NOT NULL COMMENT '环境code',
-  `json` text DEFAULT NULL COMMENT '配置文件内容-修改前',
-  `pre_json` text DEFAULT NULL COMMENT '配置文件内容-修改后',
-  `operation_type` int(2) unsigned NOT NULL COMMENT '操作类型',
-  `file_type` varchar(32) NOT NULL COMMENT '文件类型',
   `modifier` varchar(32) DEFAULT NULL COMMENT '修改人',
+  `file_name` varchar(32) NOT NULL COMMENT '文件名称',
+  `file_desc` varchar(255) DEFAULT NULL COMMENT '文件描述',
+  `file_type` varchar(16) NOT NULL DEFAULT 'PROPERTIES' COMMENT '文件类型 TEXT YAML  PROPERTIES',
+  `json` text DEFAULT NULL COMMENT '配置文件内容',
+  `temp_json` text DEFAULT NULL COMMENT '临时数据',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 1新增 2更新 3删除 4已发布',
   `create_date` datetime NOT NULL COMMENT '创建时间',
+  `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
   PRIMARY KEY (`id`),
-  KEY `idx_envcode_appname` (`env_code`,`app_name`) USING BTREE
+  KEY `idx_envcode_appcode` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='应用系统配置历史表';
 ALTER TABLE m_system_config_history ADD INDEX index_del_flag (del_flag);
 
@@ -360,28 +363,27 @@ ALTER TABLE m_system_config_history ADD INDEX index_del_flag (del_flag);
 DROP TABLE IF EXISTS `m_system_config_role_relation`;
 CREATE TABLE `m_system_config_role_relation` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
-  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+  `role_id` bigint(11) NOT NULL COMMENT '角色ID',
   `system_config_id` bigint(20) NOT NULL COMMENT '动态配置ID',
   `permission` tinyint(4) NOT NULL COMMENT '权限 1111 代表 增删改查 都有权限',
-  `create_id` bigint(11) NOT NULL COMMENT '创建者id',
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_id` bigint(11) DEFAULT NULL COMMENT '最近更新者id',
   `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='动态配置-角色关系表';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='应用系统配置-角色关系表';
 ALTER TABLE m_system_config_role_relation ADD INDEX index_del_flag (del_flag);
 
 
 CREATE TABLE `m_system_release` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `env_code` varchar(32) NOT NULL COMMENT '环境code',
-  `app_name` varchar(32) NOT NULL COMMENT '应用名',
+  `app_code` varchar(32) NOT NULL COMMENT '应用code',
   `files` varchar(255) DEFAULT NULL COMMENT '模板keys',
   `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
   `release_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
   PRIMARY KEY (`id`),
-  KEY `index_envCode_appName` (`env_code`,`app_name`) USING BTREE
+  KEY `index_envCode_appName` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置发布表';
 
 

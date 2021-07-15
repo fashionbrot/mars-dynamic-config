@@ -2,7 +2,10 @@ package com.github.fashionbrot.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.fashionbrot.entity.SystemConfigEntity;
+import com.github.fashionbrot.req.DataConfigReq;
+import com.github.fashionbrot.req.SystemConfigApiReq;
 import com.github.fashionbrot.req.SystemConfigReq;
+import com.github.fashionbrot.vo.ForDataVoList;
 
 /**
  * 应用系统配置表
@@ -24,4 +27,12 @@ public interface SystemConfigService extends IService<SystemConfigEntity> {
     Object selectById(Long id);
 
     void undel(Long id);
+
+    void releaseConfig(SystemConfigEntity req);
+
+    long checkForUpdate(DataConfigReq dataConfig);
+
+    ForDataVoList forDataVo(DataConfigReq dataConfig);
+
+    Long clusterSync(SystemConfigApiReq apiReq);
 }
