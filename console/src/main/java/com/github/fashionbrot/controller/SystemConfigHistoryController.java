@@ -47,9 +47,18 @@ public class SystemConfigHistoryController  {
     @Autowired
     public SystemConfigHistoryService service;
 
+    @MarsPermission(":index")
+    @GetMapping("/index")
+    public String index(){
+        return "/m/systemConfigHistory/index";
+    }
 
+    @MarsPermission(":view")
+    @GetMapping("/view")
+    public String view(){
+        return "/m/systemConfigHistory/view";
+    }
 
-    @MarsPermission(":page")
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody

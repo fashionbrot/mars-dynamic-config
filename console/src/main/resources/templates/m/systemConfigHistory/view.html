@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <th:block th:include="include :: header('查看')" />
+    <th:block th:include="include :: select2-css" />
+    <th:block th:include="include :: codemirror-css" />
+</head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+
+    <form class="form-horizontal m" id="editForm"  style="border: 0px solid red;">
+
+        <input type="hidden" name="id" id="id" />
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label is-required">文件名：</label>
+            <div class="col-sm-10">
+                <input type="text"  name="fileName" id="fileName" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label ">文件描述：</label>
+            <div class="col-sm-10">
+                <textarea type="text"  name="fileDesc" rows="2" id="fileDesc" class="form-control" ></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label ">文件类型：</label>
+            <div class="col-sm-10">
+                <label class="radio-box PROPERTIES">
+                    <input type="radio"  class="PROPERTIES"  value="PROPERTIES"  name="fileType"  />PROPERTIES
+                </label>
+                <label class="radio-box YAML">
+                    <input type="radio" value="YAML" class="YAML" name="fileType"  />YAML
+                </label>
+                <label class="radio-box TEXT">
+                    <input type="radio" value="TEXT" class="TEXT" name="fileType" />TEXT
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label ">配置：</label>
+            <div class="col-sm-10">
+                <div style="width: 100%;font-size: 11px;background: black;color: #ffffff;">
+                    <div>F10全屏 Esc恢复 Ctrl+F 查找
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        主题 <select style="background: black;color: #ffffff;" id="theme" name="theme" >
+                            <option >abcdef</option>
+                            <option>3024-day</option>
+                            <option>3024-night</option>
+                            <option>abbott</option>
+                            <option>ambiance</option>
+                            <option>ayu-dark</option>
+                            <option>ayu-mirage</option>
+                            <option>base16-dark</option>
+                            <option>base16-light</option>
+                            <option>bespin</option>
+                            <option>blackboard</option>
+                            <option>cobalt</option>
+                            <option>colorforth</option>
+                            <option>darcula</option>
+                            <option>dracula</option>
+                            <option>duotone-dark</option>
+                            <option>duotone-light</option>
+                            <option>eclipse</option>
+                            <option>elegant</option>
+                            <option>erlang-dark</option>
+                            <option>gruvbox-dark</option>
+                            <option>hopscotch</option>
+                            <option>icecoder</option>
+                            <option>idea</option>
+                            <option>isotope</option>
+                            <option>juejin</option>
+                            <option>lesser-dark</option>
+                            <option>liquibyte</option>
+                            <option>lucario</option>
+                            <option>material</option>
+                            <option>material-darker</option>
+                            <option>material-palenight</option>
+                            <option>material-ocean</option>
+                            <option>mbo</option>
+                            <option>mdn-like</option>
+                            <option>midnight</option>
+                            <option>monokai</option>
+                            <option>moxer</option>
+                            <option>neat</option>
+                            <option>neo</option>
+                            <option>night</option>
+                            <option>nord</option>
+                            <option>oceanic-next</option>
+                            <option>panda-syntax</option>
+                            <option>paraiso-dark</option>
+                            <option>paraiso-light</option>
+                            <option>pastel-on-dark</option>
+                            <option>railscasts</option>
+                            <option>rubyblue</option>
+                            <option>seti</option>
+                            <option>shadowfox</option>
+                            <option>solarized dark</option>
+                            <option>solarized light</option>
+                            <option>the-matrix</option>
+                            <option>tomorrow-night-bright</option>
+                            <option>tomorrow-night-eighties</option>
+                            <option>ttcn</option>
+                            <option>twilight</option>
+                            <option>vibrant-ink</option>
+                            <option>xq-dark</option>
+                            <option>xq-light</option>
+                            <option>yeti</option>
+                            <option>yonce</option>
+                            <option>zenburn</option>
+                        </select>
+                    </div>
+
+                </div>
+                <textarea type="text"  rows="2" name="tempJson"  id="tempJson" class="form-control" placeholder="" ></textarea>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: select2-js" />
+<th:block th:include="include :: codemirror-js" />
+
+<script type="text/javascript">
+    var prefix = ctx + "m/system/config";
+
+    var editor;
+    var id = getQuery("id");
+    $.operate.post2(prefix+"/selectById",{"id":id},function (data) {
+        if (data.code==0){
+            var row = data.data;
+            if (row){
+
+                $("#fileName").val(row.fileName);
+                $("#fileDesc").val(row.fileDesc);
+                $("#id").val(row.id);
+
+                // $('input[name=fileType].'+row.fileType).iCheck('check');
+                $('input[name=fileType].'+row.fileType).iCheck('check');
+
+                // $("#theme").find("option[text='"+row.theme+"']").attr("selected",true);
+                $("#theme option:contains('"+row.theme+"')").attr("selected", 'selected');
+
+
+                editor = CodeMirror.fromTextArea(document.getElementById("tempJson"), {
+                    lineNumbers: true,        //是否在编辑器左侧显示行号
+                    matchBrackets: true,      // 括号匹配
+                    mode: "properties",    //C++
+                    indentUnit:4,             // 缩进单位为4
+                    indentWithTabs: true,     //
+                    smartIndent: true,        //自动缩进，设置是否根据上下文自动缩进（和上一行相同的缩进量）。默认为true。
+                    styleActiveLine: true,       // 当前行背景高亮
+                    theme: 'abcdef',         // 编辑器主题
+                    height:"300px",
+                    extraKeys: {
+                        "F10": function(cm) {
+                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                            cm.setSize(null,'650px'); //设置代码框大小
+                        },
+                        "Esc": function(cm) {
+                            if (cm.getOption("fullScreen")){
+                                cm.setOption("fullScreen", false);
+                                cm.setSize(null,'400px'); //设置代码框大小
+                            }
+                        }
+                    }
+                });
+                editor.setSize(null,'400px'); //设置代码框大小
+                editor.setOption("theme", "abcdef");
+                if (row.json){
+                    editor.setValue(row.json);
+                }
+                setTheme(row.theme);
+            }
+        }
+    })
+
+
+
+
+
+    $(function () {
+        $('input[name=fileType]').on('ifChecked', function(event){
+            var value = $(this).val();
+            if (!editor){
+                return;
+            }
+            if (value == 'PROPERTIES') {
+                editor.setOption("mode", "text/x-properties");
+            }else if (value == 'YAML') {
+                editor.setOption("mode", "text/x-yaml");
+            }else if (value=="TEXT"){
+                editor.setOption("mode", "text/x-textile");
+            }
+        });
+    })
+
+    $("#theme").on("change",function () {
+        var input = document.getElementById("theme");
+        var theme = input.options[input.selectedIndex].textContent;
+
+        setTheme(theme);
+    });
+
+    function setTheme(theme){
+
+        $('head').children(':last').attr({
+            rel: "stylesheet",
+            type: 'text/css',
+            href: ctx+"ajax/libs/codemirror/theme/"+theme+".css?v="+(new Date().getTime()),
+        });
+
+        console.log(theme)
+        editor.setOption("theme", theme);
+        location.hash = "#" + theme;
+    }
+
+
+
+    $("#addForm").validate({
+        onkeyup: false,
+        rules: {
+            envCode:{
+                required: true,
+            },
+            appCode:{
+                required: true,
+            },
+            fileName:{
+                required: true,
+                minlength: 2,
+                maxlength:32
+            },
+            fileDesc:{
+                maxlength:255
+            }
+        },
+        messages: {
+
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            var data = $("#editForm").serializeJson();
+            data.tempJson = editor.getValue();
+            // data.fileType = $('input[name=fileType].'+row.fileType).iCheck('check');
+            $.operate.save(prefix + "/updateById", data,null,true);
+        }
+    }
+</script>
+</body>
+</html>

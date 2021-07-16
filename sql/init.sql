@@ -165,6 +165,7 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_men
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('99', '删除', '3', '', '96', '904', 'm:system:config:deleteById', 'menuItem', '0', '1', '', '2021-07-16 15:52:54', NULL, '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('100', '发布', '3', '', '96', '905', 'm:system:config:releaseConfig', 'menuItem', '0', '1', '', '2021-07-16 15:54:28', NULL, '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('101', '查看', '3', '', '96', '906', 'm:system:config:selectById', 'menuItem', '0', '1', '', '2021-07-16 16:10:52', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('102', '配置历史记录', '2', '/m/system/config/history/index', '95', '950', 'm:system:config:history:index', 'menuItem', '0', '1', 'fa fa-asterisk', '2021-07-16 16:21:02', NULL, '0');
 
 
 

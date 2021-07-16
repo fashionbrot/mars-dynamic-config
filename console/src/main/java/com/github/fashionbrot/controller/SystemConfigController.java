@@ -71,7 +71,6 @@ public class SystemConfigController {
 
 
 
-    @MarsPermission(":page")
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody
