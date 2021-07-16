@@ -46,8 +46,8 @@
                 <div style="width: 100%;font-size: 11px;background: black;color: #ffffff;">
                     <div>F10全屏 Esc恢复 Ctrl+F 查找
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        主题 <select style="background: black;color: #ffffff;" id="theme">
-                            <option>abcdef</option>
+                        主题 <select style="background: black;color: #ffffff;" id="theme" name="theme" >
+                            <option >abcdef</option>
                             <option>3024-day</option>
                             <option>3024-night</option>
                             <option>abbott</option>
@@ -144,6 +144,10 @@
                 // $('input[name=fileType].'+row.fileType).iCheck('check');
                 $('input[name=fileType].'+row.fileType).iCheck('check');
 
+                // $("#theme").find("option[text='"+row.theme+"']").attr("selected",true);
+                $("#theme option:contains('"+row.theme+"')").attr("selected", 'selected');
+
+
                 editor = CodeMirror.fromTextArea(document.getElementById("tempJson"), {
                     lineNumbers: true,        //是否在编辑器左侧显示行号
                     matchBrackets: true,      // 括号匹配
@@ -172,6 +176,7 @@
                 if (row.json){
                     editor.setValue(row.json);
                 }
+                setTheme(row.theme);
             }
         }
     })
@@ -200,6 +205,10 @@
         var input = document.getElementById("theme");
         var theme = input.options[input.selectedIndex].textContent;
 
+        setTheme(theme);
+    });
+
+    function setTheme(theme){
 
         $('head').children(':last').attr({
             rel: "stylesheet",
@@ -210,8 +219,7 @@
         console.log(theme)
         editor.setOption("theme", theme);
         location.hash = "#" + theme;
-    });
-
+    }
 
 
 

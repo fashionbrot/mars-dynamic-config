@@ -45,6 +45,7 @@ public class SystemReleaseEntity implements Serializable {
 	@TableField("files")
 	private String files;
 
+
 	@ApiModelProperty(value = "最近更新时间")
 	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
@@ -55,5 +56,6 @@ public class SystemReleaseEntity implements Serializable {
 	@TableField("release_flag")
 	private Integer releaseFlag;
 
-
+	@Version
+	private Integer version;
 }

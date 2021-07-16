@@ -119,6 +119,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         QueryWrapper releaseQuery = new QueryWrapper();
         releaseQuery.eq("env_code", envCode);
         releaseQuery.eq("app_code", appCode);
+        releaseQuery.eq("release_flag",0);
         SystemReleaseEntity systemReleaseEntity = systemReleaseMapper.selectOne(releaseQuery);
         if (systemReleaseEntity == null) {
             SystemReleaseEntity releaseEntity = SystemReleaseEntity.builder()
@@ -145,8 +146,15 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
     @Override
     public Object pageReq(SystemConfigReq req) {
         Page<?> page = PageHelper.startPage(req.getPageNum(), req.getPageSize());
-        Map<String, Object> map = ConvertUtil.toMap(req);
-        List<SystemConfigEntity> listByMap = baseMapper.selectByMap(map);
+        QueryWrapper q=new QueryWrapper();
+        q.select("        id,app_code,env_code,modifier,file_name,file_desc,file_type,status,create_date,update_date ");
+        if (StringUtil.isNotEmpty(req.getEnvCode())){
+            q.eq("env_code",req.getEnvCode());
+        }
+        if (StringUtil.isNotEmpty(req.getAppCode())){
+            q.eq("app_code",req.getAppCode());
+        }
+        List<SystemConfigEntity> listByMap = baseMapper.selectList(q);
 
         return PageVo.builder()
                 .rows(listByMap)
@@ -200,7 +208,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
             historyEntity.setTempJson(entity.getTempJson());
             systemConfigHistoryMapper.insert(historyEntity);
 
-            updateRelease(entity.getEnvCode(), entity.getAppCode(), entity.getFileName());
+            updateRelease(old.getEnvCode(), old.getAppCode(), old.getFileName());
         }
     }
 

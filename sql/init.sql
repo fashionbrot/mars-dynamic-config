@@ -160,6 +160,11 @@ INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_men
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('94', '数据回滚', '3', '', '59', '813', 'm:dynamic:data:log:rollback', 'menuItem', '0', '1', '', '2021-04-26 07:57:24', '2021-04-26 07:57:47', '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('95', '系统配置管理', '1', '', '0', '900', '', 'menuItem', '0', '1', 'fa fa-database', '2021-07-15 13:55:18', NULL, '0');
 INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('96', '系统配置列表', '2', '/m/system/config/index', '95', '901', 'm:system:config:index', 'menuItem', '0', '1', 'fa fa-database', '2021-07-15 13:56:49', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('97', '新增', '3', '', '96', '902', 'm:system:config:insert', 'menuItem', '0', '1', '', '2021-07-16 15:51:15', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('98', '编辑', '3', '', '96', '903', 'm:system:config:selectById', 'menuItem', '0', '1', '', '2021-07-16 15:51:56', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('99', '删除', '3', '', '96', '904', 'm:system:config:deleteById', 'menuItem', '0', '1', '', '2021-07-16 15:52:54', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('100', '发布', '3', '', '96', '905', 'm:system:config:releaseConfig', 'menuItem', '0', '1', '', '2021-07-16 15:54:28', NULL, '0');
+INSERT INTO `sys_menu` (`id`, `menu_name`, `menu_level`, `menu_url`, `parent_menu_id`, `priority`, `permission`, `target`, `visible`, `is_refresh`, `icon`, `create_date`, `update_date`, `del_flag`) VALUES ('101', '查看', '3', '', '96', '906', 'm:system:config:selectById', 'menuItem', '0', '1', '', '2021-07-16 16:10:52', NULL, '0');
 
 
 
@@ -332,6 +337,7 @@ CREATE TABLE `m_system_config` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  `theme` varchar(32) default 'abcdef' COMMENT '主题',
   PRIMARY KEY (`id`),
   KEY `idx_envcode_appcode` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='应用系统配置表';
@@ -353,6 +359,7 @@ CREATE TABLE `m_system_config_history` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
   `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  `theme` varchar(32) default 'abcdef' COMMENT '主题',
   PRIMARY KEY (`id`),
   KEY `idx_envcode_appcode` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='应用系统配置历史表';
@@ -374,7 +381,7 @@ CREATE TABLE `m_system_config_role_relation` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='应用系统配置-角色关系表';
 ALTER TABLE m_system_config_role_relation ADD INDEX index_del_flag (del_flag);
 
-
+DROP TABLE IF EXISTS `m_system_release`;
 CREATE TABLE `m_system_release` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `env_code` varchar(32) NOT NULL COMMENT '环境code',
@@ -382,6 +389,7 @@ CREATE TABLE `m_system_release` (
   `files` varchar(255) DEFAULT NULL COMMENT '模板keys',
   `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
   `release_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
+  `version` bigint(11) DEFAULT '1' COMMENT 'version版本号',
   PRIMARY KEY (`id`),
   KEY `index_envCode_appName` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置发布表';
