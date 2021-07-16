@@ -44,7 +44,7 @@
             <label class="col-sm-2 control-label ">配置：</label>
             <div class="col-sm-10">
                 <div style="width: 100%;font-size: 11px;background: black;color: #ffffff;">
-                    <div>F10全屏 Esc恢复 Ctrl+F 查找
+                    <!--<div>F10全屏 Esc恢复 Ctrl+F 查找
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         主题 <select style="background: black;color: #ffffff;" id="theme" name="theme" >
                             <option >abcdef</option>
@@ -112,10 +112,13 @@
                             <option>yonce</option>
                             <option>zenburn</option>
                         </select>
-                    </div>
+                    </div>-->
 
                 </div>
-                <textarea type="text"  rows="2" name="tempJson"  id="tempJson" class="form-control" placeholder="" ></textarea>
+                <div id="diffId">
+
+                </div>
+                <!--<textarea type="text"  rows="2" name="tempJson"  id="tempJson" class="form-control" placeholder="" ></textarea>-->
             </div>
         </div>
 
@@ -129,6 +132,7 @@
 
 <script type="text/javascript">
     var prefix = ctx + "m/system/config";
+    var value, orig1, orig2, dv, panes = 2, highlight = true, connect = "align", collapse = false;
 
     var editor;
     var id = getQuery("id");
@@ -147,8 +151,10 @@
                 // $("#theme").find("option[text='"+row.theme+"']").attr("selected",true);
                 $("#theme option:contains('"+row.theme+"')").attr("selected", 'selected');
 
+                initUI("diffId",row.json,row.tempJson,getMode(row.fileType),row.theme);
 
-                editor = CodeMirror.fromTextArea(document.getElementById("tempJson"), {
+
+                /*editor = CodeMirror.fromTextArea(document.getElementById("tempJson"), {
                     lineNumbers: true,        //是否在编辑器左侧显示行号
                     matchBrackets: true,      // 括号匹配
                     mode: "properties",    //C++
@@ -175,13 +181,47 @@
                 editor.setOption("theme", "abcdef");
                 if (row.json){
                     editor.setValue(row.json);
-                }
-                setTheme(row.theme);
+                }*/
+                 // setTheme(row.theme);
             }
         }
     })
 
 
+
+
+    function initUI(id,value,orig2,mode,theme) {
+        if (value == null) return;
+        var target = document.getElementById(id);
+        target.innerHTML = "";
+        dv = CodeMirror.MergeView(target, {
+            value: value,
+            origLeft: panes == 3 ? orig1 : null,
+            orig: orig2,
+            lineNumbers: true,
+            mode: mode,
+            theme:theme,
+            highlightDifferences: highlight,
+            connect: connect,
+            collapseIdentical: collapse,
+            indentUnit:4,             // 缩进单位为4
+            indentWithTabs: true,     //
+            smartIndent: true,        //自动缩进，设置是否根据上下文自动缩进（和上一行相同的缩进量）。默认为true。
+            styleActiveLine: true,       // 当前行背景高亮
+            /*extraKeys: {
+                "F10": function(cm) {
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    cm.setSize(null,'650px'); //设置代码框大小
+                },
+                "Esc": function(cm) {
+                    if (cm.getOption("fullScreen")){
+                        cm.setOption("fullScreen", false);
+                        cm.setSize(null,'400px'); //设置代码框大小
+                    }
+                }
+            }*/
+        });
+    }
 
 
 
@@ -200,6 +240,15 @@
             }
         });
     })
+    function getMode( fileType){
+        if (fileType == 'PROPERTIES') {
+            return "text/x-properties";
+        }else if (fileType == 'YAML') {
+            return "text/x-yaml";
+        }else if (fileType=="TEXT"){
+            return  "text/x-textile";
+        }
+    }
 
     $("#theme").on("change",function () {
         var input = document.getElementById("theme");
@@ -217,7 +266,7 @@
         });
 
         console.log(theme)
-        editor.setOption("theme", theme);
+        dv.setOption("theme", theme);
         location.hash = "#" + theme;
     }
 
