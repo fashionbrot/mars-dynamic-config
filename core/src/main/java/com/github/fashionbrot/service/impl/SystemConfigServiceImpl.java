@@ -12,10 +12,7 @@ import com.github.fashionbrot.entity.SystemReleaseEntity;
 import com.github.fashionbrot.enums.RespEnum;
 import com.github.fashionbrot.enums.SystemRoleEnum;
 import com.github.fashionbrot.exception.MarsException;
-import com.github.fashionbrot.mapper.SystemConfigHistoryMapper;
-import com.github.fashionbrot.mapper.SystemConfigMapper;
-import com.github.fashionbrot.mapper.SystemConfigRoleRelationMapper;
-import com.github.fashionbrot.mapper.SystemReleaseMapper;
+import com.github.fashionbrot.mapper.*;
 import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.DataConfigReq;
 import com.github.fashionbrot.req.SystemConfigApiReq;
@@ -69,6 +66,8 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
     private SystemReleaseMapper systemReleaseMapper;
     @Autowired
     private SystemConfigCacheService systemConfigCacheService;
+    @Autowired
+    private SequenceMapper sequenceMapper;
 
     @Autowired
     private Environment environment;
@@ -119,27 +118,18 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         QueryWrapper releaseQuery = new QueryWrapper();
         releaseQuery.eq("env_code", envCode);
         releaseQuery.eq("app_code", appCode);
+        releaseQuery.eq("file_name",fileName);
         releaseQuery.eq("release_flag",0);
+
         SystemReleaseEntity systemReleaseEntity = systemReleaseMapper.selectOne(releaseQuery);
         if (systemReleaseEntity == null) {
             SystemReleaseEntity releaseEntity = SystemReleaseEntity.builder()
                     .envCode(envCode)
                     .appCode(appCode)
                     .releaseFlag(0)
-                    .files(fileName)
+                    .fileName(fileName)
                     .build();
             systemReleaseMapper.insert(releaseEntity);
-        } else {
-            String files = fileName;
-            if (StringUtil.isNotEmpty(systemReleaseEntity.getFiles())) {
-                files = systemReleaseEntity.getFiles() + "," + files;
-                List<String> keys = Arrays.stream(files.split(",")).distinct().collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(keys)) {
-                    files = String.join(",", keys);
-                }
-            }
-            systemReleaseEntity.setFiles(files);
-            systemReleaseMapper.updateById(systemReleaseEntity);
         }
     }
 
@@ -260,6 +250,8 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void releaseConfig(SystemConfigEntity req) {
+
+
 
         QueryWrapper q = new QueryWrapper<SystemReleaseEntity>()
                 .eq("env_code", req.getEnvCode())
@@ -423,12 +415,12 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         } else {
             release = systemReleaseMapper.selectById(req.getVersion());
             if (release != null) {
-                List<String> stringStream = Arrays.stream(release.getFiles().split(",")).collect(Collectors.toList());
+                /*List<String> stringStream = Arrays.stream(release.getFiles().split(",")).collect(Collectors.toList());
                 keyList = stringStream.stream().filter(k -> !k.endsWith(SYSTEM_CONFIG_DEL)).collect(Collectors.toList());
                 delKeyList = stringStream.stream().filter(k -> k.endsWith(SYSTEM_CONFIG_DEL)).map(k -> k.replace(SYSTEM_CONFIG_DEL, "")).collect(Collectors.toList());
                 if (CollectionUtil.isNotEmpty(keyList)) {
                     q.in("file_name", keyList);
-                }
+                }*/
             }
 
             List<SystemConfigEntity> list = null;

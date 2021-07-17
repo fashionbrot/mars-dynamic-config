@@ -382,18 +382,36 @@ CREATE TABLE `m_system_config_role_relation` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='应用系统配置-角色关系表';
 ALTER TABLE m_system_config_role_relation ADD INDEX index_del_flag (del_flag);
 
+
 DROP TABLE IF EXISTS `m_system_release`;
 CREATE TABLE `m_system_release` (
   `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增id',
   `env_code` varchar(32) NOT NULL COMMENT '环境code',
   `app_code` varchar(32) NOT NULL COMMENT '应用code',
-  `files` varchar(255) DEFAULT NULL COMMENT '模板keys',
+  `file_name` varchar(32) DEFAULT NULL COMMENT '文件名',
   `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
   `release_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
   `version` bigint(11) DEFAULT '1' COMMENT 'version版本号',
   PRIMARY KEY (`id`),
-  KEY `index_envCode_appName` (`env_code`,`app_code`) USING BTREE
+  KEY `index` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置发布表';
+
+
+DROP TABLE IF EXISTS `m_sequence`;
+CREATE TABLE `m_sequence` (
+    `s_name`  varchar(32) NOT NULL COMMENT '序列名称' ,
+    `number`  bigint(20) NOT NULL DEFAULT 0 COMMENT '当前值' ,
+    PRIMARY KEY (`s_name`)
+)ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='自增表';
+INSERT INTO `m_sequence` (`s_name`, `number`) VALUES ('system_config', '0');
+DELIMITER//
+CREATE FUNCTION m_next_val(s_name VARCHAR(8))
+RETURNS BIGINT
+BEGIN
+    UPDATE m_sequence t, (SELECT @current_val:=`number` FROM m_sequence t2 WHERE t2.s_name=s_name) t3 SET t.number = t.number + 1 WHERE t.s_name =s_name AND @current_val=t.number;
+    RETURN @current_val+1;
+END//
+DELIMITER ;
 
 
 

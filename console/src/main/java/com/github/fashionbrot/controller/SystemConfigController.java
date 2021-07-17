@@ -2,6 +2,7 @@ package com.github.fashionbrot.controller;
 
 import com.github.fashionbrot.annotation.MarsPermission;
 import com.github.fashionbrot.entity.SystemConfigEntity;
+import com.github.fashionbrot.mapper.SequenceMapper;
 import com.github.fashionbrot.req.SystemConfigReq;
 import com.github.fashionbrot.service.SystemConfigService;
 import com.github.fashionbrot.vo.RespVo;
@@ -135,11 +136,15 @@ public class SystemConfigController {
     }
 
 
+    @Autowired
+    private SequenceMapper sequenceMapper;
 
     @MarsPermission(":releaseConfig")
     @RequestMapping(value = "releaseConfig")
     @ResponseBody
     public RespVo releaseConfig(SystemConfigEntity req) {
+        sequenceMapper.nextValue("system");
+
         service.releaseConfig(req);
         return RespVo.success();
     }

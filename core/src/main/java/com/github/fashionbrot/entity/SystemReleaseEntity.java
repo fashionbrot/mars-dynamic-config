@@ -41,9 +41,9 @@ public class SystemReleaseEntity implements Serializable {
 	@TableField("app_code")
 	private String appCode;
 
-	@ApiModelProperty(value = "模板keys")
-	@TableField("files")
-	private String files;
+	@ApiModelProperty(value = "文件名")
+	@TableField("file_name")
+	private String fileName;
 
 
 	@ApiModelProperty(value = "最近更新时间")
