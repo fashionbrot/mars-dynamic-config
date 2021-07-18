@@ -14,4 +14,6 @@ public interface SequenceMapper extends BaseMapper<SequenceEntity> {
     @Select("select m_next_val(#{s_name})")
     Long nextValue(@Param("s_name") String name);
 
+    @Select("select number from m_sequence where s_name=#{name} ")
+    Long selectNextValue(@Param("name") String name);
 }

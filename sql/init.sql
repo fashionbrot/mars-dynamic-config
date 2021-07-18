@@ -391,7 +391,7 @@ CREATE TABLE `m_system_release` (
   `file_name` varchar(32) DEFAULT NULL COMMENT '文件名',
   `update_date` datetime DEFAULT NULL COMMENT '最近更新时间',
   `release_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志位 1删除 0未删除',
-  `version` bigint(11) DEFAULT '1' COMMENT 'version版本号',
+  `version` bigint(20) NOT NULL COMMENT 'version版本号',
   PRIMARY KEY (`id`),
   KEY `index` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置发布表';

@@ -50,6 +50,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     private SysRoleMapper sysRoleMapper;
     @Autowired
     private UserLoginService userLoginService;
+    private String cookieName= "mdc";
 
     @Override
     public Object pageReq(SysUserReq req) {
@@ -90,7 +91,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
     }
 
     @Override
-    public Object login(String account, String password) {
+    public Object login(String account, String password,boolean rememberMe) {
 
         SysUserEntity userInfo = baseMapper.selectOne(new QueryWrapper<SysUserEntity>().eq("account", account));
         if (userInfo == null) {
@@ -123,6 +124,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUserEntity
                 .roleId(roleId)
                 .build();
         userLoginService.setRequest(loginModel);
+        /*if (rememberMe){
+            CookieUtil.setCookie(response,cookieName+"rememberMe","true",30);
+            CookieUtil.setCookie(response,cookieName+"name",account,30);
+            CookieUtil.setCookie(response,cookieName+"pwd",password,30);
+        }else{
+            CookieUtil.setCookie(response,cookieName+"rememberMe","");
+            CookieUtil.setCookie(response,cookieName+"name","");
+            CookieUtil.setCookie(response,cookieName+"pwd","");
+        }*/
 
         CaffeineCacheUtil.clear(userInfo.getId());
 

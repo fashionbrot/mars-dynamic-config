@@ -15,4 +15,5 @@ public interface SystemConfigHistoryService  extends IService<SystemConfigHistor
 
     Object pageReq(SystemConfigHistoryReq req);
 
+    void rollback(Long id);
 }

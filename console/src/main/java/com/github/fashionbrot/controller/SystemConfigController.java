@@ -143,8 +143,8 @@ public class SystemConfigController {
     @RequestMapping(value = "releaseConfig")
     @ResponseBody
     public RespVo releaseConfig(SystemConfigEntity req) {
-        sequenceMapper.nextValue("system");
-
+        Long nextValue = sequenceMapper.nextValue("system");
+        req.setNextValue(nextValue);
         service.releaseConfig(req);
         return RespVo.success();
     }

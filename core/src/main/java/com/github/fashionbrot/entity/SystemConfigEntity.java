@@ -64,7 +64,7 @@ public class SystemConfigEntity implements Serializable {
 	@TableField("temp_json")
 	private String tempJson;
 
-	@ApiModelProperty(value = "状态 1新增 2更新 3删除 4已发布")
+	@ApiModelProperty(value = "状态 1新增 2更新 3删除 4已发布 5回滚")
 	@TableField("status")
 	private Integer status;
 
@@ -88,4 +88,6 @@ public class SystemConfigEntity implements Serializable {
 	@ApiModelProperty(value = "主题")
 	private String theme;
 
+	@TableField(exist = false)
+	private Long nextValue;
 }

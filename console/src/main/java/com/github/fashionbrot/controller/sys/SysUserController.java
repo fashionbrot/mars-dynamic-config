@@ -87,8 +87,8 @@ public class SysUserController {
     @MarsLog
     @RequestMapping("/doLogin")
     @ResponseBody
-    public RespVo login(String account,String password) {
-        return RespVo.success(service.login(account, password));
+    public RespVo login(String account,String password,boolean rememberMe) {
+        return RespVo.success(service.login(account, password,rememberMe));
     }
 
 

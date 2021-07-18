@@ -56,6 +56,5 @@ public class SystemReleaseEntity implements Serializable {
 	@TableField("release_flag")
 	private Integer releaseFlag;
 
-	@Version
-	private Integer version;
+	private Long version;
 }
