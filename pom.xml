@@ -13,6 +13,8 @@
         <module>common</module>
         <module>console</module>
         <module>demo</module>
+        <module>data-dynamic-config</module>
+        <module>data-dynamic-springboot-starter</module>
     </modules>
 
     <properties>
