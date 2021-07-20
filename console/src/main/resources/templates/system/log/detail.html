@@ -5,32 +5,37 @@
 	<th:block th:include="include :: jsonview-css" />
 </head>
 <body class="white-bg">
-	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
 	<form class="form-horizontal m-t" id="signupForm">
 
 		<div class="form-group">
 			<label class="col-sm-2 control-label">操作者：</label>
-			<div class="form-control-static" th:text="${operLog.createName}">
+			<div  class="col-sm-10" >
+				<p class="form-control-static" th:text="${operLog.createName}"></p>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">请求描述：</label>
-			<div class="form-control-static" th:text="${operLog.requestDesc}">
+			<div  class="col-sm-10" >
+				<p class="form-control-static" th:text="${operLog.requestDesc}"></p>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">请求地址：</label>
-			<div class="form-control-static" th:text="${operLog.requestUrl}">
+			<div  class="col-sm-10" >
+				<p class="form-control-static" th:text="${operLog.requestUrl}" ></p>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">请求方式：</label>
-			<div class="form-control-static" th:text="${operLog.methodType==1?'post':'get'}">
+			<div  class="col-sm-10" >
+				<p class="form-control-static" th:text="${operLog.methodType==1?'post':'get'}" ></p>
 			</div>
 		</div>
 		<div class="form-group">
 			<label class="col-sm-2 control-label">请求ip：</label>
-			<div class="form-control-static" th:text="${operLog.requestIp}">
+			<div  class="col-sm-10" >
+				<p class="form-control-static" th:text="${operLog.requestIp}" ></p>
 			</div>
 		</div>
 		<!--div class="form-group">
@@ -40,7 +45,10 @@
 		</div>-->
 		<div class="form-group">
 			<label class="col-sm-2 control-label">请求参数：</label>
-			<div class="form-control-static"><pre id="operParam"></pre></div>
+			<div class="col-sm-10">
+
+				<pre id="operParam"></pre>
+			</div>
 		</div>
 		<!--<div class="form-group">
 			<label class="col-sm-2 control-label">返回参数：</label>
@@ -52,27 +60,34 @@
 			</div>
 		</div>-->
 		<div class="form-group" >
+			<!--<label class="col-sm-2 control-label">异常信息：</label>
+			<div class="form-control-static" style="border: 1px solid black;" ><div id="exception"></div></div>-->
+
 			<label class="col-sm-2 control-label">异常信息：</label>
-			<div class="form-control-static" ><pre id="exception"></pre></div>
+			<div class="col-sm-10">
+				<p  style="border: 1px solid black;word-break: break-word;background-color: #f5f5f5;border: 1px solid #ccc;border-radius: 4px;" id="exception"
+					th:text="${operLog.exception}"
+				></p>
+			</div>
 		</div>
 	</form>
-    </div>
-    <th:block th:include="include :: footer" />
-    <th:block th:include="include :: jsonview-js" />
-    <script th:inline="javascript">
-	    $(function() {
-	    	var operParam = [[${operLog.requestParam}]];
-	    	if ($.common.isNotEmpty(operParam) && operParam.length < 2000) {
-	    		$("#operParam").JSONView(operParam);
-	    	} else {
-	    		$("#operParam").text(operParam);
-	    	}
-			var exception = [[${operLog.exception}]];
-			if ($.common.isNotEmpty(exception) && exception.length < 2000) {
-				$("#exception").text(exception);
-			}
+</div>
+<th:block th:include="include :: footer" />
+<th:block th:include="include :: jsonview-js" />
+<script th:inline="javascript">
+	$(function() {
+		var operParam = [[${operLog.requestParam}]];
+		if ($.common.isNotEmpty(operParam) && operParam.length < 2000) {
+			$("#operParam").JSONView(operParam);
+		} else {
+			$("#operParam").text(operParam);
+		}
+		/*var exception = [[${operLog.exception}]];
+        if ($.common.isNotEmpty(exception) && exception.length < 2000) {
+            $("#exception").text(exception);
+        }*/
 
-	    });
-    </script>
+	});
+</script>
 </body>
 </html>

@@ -172,7 +172,7 @@ public class BackStageAspect implements DisposableBean {
             requestParams = requestParams.substring(0, 1200);
         }
         if (exceptionDesc!=null && exceptionDesc.length()>1200){
-            exceptionDesc = exceptionDesc.replaceAll("(\\r\\n|\\n|\\n\\r)"," <br/>").substring(0, 1200);
+            exceptionDesc = exceptionDesc.replaceAll("\t","").substring(0, 1200);
         }
         String requestId ="";
         try {
