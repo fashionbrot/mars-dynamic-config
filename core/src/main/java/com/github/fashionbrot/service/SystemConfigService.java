@@ -35,4 +35,6 @@ public interface SystemConfigService extends IService<SystemConfigEntity> {
     ForDataVoList forDataVo(DataConfigReq dataConfig);
 
     Long clusterSync(SystemConfigApiReq apiReq);
+
+   void updateRelease(String envCode, String appCode, String fileName);
 }

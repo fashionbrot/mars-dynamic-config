@@ -47,9 +47,18 @@ public class SystemConfigHistoryController  {
     @Autowired
     public SystemConfigHistoryService service;
 
+    @MarsPermission(":index")
+    @GetMapping("/index")
+    public String index(){
+        return "/m/systemConfigHistory/index";
+    }
 
+    @MarsPermission(":view")
+    @GetMapping("/view")
+    public String view(){
+        return "/m/systemConfigHistory/view";
+    }
 
-    @MarsPermission(":page")
     @ApiOperation("分页列表")
     @GetMapping("/page")
     @ResponseBody
@@ -105,12 +114,12 @@ public class SystemConfigHistoryController  {
     }
 
 
-    @MarsPermission(":deleteByIds")
-    @ApiOperation("批量删除")
-    @PostMapping("/deleteByIds")
+    @MarsPermission(":rollback")
+    @ApiOperation("回滚操作")
+    @PostMapping("/rollback")
     @ResponseBody
-    public RespVo delete(@RequestBody Long[] ids){
-        service.removeByIds(Arrays.asList(ids));
+    public RespVo rollback(Long id){
+        service.rollback(id);
         return RespVo.success();
     }
 

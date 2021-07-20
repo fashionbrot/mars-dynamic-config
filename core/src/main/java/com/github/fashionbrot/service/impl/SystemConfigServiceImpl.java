@@ -12,10 +12,7 @@ import com.github.fashionbrot.entity.SystemReleaseEntity;
 import com.github.fashionbrot.enums.RespEnum;
 import com.github.fashionbrot.enums.SystemRoleEnum;
 import com.github.fashionbrot.exception.MarsException;
-import com.github.fashionbrot.mapper.SystemConfigHistoryMapper;
-import com.github.fashionbrot.mapper.SystemConfigMapper;
-import com.github.fashionbrot.mapper.SystemConfigRoleRelationMapper;
-import com.github.fashionbrot.mapper.SystemReleaseMapper;
+import com.github.fashionbrot.mapper.*;
 import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.DataConfigReq;
 import com.github.fashionbrot.req.SystemConfigApiReq;
@@ -69,6 +66,8 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
     private SystemReleaseMapper systemReleaseMapper;
     @Autowired
     private SystemConfigCacheService systemConfigCacheService;
+    @Autowired
+    private SequenceMapper sequenceMapper;
 
     @Autowired
     private Environment environment;
@@ -76,6 +75,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
     private static final String CLUSTER = "mars.cluster.address";
     private static final String SYNC_RETRY = "mars.cluster.sync.retry";
     private static final String SYSTEM_CONFIG_DEL = "[del]";
+    private static final String SEQUENCE_NAME="system";
 
 
     private ExecutorService executorService = new ThreadPoolExecutor(5, 5, 0L, TimeUnit.MILLISECONDS,
@@ -97,7 +97,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
      * @param roleEnum
      */
     public void checkRole(Long systemConfigId, SystemRoleEnum roleEnum) {
-        LoginModel login = userLoginService.getLogin();
+        /*LoginModel login = userLoginService.getLogin();
         if (!login.isSuperAdmin()) {
             QueryWrapper q = new QueryWrapper();
             q.eq("role_id", login.getRoleId());
@@ -109,7 +109,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
             if ("0".equals(systemConfigRoleRelationEntity.getPermission().toString().charAt(roleEnum.getCode()))) {
                 throw new MarsException(RespEnum.NOT_PERMISSION_ERROR);
             }
-        }
+        }*/
     }
 
     /**
@@ -119,34 +119,36 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         QueryWrapper releaseQuery = new QueryWrapper();
         releaseQuery.eq("env_code", envCode);
         releaseQuery.eq("app_code", appCode);
+        releaseQuery.eq("file_name",fileName);
+        releaseQuery.eq("release_flag",0);
+
+        Long nextValue = sequenceMapper.selectNextValue(SEQUENCE_NAME);
+
         SystemReleaseEntity systemReleaseEntity = systemReleaseMapper.selectOne(releaseQuery);
         if (systemReleaseEntity == null) {
             SystemReleaseEntity releaseEntity = SystemReleaseEntity.builder()
                     .envCode(envCode)
                     .appCode(appCode)
                     .releaseFlag(0)
-                    .files(fileName)
+                    .fileName(fileName)
+                    .version(nextValue)
                     .build();
             systemReleaseMapper.insert(releaseEntity);
-        } else {
-            String files = fileName;
-            if (StringUtil.isNotEmpty(systemReleaseEntity.getFiles())) {
-                files = systemReleaseEntity.getFiles() + "," + files;
-                List<String> keys = Arrays.stream(files.split(",")).distinct().collect(Collectors.toList());
-                if (CollectionUtils.isNotEmpty(keys)) {
-                    files = String.join(",", keys);
-                }
-            }
-            systemReleaseEntity.setFiles(files);
-            systemReleaseMapper.updateById(systemReleaseEntity);
         }
     }
 
     @Override
     public Object pageReq(SystemConfigReq req) {
         Page<?> page = PageHelper.startPage(req.getPageNum(), req.getPageSize());
-        Map<String, Object> map = ConvertUtil.toMap(req);
-        List<SystemConfigEntity> listByMap = baseMapper.selectByMap(map);
+        QueryWrapper q=new QueryWrapper();
+        q.select("        id,app_code,env_code,modifier,file_name,file_desc,file_type,status,create_date,update_date ");
+        if (StringUtil.isNotEmpty(req.getEnvCode())){
+            q.eq("env_code",req.getEnvCode());
+        }
+        if (StringUtil.isNotEmpty(req.getAppCode())){
+            q.eq("app_code",req.getAppCode());
+        }
+        List<SystemConfigEntity> listByMap = baseMapper.selectList(q);
 
         return PageVo.builder()
                 .rows(listByMap)
@@ -200,7 +202,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
             historyEntity.setTempJson(entity.getTempJson());
             systemConfigHistoryMapper.insert(historyEntity);
 
-            updateRelease(entity.getEnvCode(), entity.getAppCode(), entity.getFileName());
+            updateRelease(old.getEnvCode(), old.getAppCode(), old.getFileName());
         }
     }
 
@@ -234,7 +236,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
 
         SystemConfigEntity entity = baseMapper.selectById(id);
         if (entity != null) {
-            if (entity.getStatus() == 1 || entity.getStatus() == 2) {
+            if (entity.getStatus() == 1 || entity.getStatus() == 2 || entity.getStatus()==5) {
                 entity.setJson(entity.getTempJson());
             }
         }
@@ -253,12 +255,17 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
     @Override
     public void releaseConfig(SystemConfigEntity req) {
 
+        Long nowNextValue = sequenceMapper.selectNextValue("system");
+        if (req.getNextValue().longValue()!=nowNextValue.longValue()){
+            throw new MarsException("处理繁忙，请稍后重试");
+        }
+
         QueryWrapper q = new QueryWrapper<SystemReleaseEntity>()
                 .eq("env_code", req.getEnvCode())
                 .eq("app_code", req.getAppCode())
                 .eq("release_flag", 0);
-        SystemReleaseEntity releaseEntity = systemReleaseMapper.selectOne(q);
-        if (releaseEntity == null) {
+        int  count = systemReleaseMapper.selectCount(q);
+        if (count==0) {
             throw new MarsException("没有要发布的配置");
         }
 
@@ -277,12 +284,12 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         SystemReleaseEntity updateRelease = SystemReleaseEntity.builder()
                 .releaseFlag(1)
                 .build();
-        if (systemReleaseMapper.update(updateRelease, q) != 1) {
+        if (systemReleaseMapper.update(updateRelease, q) <=0) {
             throw new MarsException(RespEnum.FAIL);
         }
 
         String key = getKey(req.getEnvCode(), req.getAppCode());
-        systemConfigCacheService.setCache(key, releaseEntity.getId());
+        systemConfigCacheService.setCache(key,nowNextValue );
 
         if (environment.containsProperty(CLUSTER)) {
             String cluster = environment.getProperty(CLUSTER);
@@ -297,8 +304,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
             }
 
             List<String> serverList = getServerList(cluster, "/api/config/cluster/sync");
-            int count = serverList.size();
-            if (count <= 0) {
+            if (serverList.size() <= 0) {
                 return;
             }
 
@@ -309,7 +315,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
             params.add("appCode");
             params.add(req.getAppCode());
             params.add("version");
-            params.add(releaseEntity.getId() + "");
+            params.add(nowNextValue + "");
 
             for (String s : serverList) {
                 executorService.submit(new Runnable() {
@@ -317,7 +323,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
                     public void run() {
                         for (int i = 0; i < retry; i++) {
                             HttpResult httpResult = HttpClientUtil.httpPost(s, null, params, "UTF-8", 2000, 2000);
-                            if (httpResult.isSuccess() && (releaseEntity.getId().longValue() + "").equals(httpResult.getResponseBody())) {
+                            if (httpResult.isSuccess() && (nowNextValue.longValue() + "").equals(httpResult.getResponseBody())) {
                                 break;
                             }
                         }
@@ -415,12 +421,12 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         } else {
             release = systemReleaseMapper.selectById(req.getVersion());
             if (release != null) {
-                List<String> stringStream = Arrays.stream(release.getFiles().split(",")).collect(Collectors.toList());
+                /*List<String> stringStream = Arrays.stream(release.getFiles().split(",")).collect(Collectors.toList());
                 keyList = stringStream.stream().filter(k -> !k.endsWith(SYSTEM_CONFIG_DEL)).collect(Collectors.toList());
                 delKeyList = stringStream.stream().filter(k -> k.endsWith(SYSTEM_CONFIG_DEL)).map(k -> k.replace(SYSTEM_CONFIG_DEL, "")).collect(Collectors.toList());
                 if (CollectionUtil.isNotEmpty(keyList)) {
                     q.in("file_name", keyList);
-                }
+                }*/
             }
 
             List<SystemConfigEntity> list = null;

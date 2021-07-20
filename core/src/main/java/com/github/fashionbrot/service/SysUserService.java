@@ -19,7 +19,7 @@ public interface SysUserService extends IService<SysUserEntity> {
 
     void updatePwd(String oldPassword, String newPassword);
 
-    Object login(String account, String password);
+    Object login(String account, String password,boolean rememberMe);
 
     void add(SysUserEntity entity);
 

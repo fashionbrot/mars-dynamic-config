@@ -85,5 +85,6 @@ public class SystemConfigHistoryEntity implements Serializable {
 	@TableField(value = "del_flag",fill = FieldFill.INSERT)
 	private Integer delFlag;
 
-
+	@ApiModelProperty(value = "主题")
+	private String theme;
 }

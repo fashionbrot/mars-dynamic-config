@@ -1039,7 +1039,7 @@ var table = {
                 $.operate.submit2(url, "get", "json", "", callback);
             },
             // 详细信息
-            detail: function(id, width, height) {
+            detail: function(id, width, height,f) {
             	table.set();
             	var _url = $.operate.detailUrl(id);
             	var options = {
@@ -1054,6 +1054,23 @@ var table = {
                     }
                 };
             	$.modal.openOptions(options);
+            },
+            detailFull: function(id, width, height,f) {
+                table.set();
+                var _url = $.operate.detailUrl(id);
+                var options = {
+                    title: table.options.modalName + "详细",
+                    width: width,
+                    height: height,
+                    url: _url,
+                    skin: 'layui-layer-gray',
+                    full:true,
+                    btn: ['关闭'],
+                    yes: function (index, layero) {
+                        layer.close(index);
+                    }
+                };
+                $.modal.openOptions(options);
             },
             // 详细访问地址
             detailUrl: function(id) {

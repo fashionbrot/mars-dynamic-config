@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <head>
-    <th:block th:include="include :: header('编辑')" />
+    <th:block th:include="include :: header('查看')" />
     <th:block th:include="include :: select2-css" />
     <th:block th:include="include :: codemirror-css" />
 </head>
@@ -43,79 +43,18 @@
         <div class="form-group">
             <label class="col-sm-2 control-label ">配置：</label>
             <div class="col-sm-10">
-                <div style="width: 100%;font-size: 11px;background: black;color: #ffffff;">
-                    <div>F10全屏 Esc恢复 Ctrl+F 查找
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-                        主题 <select style="background: black;color: #ffffff;" id="theme" name="theme" >
-                            <option >abcdef</option>
-                            <option>3024-day</option>
-                            <option>3024-night</option>
-                            <option>abbott</option>
-                            <option>ambiance</option>
-                            <option>ayu-dark</option>
-                            <option>ayu-mirage</option>
-                            <option>base16-dark</option>
-                            <option>base16-light</option>
-                            <option>bespin</option>
-                            <option>blackboard</option>
-                            <option>cobalt</option>
-                            <option>colorforth</option>
-                            <option>darcula</option>
-                            <option>dracula</option>
-                            <option>duotone-dark</option>
-                            <option>duotone-light</option>
-                            <option>eclipse</option>
-                            <option>elegant</option>
-                            <option>erlang-dark</option>
-                            <option>gruvbox-dark</option>
-                            <option>hopscotch</option>
-                            <option>icecoder</option>
-                            <option>idea</option>
-                            <option>isotope</option>
-                            <option>juejin</option>
-                            <option>lesser-dark</option>
-                            <option>liquibyte</option>
-                            <option>lucario</option>
-                            <option>material</option>
-                            <option>material-darker</option>
-                            <option>material-palenight</option>
-                            <option>material-ocean</option>
-                            <option>mbo</option>
-                            <option>mdn-like</option>
-                            <option>midnight</option>
-                            <option>monokai</option>
-                            <option>moxer</option>
-                            <option>neat</option>
-                            <option>neo</option>
-                            <option>night</option>
-                            <option>nord</option>
-                            <option>oceanic-next</option>
-                            <option>panda-syntax</option>
-                            <option>paraiso-dark</option>
-                            <option>paraiso-light</option>
-                            <option>pastel-on-dark</option>
-                            <option>railscasts</option>
-                            <option>rubyblue</option>
-                            <option>seti</option>
-                            <option>shadowfox</option>
-                            <option>solarized dark</option>
-                            <option>solarized light</option>
-                            <option>the-matrix</option>
-                            <option>tomorrow-night-bright</option>
-                            <option>tomorrow-night-eighties</option>
-                            <option>ttcn</option>
-                            <option>twilight</option>
-                            <option>vibrant-ink</option>
-                            <option>xq-dark</option>
-                            <option>xq-light</option>
-                            <option>yeti</option>
-                            <option>yonce</option>
-                            <option>zenburn</option>
-                        </select>
+                <div style="width: 100%;font-size: 11px;background: black;color: #ffffff;display: inline-flex;">
+                    <div style="width: 50%;text-align: center">
+                        修改后数据
                     </div>
+                    <div style="width: 50%;text-align: center">
+                        修改前数据
+                    </div>
+                </div>
+                <div id="diffId">
 
                 </div>
-                <textarea type="text"  rows="2" name="tempJson"  id="tempJson" class="form-control" placeholder="" ></textarea>
+                <!--<textarea type="text"  rows="2" name="tempJson"  id="tempJson" class="form-control" placeholder="" ></textarea>-->
             </div>
         </div>
 
@@ -128,7 +67,8 @@
 <th:block th:include="include :: codemirror-js" />
 
 <script type="text/javascript">
-    var prefix = ctx + "m/system/config";
+    var prefix = ctx + "m/system/config/history";
+    var value, orig1, orig2, dv, panes = 2, highlight = true, connect = "align", collapse = false;
 
     var editor;
     var id = getQuery("id");
@@ -147,8 +87,10 @@
                 // $("#theme").find("option[text='"+row.theme+"']").attr("selected",true);
                 $("#theme option:contains('"+row.theme+"')").attr("selected", 'selected');
 
+                initUI("diffId",row.tempJson,row.json,getMode(row.fileType),"");
 
-                editor = CodeMirror.fromTextArea(document.getElementById("tempJson"), {
+
+                /*editor = CodeMirror.fromTextArea(document.getElementById("tempJson"), {
                     lineNumbers: true,        //是否在编辑器左侧显示行号
                     matchBrackets: true,      // 括号匹配
                     mode: "properties",    //C++
@@ -175,13 +117,47 @@
                 editor.setOption("theme", "abcdef");
                 if (row.json){
                     editor.setValue(row.json);
-                }
-                setTheme(row.theme);
+                }*/
+                 // setTheme(row.theme);
             }
         }
     })
 
 
+
+
+    function initUI(id,value,orig2,mode,theme) {
+        if (value == null) return;
+        var target = document.getElementById(id);
+        target.innerHTML = "";
+        dv = CodeMirror.MergeView(target, {
+            value: value,
+            origLeft: panes == 3 ? orig1 : null,
+            orig: orig2,
+            lineNumbers: true,
+            mode: mode,
+            theme:'default',
+            highlightDifferences: highlight,
+            connect: connect,
+            collapseIdentical: collapse,
+            indentUnit:4,             // 缩进单位为4
+            indentWithTabs: true,     //
+            smartIndent: true,        //自动缩进，设置是否根据上下文自动缩进（和上一行相同的缩进量）。默认为true。
+            styleActiveLine: true,       // 当前行背景高亮
+            /*extraKeys: {
+                "F10": function(cm) {
+                    cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    cm.setSize(null,'650px'); //设置代码框大小
+                },
+                "Esc": function(cm) {
+                    if (cm.getOption("fullScreen")){
+                        cm.setOption("fullScreen", false);
+                        cm.setSize(null,'400px'); //设置代码框大小
+                    }
+                }
+            }*/
+        });
+    }
 
 
 
@@ -200,6 +176,15 @@
             }
         });
     })
+    function getMode( fileType){
+        if (fileType == 'PROPERTIES') {
+            return "text/x-properties";
+        }else if (fileType == 'YAML') {
+            return "text/x-yaml";
+        }else if (fileType=="TEXT"){
+            return  "text/x-textile";
+        }
+    }
 
     $("#theme").on("change",function () {
         var input = document.getElementById("theme");
@@ -217,7 +202,7 @@
         });
 
         console.log(theme)
-        editor.setOption("theme", theme);
+        dv.setOption("theme", theme);
         location.hash = "#" + theme;
     }
 
@@ -247,13 +232,12 @@
         focusCleanup: true
     });
 
+
+
     function submitHandler() {
-        if ($.validate.form()) {
-            var data = $("#editForm").serializeJson();
-            data.tempJson = editor.getValue();
-            // data.fileType = $('input[name=fileType].'+row.fileType).iCheck('check');
-            $.operate.save(prefix + "/updateById", data,null,true);
-        }
+        $.modal.confirm("确定要回滚当前数据吗？",function () {
+            $.operate.save(prefix + "/rollback",{"id":$("#id").val()},null,false);
+        })
     }
 </script>
 </body>
