@@ -48,6 +48,12 @@
             <version>3.5</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.fashionbrot</groupId>
+            <artifactId>system-dynamic-config</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
 

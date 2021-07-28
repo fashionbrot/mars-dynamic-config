@@ -7,13 +7,9 @@
 
     <artifactId>demo</artifactId>
 
-    <modules>
+    <!--<modules>
         <module>data-dynamic-demo</module>
-    </modules>
-    <parent>
-        <artifactId>mars-dynamic-config</artifactId>
-        <groupId>com.github.fashionbrot</groupId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+    </modules>-->
+
 
 </project>

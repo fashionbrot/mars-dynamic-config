@@ -421,6 +421,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         } else {
             release = systemReleaseMapper.selectById(req.getVersion());
             if (release != null) {
+                //TODO 继续
                 /*List<String> stringStream = Arrays.stream(release.getFiles().split(",")).collect(Collectors.toList());
                 keyList = stringStream.stream().filter(k -> !k.endsWith(SYSTEM_CONFIG_DEL)).collect(Collectors.toList());
                 delKeyList = stringStream.stream().filter(k -> k.endsWith(SYSTEM_CONFIG_DEL)).map(k -> k.replace(SYSTEM_CONFIG_DEL, "")).collect(Collectors.toList());
