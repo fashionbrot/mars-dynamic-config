@@ -393,7 +393,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         q.select("file_name,file_type,json");
         q.eq("env_code", req.getEnvCode());
         q.eq("app_code", req.getAppCode());
-        SystemReleaseEntity release = null;
+        List<SystemReleaseEntity> releaseList = null;
         List<String> delKeyList = null;
         List<String> keyList = null;
         //如果是客户端第一次调用,并且 本地缓存没有最新的version，则进行数据库查询
@@ -419,40 +419,41 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
                     .list(forDataVoList)
                     .build();
         } else {
-            release = systemReleaseMapper.selectById(req.getVersion());
-            if (release != null) {
-                //TODO 继续
-                /*List<String> stringStream = Arrays.stream(release.getFiles().split(",")).collect(Collectors.toList());
-                keyList = stringStream.stream().filter(k -> !k.endsWith(SYSTEM_CONFIG_DEL)).collect(Collectors.toList());
-                delKeyList = stringStream.stream().filter(k -> k.endsWith(SYSTEM_CONFIG_DEL)).map(k -> k.replace(SYSTEM_CONFIG_DEL, "")).collect(Collectors.toList());
-                if (CollectionUtil.isNotEmpty(keyList)) {
-                    q.in("file_name", keyList);
-                }*/
-            }
+            QueryWrapper rq=new QueryWrapper();
+            rq.select("file_name");
+            rq.eq("app_code",req.getAppCode());
+            rq.eq("env_code",req.getEnvCode());
+            rq.eq("version",req.getVersion());
+            releaseList = systemReleaseMapper.selectList(rq);
 
-            List<SystemConfigEntity> list = null;
-            if (CollectionUtil.isNotEmpty(keyList)) {
-                list = baseMapper.selectList(q);
-            }
             List<ForDataVo> forDataVoList = null;
-            if (CollectionUtil.isNotEmpty(list)) {
-                forDataVoList = list.stream()
-                        .filter(m -> StringUtil.isNotEmpty(m.getJson()))
-                        .map(m -> changeForData(m))
-                        .collect(Collectors.toList());
+            if (CollectionUtils.isNotEmpty(releaseList)) {
+                keyList = releaseList.stream().map(m-> m.getFileName()).filter(k -> StringUtil.isNotEmpty(k) && !k.endsWith(SYSTEM_CONFIG_DEL)).collect(Collectors.toList());
+                delKeyList = releaseList.stream().map(m-> m.getFileName()).filter(k -> k.endsWith(SYSTEM_CONFIG_DEL)).map(k -> k.replace(SYSTEM_CONFIG_DEL, "")).collect(Collectors.toList());
 
-                addDelKey(delKeyList, forDataVoList);
-            } else {
-                forDataVoList = new ArrayList<>(delKeyList.size());
-                addDelKey(delKeyList, forDataVoList);
+                forDataVoList = new ArrayList<>(keyList.size()+delKeyList.size());
+
+                if (CollectionUtils.isNotEmpty(keyList)){
+                    q.in("file_name",keyList);
+                    List<SystemConfigEntity> list =baseMapper.selectList(q);
+                    if (CollectionUtil.isNotEmpty(list)) {
+                        forDataVoList.addAll(list.stream()
+                                .filter(m -> StringUtil.isNotEmpty(m.getJson()))
+                                .map(m -> changeForData(m))
+                                .collect(Collectors.toList())) ;
+                    }
+                }
+                if (CollectionUtils.isNotEmpty(delKeyList)){
+                    addDelKey(delKeyList, forDataVoList);
+                }
             }
+
 
             Long lastVersion = systemConfigCacheService.getCache(key);
             return ForDataVoList.builder()
                     .version(lastVersion)
                     .list(forDataVoList)
                     .build();
-
         }
     }
 
@@ -469,7 +470,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
             for (int i = 0; i < delKeyList.size(); i++) {
                 forDataVoList.add(ForDataVo.builder()
                         .fileName(delKeyList.get(i))
-                        .fileType("properties")
+                        .fileType("PROPERTIES")
                         .content("")
                         .delFlag(true)
                         .build());
