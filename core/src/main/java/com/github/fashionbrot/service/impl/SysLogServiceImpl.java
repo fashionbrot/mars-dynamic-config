@@ -5,18 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.fashionbrot.dto.SysLogDTO;
 import com.github.fashionbrot.entity.SysLogEntity;
 import com.github.fashionbrot.mapper.SysLogMapper;
-import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysLogReq;
 import com.github.fashionbrot.service.SysLogService;
-import com.github.fashionbrot.util.ConvertUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 系统日志

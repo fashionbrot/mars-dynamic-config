@@ -1,4 +1,4 @@
-package com.github.fashionbrot.util;
+package com.github.fashionbrot.ribbon.util;
 
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.PropertyResolver;

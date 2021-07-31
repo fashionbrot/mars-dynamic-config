@@ -38,6 +38,9 @@
                 <label class="radio-box TEXT">
                     <input type="radio" value="TEXT" class="TEXT" name="fileType" />TEXT
                 </label>
+                <label class="radio-box">
+                    <input type="radio" value="CONF" class="CONF"  name="fileType" />CONF
+                </label>
             </div>
         </div>
         <div class="form-group">
@@ -197,6 +200,8 @@
                 editor.setOption("mode", "text/x-yaml");
             }else if (value=="TEXT"){
                 editor.setOption("mode", "text/x-textile");
+            }else if (value=="CONF"){
+                editor.setOption("mode", "text/x-properties");
             }
         });
     })

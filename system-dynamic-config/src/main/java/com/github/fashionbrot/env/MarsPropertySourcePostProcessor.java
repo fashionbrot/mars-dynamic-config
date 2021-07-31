@@ -1,16 +1,16 @@
 package com.github.fashionbrot.env;
 
+import com.github.fashionbrot.ribbon.Server;
 import com.github.fashionbrot.api.ApiConstant;
 import com.github.fashionbrot.api.ForDataVoList;
 import com.github.fashionbrot.config.GlobalMarsProperties;
 import com.github.fashionbrot.ribbon.loadbalancer.BaseLoadBalancer;
 import com.github.fashionbrot.ribbon.loadbalancer.ILoadBalancer;
-import com.github.fashionbrot.ribbon.loadbalancer.Server;
 import com.github.fashionbrot.ribbon.util.CollectionUtil;
-import com.github.fashionbrot.ribbon.util.StringUtil;
 import com.github.fashionbrot.server.ServerHttpAgent;
 import com.github.fashionbrot.util.BeanSystemUtil;
 import com.github.fashionbrot.util.ObjectUtils;
+import com.github.fashionbrot.ribbon.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;

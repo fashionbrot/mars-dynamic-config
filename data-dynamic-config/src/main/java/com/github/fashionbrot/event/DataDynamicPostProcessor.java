@@ -5,7 +5,7 @@ import com.github.fashionbrot.ribbon.loadbalancer.BaseLoadBalancer;
 import com.github.fashionbrot.ribbon.loadbalancer.ILoadBalancer;
 import com.github.fashionbrot.ribbon.loadbalancer.Server;
 import com.github.fashionbrot.ribbon.util.CollectionUtil;
-import com.github.fashionbrot.util.BeanUtil;
+import com.github.fashionbrot.ribbon.util.BeanUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;

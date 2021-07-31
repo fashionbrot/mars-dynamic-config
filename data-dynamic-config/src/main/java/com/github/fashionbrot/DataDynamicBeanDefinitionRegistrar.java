@@ -13,7 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.Assert;
 
-import static com.github.fashionbrot.util.BeanUtil.*;
+import static com.github.fashionbrot.ribbon.util.BeanUtil.*;
 import static org.springframework.core.annotation.AnnotationAttributes.fromMap;
 
 

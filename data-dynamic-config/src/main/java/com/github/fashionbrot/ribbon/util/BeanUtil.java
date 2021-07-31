@@ -1,11 +1,9 @@
-package com.github.fashionbrot.util;
+package com.github.fashionbrot.ribbon.util;
 
 import com.github.fashionbrot.DataDynamicConsts;
 import com.github.fashionbrot.GlobalDataDynamicProperties;
 import com.github.fashionbrot.event.DataDynamicPostProcessor;
 import com.github.fashionbrot.event.HttpBeanPostProcessor;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
-import com.github.fashionbrot.ribbon.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;

@@ -7,7 +7,6 @@ import com.github.fashionbrot.entity.SysMenuEntity;
 import com.github.fashionbrot.model.LoginModel;
 import com.github.fashionbrot.req.SysMenuReq;
 import com.github.fashionbrot.service.SysMenuService;
-import com.github.fashionbrot.service.SysUserService;
 import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.CaffeineCacheUtil;
 import com.github.fashionbrot.vo.RespVo;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

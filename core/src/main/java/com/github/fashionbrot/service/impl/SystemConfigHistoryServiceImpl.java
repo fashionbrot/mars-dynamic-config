@@ -11,7 +11,6 @@ import com.github.fashionbrot.mapper.SystemConfigMapper;
 import com.github.fashionbrot.req.SystemConfigHistoryReq;
 import com.github.fashionbrot.service.SystemConfigHistoryService;
 import com.github.fashionbrot.service.SystemConfigService;
-import com.github.fashionbrot.util.ConvertUtil;
 import com.github.fashionbrot.util.StringUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 应用系统配置历史表

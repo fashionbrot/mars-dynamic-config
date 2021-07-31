@@ -8,12 +8,10 @@ import com.github.fashionbrot.exception.MarsException;
 import com.github.fashionbrot.mapper.TemplateMapper;
 import com.github.fashionbrot.req.TemplateReq;
 import com.github.fashionbrot.service.TemplateService;
-import com.github.fashionbrot.util.ConvertUtil;
 import com.github.fashionbrot.vo.PageVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

@@ -1,19 +1,16 @@
 package com.github.fashionbrot.server;
 
+import com.github.fashionbrot.ribbon.Server;
 import com.github.fashionbrot.api.ApiConstant;
 import com.github.fashionbrot.api.ForDataVo;
 import com.github.fashionbrot.api.ForDataVoList;
 import com.github.fashionbrot.config.GlobalMarsProperties;
+import com.github.fashionbrot.ribbon.consts.GlobalConsts;
+import com.github.fashionbrot.ribbon.util.StringUtil;
 import com.github.fashionbrot.enums.ConfigTypeEnum;
 import com.github.fashionbrot.env.MarsPropertySource;
-import com.github.fashionbrot.ribbon.constants.GlobalConstants;
-import com.github.fashionbrot.ribbon.enums.SchemeEnum;
-import com.github.fashionbrot.ribbon.loadbalancer.Server;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
-import com.github.fashionbrot.ribbon.util.HttpClientUtil;
-import com.github.fashionbrot.ribbon.util.HttpResult;
-import com.github.fashionbrot.ribbon.util.StringUtil;
 import com.github.fashionbrot.support.SourceParseFactory;
+import com.github.fashionbrot.ribbon.util.*;
 import com.github.fashionbrot.util.FileUtil;
 import com.github.fashionbrot.util.JsonUtil;
 import com.github.fashionbrot.util.ObjectUtils;
@@ -22,17 +19,12 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author fashionbrot
- * @date 2021/07/28 22:45
- *
- */
+
 @Slf4j
 public class ServerHttpAgent {
 
@@ -157,7 +149,7 @@ public class ServerHttpAgent {
 
     public static ForDataVoList getForData(Server server, String envCode, String appCode, boolean first){
 
-        List<String> params =getParams(envCode,appCode,first);
+        String params =getParams(envCode,appCode,first);
         String url = getForDataRequestUrl(server);
         HttpResult httpResult =  HttpClientUtil.httpPost(url,null,params);
         if (httpResult.isSuccess()){
@@ -176,10 +168,10 @@ public class ServerHttpAgent {
      */
     public static boolean checkForUpdate(Server server, String env, String appCode, boolean first) {
 
-        List<String> params = getParams(env, appCode,first);
+        String params = getParams(env, appCode,first);
         String url = getCheckForUpdateRequestUrl(server);
 
-        HttpResult httpResult  = HttpClientUtil.httpPost(url,null,params, GlobalConstants.ENCODE_UTF8,2000,2000);
+        HttpResult httpResult  = HttpClientUtil.httpPost(url,null,params, GlobalConsts.ENCODE_UTF8,2000,2000);
         if (httpResult.isSuccess() && StringUtil.isNotEmpty(httpResult.getContent()) ){
             long responseVersion = ObjectUtils.parseLong(httpResult.getContent());
             if (responseVersion == -1 || responseVersion == 0){
@@ -205,43 +197,33 @@ public class ServerHttpAgent {
     }
 
     private static String getCheckForUpdateRequestUrl(Server server) {
-        String url ;
-        if (server.getScheme() == SchemeEnum.HTTP) {
-            url = String.format(ApiConstant.HTTP_CHECK_FOR_UPDATE_PATH_PARAM, server.getServerIp());
-        } else {
-            url = String.format(ApiConstant.HTTPS_CHECK_FOR_UPDATE_PATH_PARAM, server.getServerIp());
-        }
-        return url;
+        return String.format(ApiConstant.HTTP_CHECK_FOR_UPDATE_PATH_PARAM, server.getServer());
     }
 
-    private static List<String> getParams(String env, String appCode,boolean first) {
-        List<String> params =new ArrayList<>(first?8:6);
-        params.add("envCode");
-        params.add(env);
-        params.add("appCode");
-        params.add(appCode);
-        params.add("version");
+    private static String getParams(String env, String appCode,boolean first) {
+        StringBuilder sb=new StringBuilder();
+        sb.append("envCode").append("=").append(env);
+        sb.append("&");
+        sb.append("appCode").append("=").append(appCode);
+        sb.append("&");
+        sb.append("version").append("=");
+
         String key = getKey(env,appCode);
         if (lastVersion.containsKey(key)) {
-            params.add((lastVersion.get(key) +1)+"");
+            sb.append((lastVersion.get(key))+"");
         }else{
-            params.add("0");
+            sb.append("0");
         }
+
         if (first){
-            params.add("first");
-            params.add("true");
+            sb.append("&");
+            sb.append("first").append("=").append("true");
         }
-        return params;
+        return sb.toString();
     }
 
     private static String getForDataRequestUrl(Server server) {
-        String url ;
-        if (server.getScheme() == SchemeEnum.HTTP) {
-            url = String.format(ApiConstant.HTTP_LOAD_DATA, server.getServerIp());
-        } else {
-            url = String.format(ApiConstant.HTTPS_LOAD_DATA, server.getServerIp());
-        }
-        return url;
+        return String.format(ApiConstant.HTTPS_LOAD_DATA, server.getServer());
     }
 
 

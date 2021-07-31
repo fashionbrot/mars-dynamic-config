@@ -7,7 +7,6 @@ import com.github.fashionbrot.entity.SysLogEntity;
 import com.github.fashionbrot.exception.MarsException;
 import com.github.fashionbrot.mapper.SysLogMapper;
 import com.github.fashionbrot.model.LoginModel;
-import com.github.fashionbrot.service.SysUserService;
 import com.github.fashionbrot.service.UserLoginService;
 import com.github.fashionbrot.util.IpUtil;
 import com.github.fashionbrot.validated.exception.ValidatedException;

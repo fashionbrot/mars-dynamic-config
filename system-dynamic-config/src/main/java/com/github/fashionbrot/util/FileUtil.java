@@ -1,6 +1,6 @@
 package com.github.fashionbrot.util;
 
-import com.github.fashionbrot.ribbon.constants.GlobalConstants;
+import com.github.fashionbrot.ribbon.consts.GlobalConsts;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
@@ -27,7 +27,7 @@ public class FileUtil {
     }
 
     public static String getUserHome(String appCode) {
-        return USER_HOME + File.separator + GlobalConstants.NAME + File.separator + appCode + File.separator;
+        return USER_HOME + File.separator + GlobalConsts.NAME + File.separator + appCode + File.separator;
     }
 
 
@@ -84,7 +84,7 @@ public class FileUtil {
             byte[] buf = new byte[1024];
             StringBuffer sb = new StringBuffer();
             while ((randomAccessFile.read(buf)) != -1) {
-                sb.append(new String(buf, GlobalConstants.ENCODE_UTF8));
+                sb.append(new String(buf, GlobalConsts.ENCODE_UTF8));
                 buf = new byte[1024];
             }
 
@@ -137,7 +137,7 @@ public class FileUtil {
                 }
             } while (null == fileLock);
 
-            randomAccessFile.write(content.getBytes(GlobalConstants.ENCODE_UTF8));
+            randomAccessFile.write(content.getBytes(GlobalConsts.ENCODE_UTF8));
         } catch (Exception e) {
             log.error("writeFile error", e);
         } finally {

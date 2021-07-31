@@ -50,6 +50,9 @@
                     <input type="radio" value="YAML"  name="fileType"  />YAML
                 </label>
                 <label class="radio-box">
+                    <input type="radio" value="CONF"  name="fileType"  />CONF
+                </label>
+                <label class="radio-box">
                     <input type="radio" value="TEXT"  name="fileType" />TEXT
                 </label>
             </div>
@@ -216,6 +219,8 @@
             editor.setOption("mode", "text/x-yaml");
         }else if (value=="TEXT"){
             editor.setOption("mode", "text/x-textile");
+        }else if (value=="CONF"){
+            editor.setOption("mode", "text/x-properties");
         }
     });
 

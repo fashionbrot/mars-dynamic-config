@@ -1,16 +1,16 @@
 package com.github.fashionbrot.event;
 
+import com.github.fashionbrot.ribbon.Server;
 import com.github.fashionbrot.api.ApiConstant;
 import com.github.fashionbrot.api.ForDataVo;
 import com.github.fashionbrot.api.ForDataVoList;
 import com.github.fashionbrot.config.GlobalMarsProperties;
 import com.github.fashionbrot.enums.ConfigTypeEnum;
 import com.github.fashionbrot.env.MarsPropertySource;
-import com.github.fashionbrot.ribbon.loadbalancer.BaseLoadBalancer;
-import com.github.fashionbrot.ribbon.loadbalancer.ILoadBalancer;
-import com.github.fashionbrot.ribbon.loadbalancer.Server;
 import com.github.fashionbrot.ribbon.util.CollectionUtil;
 import com.github.fashionbrot.ribbon.util.StringUtil;
+import com.github.fashionbrot.ribbon.loadbalancer.BaseLoadBalancer;
+import com.github.fashionbrot.ribbon.loadbalancer.ILoadBalancer;
 import com.github.fashionbrot.server.ServerHttpAgent;
 import com.github.fashionbrot.support.SourceParseFactory;
 import com.github.fashionbrot.util.BeanSystemUtil;
@@ -94,7 +94,7 @@ public class MarsTimerHttpBeanPostProcessor implements BeanFactoryAware,Applicat
             }
         });
         ILoadBalancer loadBalancer = new BaseLoadBalancer();
-        loadBalancer.setServer(serverAddress, ApiConstant.HEALTH);
+        loadBalancer.setServer(serverAddress);
 
         executorService.scheduleWithFixedDelay(new Runnable() {
             @Override

@@ -1,9 +1,8 @@
 package com.github.fashionbrot;
 
-import com.alibaba.fastjson.JSONArray;
 import com.github.fashionbrot.ribbon.util.CollectionUtil;
 import com.github.fashionbrot.ribbon.util.StringUtil;
-import com.github.fashionbrot.util.JsonUtil;
+import com.github.fashionbrot.ribbon.util.JsonUtil;
 import com.github.fashionbrot.vo.DataDynamicVo;
 import lombok.extern.slf4j.Slf4j;
 

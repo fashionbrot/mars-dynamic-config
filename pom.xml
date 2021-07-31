@@ -16,6 +16,7 @@
         <module>data-dynamic-config</module>
         <module>data-dynamic-springboot-starter</module>
         <module>demo/data-dynamic-demo</module>
+        <module>mars-ribbon</module>
         <module>system-dynamic-config</module>
     </modules>
 
