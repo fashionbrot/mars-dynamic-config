@@ -6,8 +6,6 @@ import com.github.fashionbrot.env.MarsPropertySourcePostProcessor;
 import com.github.fashionbrot.event.MarsTimerHttpBeanPostProcessor;
 import com.github.fashionbrot.listener.MarsConfigListenerMethodProcessor;
 import com.github.fashionbrot.properties.config.MarsConfigurationPropertiesBindingPostProcessor;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
-import com.github.fashionbrot.ribbon.util.StringUtil;
 import com.github.fashionbrot.value.MarsValueAnnotationBeanPostProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanFactory;

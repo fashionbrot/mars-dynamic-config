@@ -1,7 +1,6 @@
 package com.github.fashionbrot.util;
 
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
-import com.github.fashionbrot.ribbon.util.StringUtil;
+import com.github.fashionbrot.support.YamlSourceParse;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -267,36 +266,42 @@ public class YamlParser {
 
 
     public static void main(String[] args) throws IOException {
-        String content = "spring:\n" +
-                "    http:\n" +
-                "        encoding:\n" +
-                "            charset: UTF-8\n" +
-                "            enabled: true\n" +
-                "            force: true\n" +
-                "    thymeleaf:\n" +
-                "        cache: false\n" +
-                "        enabled: true\n" +
-                "        encoding: UTF-8\n" +
-                "        mode: LEGACYHTML5\n" +
-                "        prefix: classpath:/templates\n" +
-                "        servlet:\n" +
-                "            content-type: text/html\n" +
-                "        suffix: .html\n" +
-                "    profiles:\n" +
-                "        active: test\n" +
-                "        #配置文件传输\n" +
+        String content = "server:\n" +
+                "  servlet:\n" +
+                "    encoding:\n" +
+                "      charset: UTF-8\n" +
+                "      enabled: true\n" +
+                "      force: true\n" +
+                "\n" +
+                "spring:\n" +
+                "  thymeleaf:\n" +
+                "    cache: false\n" +
+                "    enabled: true\n" +
+                "    encoding: UTF-8\n" +
+                "    mode: LEGACYHTML5\n" +
+                "    prefix: classpath:/templates/\n" +
                 "    servlet:\n" +
-                "        multipart:\n" +
-                "            enabled : true\n" +
-                "            file-size-threshold: 0\n" +
-                "            #单个数据的大小\n" +
-                "            max-file-size: 100MB\n" +
-                "            #总数据的大小\n" +
-                "            max-request-size: 100MB";
+                "      content-type: text/html\n" +
+                "    suffix: .html\n" +
+                "\n" +
+                "pagehelper:\n" +
+                "  helper-dialect: mysql\n" +
+                "  params: count=countSql\n" +
+                "  reasonable: true\n" +
+                "  support-methods-arguments: true\n" +
+                "\n" +
+                "mybatis-plus:\n" +
+                "  mapper-locations: classpath*:com/github/fashionbrot/mapper/xml/*.xml\n" +
+                "  type-aliases-package: com.github.fashionbrot.entity\n" +
+                "\n" +
+                "\n";
         String content2="abc: dsafdsfdsafads                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ";
-        Map<String, Object> a= YamlParser.yamlToFlattenedMap(content2);
-        System.out.println(a.get("abc"));
+        Map<String, Object> a= YamlParser.yamlToFlattenedMap(content);
+//        System.out.println(a.get("server.servlet.encoding.charset"));
 
+        YamlSourceParse y=new YamlSourceParse();
+        Properties parse = y.parse(content);
+        System.out.println(parse.getProperty("server.servlet.encoding.charset"));
         /*Map<String, Object> b = YamlParser.yamlToMultilayerMap(content);
         System.out.println(b);
 

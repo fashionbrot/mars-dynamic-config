@@ -3,7 +3,6 @@ package com.github.fashionbrot.util;
 
 import com.github.fashionbrot.properties.annotation.MarsIgnoreField;
 import com.github.fashionbrot.properties.annotation.MarsProperty;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.PropertyValues;

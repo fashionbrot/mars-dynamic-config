@@ -3,7 +3,7 @@ package com.github.fashionbrot.value;
 import com.github.fashionbrot.api.ApiConstant;
 import com.github.fashionbrot.env.MarsPropertySource;
 import com.github.fashionbrot.event.MarsListenerEvent;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
+import com.github.fashionbrot.util.CollectionUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.TypeConverter;

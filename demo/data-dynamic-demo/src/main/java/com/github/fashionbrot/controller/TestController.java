@@ -2,14 +2,12 @@ package com.github.fashionbrot.controller;
 
 import com.github.fashionbrot.DataDynamicCache;
 import com.github.fashionbrot.model.BannerModel;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
-import org.springframework.boot.Banner;
+import com.github.fashionbrot.util.CollectionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 public class TestController {

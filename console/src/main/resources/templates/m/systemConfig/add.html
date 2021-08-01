@@ -49,9 +49,9 @@
                 <label class="radio-box">
                     <input type="radio" value="YAML"  name="fileType"  />YAML
                 </label>
-                <label class="radio-box">
+                <!--<label class="radio-box">
                     <input type="radio" value="CONF"  name="fileType"  />CONF
-                </label>
+                </label>-->
                 <label class="radio-box">
                     <input type="radio" value="TEXT"  name="fileType" />TEXT
                 </label>
@@ -203,7 +203,26 @@
                     cm.setOption("fullScreen", false);
                     cm.setSize(null,'400px'); //设置代码框大小
                 }
+            },
+            "Tab": function(cm) {
+                if (cm.somethingSelected()) {
+                    console.log(cm)
+                    cm.indentSelection('add')
+                } else {
+                    var spaces = Array(cm.getOption("indentUnit")-2).join("  ");
+                    cm.replaceSelection(spaces)
+                }
             }
+            ,"Shift-Tab": function(cm) {              // 反向缩进
+                if (cm.somethingSelected()) {
+                    cm.indentSelection('subtract');  // 反向缩进
+                } else {
+                    // cm.indentLine(cm.getCursor().line, "subtract");  // 直接缩进整行
+                    var cursor = cm.getCursor();
+                    console.log(cursor)
+                    cm.setCursor({line: cursor.line, ch: cursor.ch - 2});  // 光标回退 indexUnit 字符
+                }
+            },
         }
     });
     // editor.setSize('600px','400px'); //设置代码框大小
@@ -216,7 +235,7 @@
         if (value == 'PROPERTIES') {
             editor.setOption("mode", "text/x-properties");
         }else if (value == 'YAML') {
-            editor.setOption("mode", "text/x-yaml");
+            editor.setOption("mode", "text/yaml");
         }else if (value=="TEXT"){
             editor.setOption("mode", "text/x-textile");
         }else if (value=="CONF"){

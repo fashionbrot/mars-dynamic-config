@@ -1,4 +1,4 @@
-package com.github.fashionbrot.ribbon.util;
+package com.github.fashionbrot.util;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;

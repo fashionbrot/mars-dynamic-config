@@ -1,13 +1,12 @@
 package com.github.fashionbrot;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.fashionbrot.ribbon.enums.SchemeEnum;
-import com.github.fashionbrot.ribbon.loadbalancer.Server;
-import com.github.fashionbrot.ribbon.util.HttpClientUtil;
-import com.github.fashionbrot.ribbon.util.HttpResult;
-import com.github.fashionbrot.ribbon.util.StringUtil;
-import com.github.fashionbrot.ribbon.util.JsonUtil;
-import com.github.fashionbrot.ribbon.util.ObjectUtil;
+import com.github.fashionbrot.ribbon.Server;
+import com.github.fashionbrot.util.HttpClientUtil;
+import com.github.fashionbrot.util.HttpResult;
+import com.github.fashionbrot.util.StringUtil;
+import com.github.fashionbrot.util.JsonUtil;
+import com.github.fashionbrot.util.ObjectUtil;
 import com.github.fashionbrot.vo.RespVo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,25 +29,19 @@ public class HttpService {
 
         if (dataConfig!=null){
 
-            List<String> params =new ArrayList<>(6);
-            params.add("envCode");
-            params.add(dataConfig.getEnvCode());
-            params.add("appCode");
-            params.add(dataConfig.getAppCode());
 
-            params.add("version");
-            params.add(version.longValue()+"");
+            StringBuilder sb=new StringBuilder();
+            sb.append("envCode").append("=").append(dataConfig.getEnvCode());
+            sb.append("&");
+            sb.append("appCode").append("=").append(dataConfig.getAppCode());
+            sb.append("&");
+            sb.append("version").append("=").append(version.longValue());
 
 
-            String url ;
-            if (server.getScheme() == SchemeEnum.HTTP) {
-                url = String.format(DataDynamicConsts.HTTP_CHECK_VERSION, server.getServerIp());
-            } else {
-                url = String.format(DataDynamicConsts.HTTPS_CHECK_VERSION, server.getServerIp());
-            }
+            String url =String.format(DataDynamicConsts.HTTPS_CHECK_VERSION, server.getServer());
 
             try {
-                HttpResult httpResult =  HttpClientUtil.httpPost(url,null,params);
+                HttpResult httpResult =  HttpClientUtil.httpPost(url,null,sb.toString());
 
                 if (httpResult!=null && httpResult.isSuccess()){
                     if (StringUtil.isNotEmpty(httpResult.getContent())) {
@@ -84,27 +77,24 @@ public class HttpService {
         if (dataConfig!=null){
 
 
-            List<String> params =new ArrayList<>(all?8:6);
-            params.add("envCode");
-            params.add(dataConfig.getEnvCode());
-            params.add("appCode");
-            params.add(dataConfig.getAppCode());
-            params.add("version");
-            params.add((version.longValue()+1)+"");//获取当前version+1 ，不能跳过已发布的配置
+
+
+            StringBuilder sb=new StringBuilder();
+            sb.append("envCode").append("=").append(dataConfig.getEnvCode());
+            sb.append("&");
+            sb.append("appCode").append("=").append(dataConfig.getAppCode());
+            sb.append("&");
+            sb.append("version").append("=").append(version.longValue());
             if (all){
-                params.add("all");
-                params.add("1");
+                sb.append("&");
+                sb.append("all=1");
             }
 
 
-            String url ;
-            if (server.getScheme() == SchemeEnum.HTTP) {
-                url = String.format(DataDynamicConsts.HTTP_LOAD_DATA, server.getServerIp());
-            } else {
-                url = String.format(DataDynamicConsts.HTTPS_LOAD_DATA, server.getServerIp());
-            }
+            String url = String.format(DataDynamicConsts.HTTPS_LOAD_DATA, server.getServer());
+
             try {
-                HttpResult httpResult =  HttpClientUtil.httpPost(url,null,params);
+                HttpResult httpResult =  HttpClientUtil.httpPost(url,null,sb.toString());
                 if (httpResult!=null && httpResult.isSuccess() && ObjectUtil.isNotEmpty(httpResult.getContent())){
                     RespVo resp = JsonUtil.parseObject(httpResult.getContent(),RespVo.class);
                     if (resp!=null && resp.isSuccess()){

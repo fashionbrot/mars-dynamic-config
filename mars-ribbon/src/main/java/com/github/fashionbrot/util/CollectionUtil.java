@@ -1,4 +1,4 @@
-package com.github.fashionbrot.ribbon.util;
+package com.github.fashionbrot.util;
 
 import java.util.Collection;
 import java.util.Map;

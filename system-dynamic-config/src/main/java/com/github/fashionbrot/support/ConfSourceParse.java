@@ -1,7 +1,7 @@
 package com.github.fashionbrot.support;
 
 import com.github.fashionbrot.enums.ConfigTypeEnum;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
+import com.github.fashionbrot.util.CollectionUtil;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigValue;
@@ -50,11 +50,11 @@ public class ConfSourceParse implements SourceParse {
 
     public static void main(String[] args) {
 
-        Config  config = ConfigFactory.parseString("lobbyserver= {\n" +
+        Config  config = ConfigFactory.parseString("[lobbyserver] \n" +
                 "  ip= ${globalIP}\n" +
                 "  port= 9900\n" +
                 "  rpc= 9901\n" +
-                "}\n");
+                "\n");
         System.out.println(config.getString("lobbyserver.port"));
 
         String test ="{test{t1={t1=2}\n t2=2}}";

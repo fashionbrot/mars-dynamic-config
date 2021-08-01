@@ -2,7 +2,7 @@ package com.github.fashionbrot.support;
 
 
 import com.github.fashionbrot.enums.ConfigTypeEnum;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
+import com.github.fashionbrot.util.CollectionUtil;
 import com.github.fashionbrot.util.YamlParser;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;

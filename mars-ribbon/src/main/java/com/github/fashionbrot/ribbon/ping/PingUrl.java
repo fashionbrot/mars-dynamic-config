@@ -2,9 +2,9 @@ package com.github.fashionbrot.ribbon.ping;
 
 
 import com.github.fashionbrot.ribbon.Server;
-import com.github.fashionbrot.ribbon.util.HttpClientUtil;
-import com.github.fashionbrot.ribbon.util.HttpResult;
-import com.github.fashionbrot.ribbon.util.StringUtil;
+import com.github.fashionbrot.util.HttpClientUtil;
+import com.github.fashionbrot.util.HttpResult;
+import com.github.fashionbrot.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 

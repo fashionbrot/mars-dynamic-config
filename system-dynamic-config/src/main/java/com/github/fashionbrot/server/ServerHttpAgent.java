@@ -6,14 +6,10 @@ import com.github.fashionbrot.api.ForDataVo;
 import com.github.fashionbrot.api.ForDataVoList;
 import com.github.fashionbrot.config.GlobalMarsProperties;
 import com.github.fashionbrot.ribbon.consts.GlobalConsts;
-import com.github.fashionbrot.ribbon.util.StringUtil;
+import com.github.fashionbrot.util.*;
 import com.github.fashionbrot.enums.ConfigTypeEnum;
 import com.github.fashionbrot.env.MarsPropertySource;
 import com.github.fashionbrot.support.SourceParseFactory;
-import com.github.fashionbrot.ribbon.util.*;
-import com.github.fashionbrot.util.FileUtil;
-import com.github.fashionbrot.util.JsonUtil;
-import com.github.fashionbrot.util.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -223,7 +219,7 @@ public class ServerHttpAgent {
     }
 
     private static String getForDataRequestUrl(Server server) {
-        return String.format(ApiConstant.HTTPS_LOAD_DATA, server.getServer());
+        return String.format(ApiConstant.HTTP_LOAD_DATA, server.getServer());
     }
 
 

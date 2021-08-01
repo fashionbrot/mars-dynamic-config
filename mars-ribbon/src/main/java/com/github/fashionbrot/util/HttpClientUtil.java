@@ -1,4 +1,4 @@
-package com.github.fashionbrot.ribbon.util;
+package com.github.fashionbrot.util;
 
 import com.github.fashionbrot.ribbon.consts.GlobalConsts;
 import lombok.extern.slf4j.Slf4j;
@@ -193,11 +193,12 @@ public class HttpClientUtil {
 
     private static String encodingParams(String paramValues, String encoding) {
         if (StringUtil.isNotEmpty(paramValues)){
-            try {
+            return paramValues;
+            /*try {
                 return URLEncoder.encode(paramValues, encoding);
             } catch (UnsupportedEncodingException e) {
                 log.error("encodingParams error param:{} encoding:{}",paramValues,encoding);
-            }
+            }*/
         }
         return "";
     }

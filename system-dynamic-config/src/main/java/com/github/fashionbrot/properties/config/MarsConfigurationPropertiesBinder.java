@@ -3,7 +3,7 @@ package com.github.fashionbrot.properties.config;
 import com.github.fashionbrot.api.ApiConstant;
 import com.github.fashionbrot.env.MarsPropertySource;
 import com.github.fashionbrot.properties.annotation.MarsConfigurationProperties;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
+import com.github.fashionbrot.util.CollectionUtil;
 import com.github.fashionbrot.util.MarsUtil;
 import com.github.fashionbrot.util.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;

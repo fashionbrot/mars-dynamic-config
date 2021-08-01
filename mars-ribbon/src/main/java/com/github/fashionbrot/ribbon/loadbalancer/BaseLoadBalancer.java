@@ -5,8 +5,8 @@ import com.github.fashionbrot.ribbon.ping.IPing;
 import com.github.fashionbrot.ribbon.ping.PingUrl;
 import com.github.fashionbrot.ribbon.rule.IRule;
 import com.github.fashionbrot.ribbon.rule.RoundRobinRule;
-import com.github.fashionbrot.ribbon.util.CollectionUtil;
-import com.github.fashionbrot.ribbon.util.StringUtil;
+import com.github.fashionbrot.util.CollectionUtil;
+import com.github.fashionbrot.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package com.github.fashionbrot.ribbon;
 
-import com.github.fashionbrot.ribbon.util.StringUtil;
+import com.github.fashionbrot.util.StringUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

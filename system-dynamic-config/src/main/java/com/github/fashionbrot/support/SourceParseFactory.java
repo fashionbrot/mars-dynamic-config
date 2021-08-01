@@ -15,11 +15,8 @@ public class SourceParseFactory {
     static {
         SourceParse propertiesSourceParse = new PropertiesSourceParse();
         parseMap.put(ConfigTypeEnum.NONE,propertiesSourceParse);
-
-        ServiceLoader<SourceParse> serviceLoader = ServiceLoader.load(SourceParse.class);
-        for(SourceParse service : serviceLoader) {
-            parseMap.put(service.sourceType(),service);
-        }
+        parseMap.put(ConfigTypeEnum.PROPERTIES,propertiesSourceParse);
+        parseMap.put(ConfigTypeEnum.YAML,new YamlSourceParse());
     }
 
     public static SourceParse getSourceParse(ConfigTypeEnum configType){
@@ -38,9 +35,11 @@ public class SourceParseFactory {
     }
 
     public static void main(String[] args) {
-        String text ="{test{t1={abc=121} \n t2=cdd}}";
+        String text ="[conf]\n" +
+                "aaa=baafda\n" +
+                "cafdafs=asfasfs";
         Properties p = toProperties(text,ConfigTypeEnum.CONF);
-        System.out.println(p.entrySet());
+        System.out.println(p.getProperty("conf.aaa"));
     }
 
 }
