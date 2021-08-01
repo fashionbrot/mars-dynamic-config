@@ -18,6 +18,6 @@ import org.apache.ibatis.annotations.Select;
 public interface SystemReleaseMapper extends BaseMapper<SystemReleaseEntity> {
 
 
-    @Select("select version from m_system_release where env_code=#{envCode} and app_code=#{appCode}  and release_flag=#{releaseFlag}  ORDER BY id desc  LIMIT 1")
+    @Select("select id from m_system_release where env_code=#{envCode} and app_code=#{appCode}  and release_flag=#{releaseFlag}  ORDER BY id desc  LIMIT 1")
     Long getTopReleaseId(@Param("envCode") String envCode, @Param("appCode") String appCode, @Param("releaseFlag")Integer releaseFlag);
 }

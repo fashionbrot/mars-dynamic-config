@@ -65,7 +65,7 @@ public class HttpBeanPostProcessor implements BeanFactoryAware, ApplicationEvent
             }
         });
         ILoadBalancer loadBalancer = new BaseLoadBalancer();
-        loadBalancer.setServer(properties.getServerAddress(), DataDynamicConsts.HEALTH);
+        loadBalancer.setServer(properties.getServerAddress());
 
 
         executorService.scheduleWithFixedDelay(new Runnable() {

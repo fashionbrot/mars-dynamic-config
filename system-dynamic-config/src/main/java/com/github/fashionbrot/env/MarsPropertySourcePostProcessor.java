@@ -65,7 +65,7 @@ public class MarsPropertySourcePostProcessor implements BeanDefinitionRegistryPo
             return;
         }
         ILoadBalancer loadBalancer = new BaseLoadBalancer();
-        loadBalancer.setServer(serverAddress, ApiConstant.HEALTH);
+        loadBalancer.setServer(serverAddress);
 
         Server server = loadBalancer.chooseServer();
         if (server == null && globalMarsProperties.isEnableLocalCache()) {

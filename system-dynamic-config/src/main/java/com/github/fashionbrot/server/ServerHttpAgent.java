@@ -206,7 +206,7 @@ public class ServerHttpAgent {
 
         String key = getKey(env,appCode);
         if (lastVersion.containsKey(key)) {
-            sb.append((lastVersion.get(key))+"");
+            sb.append(lastVersion.get(key)+1);
         }else{
             sb.append("0");
         }

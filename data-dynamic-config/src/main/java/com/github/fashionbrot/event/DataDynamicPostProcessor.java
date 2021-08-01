@@ -52,7 +52,7 @@ public  class DataDynamicPostProcessor implements BeanFactoryAware,BeanFactoryPo
 
 
         ILoadBalancer loadBalancer = new BaseLoadBalancer();
-        loadBalancer.setServer(properties.getServerAddress(), DataDynamicConsts.HEALTH);
+        loadBalancer.setServer(properties.getServerAddress());
 
         Server server = loadBalancer.chooseServer();
         if (server==null){

@@ -50,7 +50,7 @@ public @interface EnableSystemDynamicConfig {
     String serverAddress() default SERVER_ADDRESS;
 
     /**
-     * listen long poll timeout  default 50000 ms
+     * listen long poll timeout  default 30000 ms
      */
     String listenLongPollMs() default LISTEN_LONG_POLL_MS;
 

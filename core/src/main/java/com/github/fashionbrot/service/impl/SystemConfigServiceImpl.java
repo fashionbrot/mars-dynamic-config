@@ -10,6 +10,7 @@ import com.github.fashionbrot.entity.SystemConfigHistoryEntity;
 import com.github.fashionbrot.entity.SystemReleaseEntity;
 import com.github.fashionbrot.enums.RespEnum;
 import com.github.fashionbrot.enums.SystemRoleEnum;
+import com.github.fashionbrot.exception.CurdException;
 import com.github.fashionbrot.exception.MarsException;
 import com.github.fashionbrot.mapper.*;
 import com.github.fashionbrot.model.LoginModel;
@@ -116,7 +117,6 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         QueryWrapper releaseQuery = new QueryWrapper();
         releaseQuery.eq("env_code", envCode);
         releaseQuery.eq("app_code", appCode);
-        releaseQuery.eq("file_name",fileName);
         releaseQuery.eq("release_flag",0);
 
         Long nextValue = sequenceMapper.selectNextValue(SEQUENCE_NAME);
@@ -127,10 +127,23 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
                     .envCode(envCode)
                     .appCode(appCode)
                     .releaseFlag(0)
-                    .fileName(fileName)
-                    .version(nextValue)
+                    .files(fileName)
                     .build();
             systemReleaseMapper.insert(releaseEntity);
+        }else{
+
+            String oldKeys = systemReleaseEntity.getFiles();
+            if (StringUtils.isNotEmpty(oldKeys)){
+                oldKeys=oldKeys+","+fileName;
+                List<String> keys = Arrays.stream(oldKeys.split(",")).distinct().collect(Collectors.toList());
+                if (CollectionUtils.isNotEmpty(keys)){
+                    oldKeys = String.join(",",keys);
+                }
+            }else{
+                oldKeys = fileName;
+            }
+            systemReleaseEntity.setFiles(oldKeys);
+            systemReleaseMapper.updateById(systemReleaseEntity);
         }
     }
 
@@ -390,7 +403,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         q.select("file_name,file_type,json");
         q.eq("env_code", req.getEnvCode());
         q.eq("app_code", req.getAppCode());
-        List<SystemReleaseEntity> releaseList = null;
+        SystemReleaseEntity release = null;
         List<String> delKeyList = null;
         List<String> keyList = null;
         //如果是客户端第一次调用,并且 本地缓存没有最新的version，则进行数据库查询
@@ -416,34 +429,29 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
                     .list(forDataVoList)
                     .build();
         } else {
-            QueryWrapper rq=new QueryWrapper();
-            rq.select("file_name");
-            rq.eq("app_code",req.getAppCode());
-            rq.eq("env_code",req.getEnvCode());
-            rq.eq("version",req.getVersion());
-            releaseList = systemReleaseMapper.selectList(rq);
 
-            List<ForDataVo> forDataVoList = null;
-            if (CollectionUtils.isNotEmpty(releaseList)) {
-                keyList = releaseList.stream().map(m-> m.getFileName()).filter(k -> StringUtil.isNotEmpty(k) && !k.endsWith(SYSTEM_CONFIG_DEL)).collect(Collectors.toList());
-                delKeyList = releaseList.stream().map(m-> m.getFileName()).filter(k -> k.endsWith(SYSTEM_CONFIG_DEL)).map(k -> k.replace(SYSTEM_CONFIG_DEL, "")).collect(Collectors.toList());
-
-                forDataVoList = new ArrayList<>(keyList.size()+delKeyList.size());
-
-                if (CollectionUtils.isNotEmpty(keyList)){
+            release = systemReleaseMapper.selectById(req.getVersion());
+            if (release!=null){
+                List<String> stringStream =  Arrays.stream(release.getFiles().split(",")).collect(Collectors.toList());
+                keyList = stringStream.stream().filter(k-> !k.endsWith(SYSTEM_CONFIG_DEL)).collect(Collectors.toList());
+                delKeyList = stringStream.stream().filter(k-> k.endsWith(SYSTEM_CONFIG_DEL)).map(k-> k.replace(SYSTEM_CONFIG_DEL,"")).collect(Collectors.toList());
+                if (CollectionUtil.isNotEmpty(keyList)){
                     q.in("file_name",keyList);
-                    List<SystemConfigEntity> list =baseMapper.selectList(q);
-                    if (CollectionUtil.isNotEmpty(list)) {
-                        forDataVoList.addAll(list.stream()
-                                .filter(m -> StringUtil.isNotEmpty(m.getJson()))
-                                .map(m -> changeForData(m))
-                                .collect(Collectors.toList())) ;
-                    }
-                }
-                if (CollectionUtils.isNotEmpty(delKeyList)){
-                    addDelKey(delKeyList, forDataVoList);
                 }
             }
+            List<SystemConfigEntity> list = null;
+            if (CollectionUtil.isNotEmpty(keyList)) {
+                list = baseMapper.selectList(q);
+            }
+
+            List<ForDataVo>  forDataVoList = new ArrayList<>();
+            if (CollectionUtil.isNotEmpty(list)){
+                forDataVoList = list.stream()
+                        .filter(m-> StringUtil.isNotEmpty(m.getJson()))
+                        .map(m-> changeForData(m))
+                        .collect(Collectors.toList());
+            }
+            addDelKey(delKeyList, forDataVoList);
 
 
             Long lastVersion = systemConfigCacheService.getCache(key);

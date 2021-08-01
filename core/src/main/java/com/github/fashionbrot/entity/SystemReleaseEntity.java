@@ -42,8 +42,8 @@ public class SystemReleaseEntity implements Serializable {
 	private String appCode;
 
 	@ApiModelProperty(value = "文件名")
-	@TableField("file_name")
-	private String fileName;
+	@TableField("files")
+	private String files;
 
 
 	@ApiModelProperty(value = "最近更新时间")
@@ -55,6 +55,4 @@ public class SystemReleaseEntity implements Serializable {
 	@ApiModelProperty(value = "删除标志位 1删除 0未删除")
 	@TableField("release_flag")
 	private Integer releaseFlag;
-
-	private Long version;
 }
