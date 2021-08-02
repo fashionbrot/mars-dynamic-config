@@ -46,12 +46,12 @@ public class BeanSystemUtil {
                     .build();
         }else{
             globalMarsProperties = GlobalMarsProperties.builder()
-                    .appCode(getEnvValue(environment, "mars.config.app-code",""))
-                    .envCode(getEnvValue(environment, "mars.config.env-code",""))
-                    .serverAddress(getEnvValue(environment, "mars.config.server-address",""))
-                    .listenLongPollMs(StringUtil.parseLong(getEnvValue(environment, "mars.config.listen-long-poll-ms", "30000"),30000L))
-                    .enableLocalCache(StringUtil.parseBoolean(getEnvValue(environment,"mars.config.enable-local-cache","false"),false))
-                    .localCachePath(getEnvValue(environment,"mars.config.local-cache-path",""))
+                    .appCode(getEnvValue(environment, "mars.system.app-code",""))
+                    .envCode(getEnvValue(environment, "mars.system.env-code",""))
+                    .serverAddress(getEnvValue(environment, "mars.system.server-address",""))
+                    .listenLongPollMs(StringUtil.parseLong(getEnvValue(environment, "mars.system.listen-long-poll-ms", "30000"),30000L))
+                    .enableLocalCache(StringUtil.parseBoolean(getEnvValue(environment,"mars.system.enable-local-cache","false"),false))
+                    .localCachePath(getEnvValue(environment,"mars.system.local-cache-path",""))
                     .build();
         }
 

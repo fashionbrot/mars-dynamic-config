@@ -1,0 +1,50 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.github.fashionbrot.SystemDynamicConfigurationProperties",
+      "name": "mars.system",
+      "type": "com.github.fashionbrot.SystemDynamicConfigurationProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.github.fashionbrot.SystemDynamicConfigurationProperties",
+      "name": "mars.system.app-code",
+      "description": "应用Code",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.github.fashionbrot.SystemDynamicConfigurationProperties",
+      "name": "mars.system.enable-local-cache",
+      "description": "Whether to enable local caching\n @return",
+      "defaultValue":false,
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.github.fashionbrot.SystemDynamicConfigurationProperties",
+      "name": "mars.system.env-code",
+      "description": "环境code",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.github.fashionbrot.SystemDynamicConfigurationProperties",
+      "defaultValue": 30000,
+      "name": "mars.system.listen-long-poll-ms",
+      "description": "客户端轮训毫秒数",
+      "type": "java.lang.Long"
+    },
+    {
+      "sourceType": "com.github.fashionbrot.SystemDynamicConfigurationProperties",
+      "name": "mars.system.local-cache-path",
+      "description": "Local cache file path\n @return",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.github.fashionbrot.SystemDynamicConfigurationProperties",
+      "name": "mars.system.server-address",
+      "description": "服务器地址 多个逗号分隔",
+      "type": "java.lang.String"
+    }
+  ]
+}

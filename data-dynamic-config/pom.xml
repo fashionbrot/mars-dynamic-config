@@ -19,7 +19,7 @@
     </properties>
 
 
-    <url>https://github.com/fashionbrot/mars-config</url>
+    <url>https://github.com/fashionbrot/mars-dynamic-config</url>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -30,9 +30,9 @@
 
     <scm>
         <tag>master</tag>
-        <url>scm:git:https://github.com/fashionbrot/mars-config.git</url>
-        <connection>scm:git:https://github.com/fashionbrot/mars-config.git</connection>
-        <developerConnection>https://github.com/fashionbrot/mars-config</developerConnection>
+        <url>scm:git:https://github.com/fashionbrot/mars-dynamic-config.git</url>
+        <connection>scm:git:https://github.com/fashionbrot/mars-dynamic-config.git</connection>
+        <developerConnection>https://github.com/fashionbrot/mars-dynamic-config</developerConnection>
     </scm>
 
     <developers>

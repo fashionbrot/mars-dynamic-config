@@ -5,7 +5,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.github.fashionbrot</groupId>
     <artifactId>demo</artifactId>
+    <version>1.0.0</version>
 
     <!--<modules>
         <module>data-dynamic-demo</module>

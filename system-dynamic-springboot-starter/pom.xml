@@ -2,14 +2,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.github.fashionbrot</groupId>
-    <artifactId>data-dynamic-springboot-starter</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
-    <description>data-dynamic-springboot-starter 数据动态配置</description>
-    <name>data-dynamic-springboot-starter</name>
+    <artifactId>system-dynamic-springboot-starter</artifactId>
+    <version>2.0.1</version>
+    <description>system-dynamic-springboot-starter 动态配置  https://github.com/fashionbrot/mars-dynamic-config</description>
+    <name>system-dynamic-springboot-starter</name>
     <packaging>jar</packaging>
 
 
@@ -56,16 +56,9 @@
     <dependencies>
         <dependency>
             <groupId>com.github.fashionbrot</groupId>
-            <artifactId>data-dynamic-config</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>system-dynamic-config</artifactId>
+            <version>2.0.1</version>
         </dependency>
-        <!--<dependency>
-            <groupId>com.github.fashionbrot</groupId>
-            <artifactId>data-dynamic-config</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/data-dynamic-config-1.0-SNAPSHOT.jar</systemPath>
-        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -106,9 +99,7 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -122,7 +113,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -169,6 +159,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
