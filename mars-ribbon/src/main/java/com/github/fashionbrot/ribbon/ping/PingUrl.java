@@ -15,7 +15,7 @@ public class PingUrl implements IPing {
     @Override
     public boolean isAlive(Server server) {
         String url = server.getServer();
-        if (StringUtil.isEmpty(url)){
+        if (StringUtil.isEmpty(server.getPath())){
             return true;
         }
         HttpResult httpResult;

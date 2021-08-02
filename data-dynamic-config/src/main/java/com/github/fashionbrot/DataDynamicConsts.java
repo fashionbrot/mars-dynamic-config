@@ -31,15 +31,15 @@ public class DataDynamicConsts {
 
 
 
-    public static final String APP_CODE = "${mars.data.dynamic.app-code}";
+    public static final String APP_CODE = "${mars.dynamic.data.app-code}";
 
-    public static final String ENV_CODE = "${mars.data.dynamic.env-code}";
+    public static final String ENV_CODE = "${mars.dynamic.data.env-code}";
 
-    public static final String SERVER_ADDRESS = "${mars.data.dynamic.server-address}";
+    public static final String SERVER_ADDRESS = "${mars.dynamic.data.server-address}";
 
-    public static final String LOCAL_CACHE_PATH = "${mars.data.dynamic.local-cache-path}";
+    public static final String LOCAL_CACHE_PATH = "${mars.dynamic.data.local-cache-path}";
 
-    public static final String LISTEN_LONG_POLL_MS = "${mars.data.dynamic.listen-long-poll-ms}";
+    public static final String LISTEN_LONG_POLL_MS = "${mars.dynamic.data.listen-long-poll-ms}";
 
-    public static final String CLUSTER = "mars.data.dynamic.cluster";
+    public static final String CLUSTER = "${mars.dynamic.data.cluster}";
 }

@@ -29,11 +29,5 @@ public class Server {
         return "http://"+host+":"+port;
     }
 
-    public String getPath(){
-        if (StringUtil.isNotEmpty(path) && path.startsWith("/")){
-            return getServer()+path;
-        }
-        return getServer()+"/"+path;
-    }
 
 }

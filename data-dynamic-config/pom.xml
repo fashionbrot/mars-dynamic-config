@@ -6,7 +6,7 @@
 
     <groupId>com.github.fashionbrot</groupId>
     <artifactId>data-dynamic-config</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.2.0</version>
 
     <description>data-dynamic-config 数据动态配置</description>
     <name>data-dynamic-config</name>
