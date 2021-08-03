@@ -12,22 +12,22 @@ import java.lang.annotation.*;
 @Import(MarsConfigBeanDefinitionRegistrar.class)
 public @interface EnableSystemDynamicConfig {
 
-    String APP_CODE = "${mars.system.app-code}";
+    String APP_CODE = "${mars.dynamic.system.app-code}";
 
-    String ENV_CODE = "${mars.system.env-code}";
+    String ENV_CODE = "${mars.dynamic.system.env-code}";
 
-    String SERVER_ADDRESS = "${mars.system.http.server-address}";
+    String SERVER_ADDRESS = "${mars.dynamic.system.server-address}";
     /**
      * Whether to enable local caching
      */
-    String ENABLE_LOCAL_CACHE = "${mars.system.enable-local-cache}";
+    String ENABLE_LOCAL_CACHE = "${mars.dynamic.system.enable-local-cache}";
     /**
      * Local cache file path
      */
-    String LOCAL_CACHE_PATH = "${mars.system.local-cache-path}";
+    String LOCAL_CACHE_PATH = "${mars.dynamic.system.local-cache-path}";
 
 
-    String LISTEN_LONG_POLL_MS = "${mars.system.listen-long-poll-ms}";
+    String LISTEN_LONG_POLL_MS = "${mars.dynamic.system.listen-long-poll-ms}";
 
 
 
