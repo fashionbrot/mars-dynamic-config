@@ -36,8 +36,5 @@ public @interface EnableDataDynamicConfig {
     String listenLongPollMs() default DataDynamicConsts.LISTEN_LONG_POLL_MS;
 
 
-
-    String cluster() default DataDynamicConsts.CLUSTER;
-
     String localCachePath() default DataDynamicConsts.LOCAL_CACHE_PATH;
 }

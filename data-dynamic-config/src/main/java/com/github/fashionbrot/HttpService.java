@@ -38,7 +38,7 @@ public class HttpService {
             sb.append("version").append("=").append(version.longValue());
 
 
-            String url =String.format(DataDynamicConsts.HTTPS_CHECK_VERSION, server.getServer());
+            String url =String.format(DataDynamicConsts.HTTP_CHECK_VERSION, server.getServer());
 
             try {
                 HttpResult httpResult =  HttpClientUtil.httpPost(url,null,sb.toString());
@@ -91,7 +91,7 @@ public class HttpService {
             }
 
 
-            String url = String.format(DataDynamicConsts.HTTPS_LOAD_DATA, server.getServer());
+            String url = String.format(DataDynamicConsts.HTTP_LOAD_DATA, server.getServer());
 
             try {
                 HttpResult httpResult =  HttpClientUtil.httpPost(url,null,sb.toString());

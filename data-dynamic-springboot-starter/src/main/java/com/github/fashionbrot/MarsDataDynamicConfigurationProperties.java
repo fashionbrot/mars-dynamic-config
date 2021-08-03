@@ -29,11 +29,6 @@ public class MarsDataDynamicConfigurationProperties {
      */
     private Long listenLongPollMs=10000L;
 
-    /**
-     * 集群配置
-     * @return
-     */
-    private String cluster;
 
 
 
@@ -69,11 +64,5 @@ public class MarsDataDynamicConfigurationProperties {
         this.listenLongPollMs = listenLongPollMs;
     }
 
-    public String getCluster() {
-        return cluster;
-    }
 
-    public void setCluster(String cluster) {
-        this.cluster = cluster;
-    }
 }

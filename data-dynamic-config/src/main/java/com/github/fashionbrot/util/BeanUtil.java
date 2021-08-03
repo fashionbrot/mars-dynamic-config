@@ -41,11 +41,11 @@ public class BeanUtil {
                     .build();
         }else{
             globalMarsProperties = GlobalDataDynamicProperties.builder()
-                    .appCode(getEnvValue(environment, DataDynamicConsts.APP_CODE,""))
-                    .envCode(getEnvValue(environment, DataDynamicConsts.ENV_CODE,""))
-                    .serverAddress(getEnvValue(environment, DataDynamicConsts.SERVER_ADDRESS,""))
-                    .listenLongPollMs(StringUtil.parseLong(getEnvValue(environment, DataDynamicConsts.LISTEN_LONG_POLL_MS, "10000"),10000L))
-                    .localCachePath(getEnvValue(environment, DataDynamicConsts.LOCAL_CACHE_PATH,""))
+                    .appCode(getEnvValue(environment, "mars.dynamic.data.app-code",""))
+                    .envCode(getEnvValue(environment, "mars.dynamic.data.env-code",""))
+                    .serverAddress(getEnvValue(environment, "mars.dynamic.data.server-address",""))
+                    .listenLongPollMs(StringUtil.parseLong(getEnvValue(environment, "mars.dynamic.data.listen-long-poll-ms", "10000"),10000L))
+                    .localCachePath(getEnvValue(environment, "mars.dynamic.data.local-cache-path",""))
                     .build();
         }
         registerSingleton(registry, GlobalDataDynamicProperties.BEAN_NAME, globalMarsProperties);

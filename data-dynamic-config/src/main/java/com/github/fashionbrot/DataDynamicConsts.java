@@ -7,21 +7,13 @@ public class DataDynamicConsts {
 
     public static final String VERSION = "1.0.0";
 
-    public static final String HTTP = "http://";
-
-    public static final String HTTPS = "https://";
-
     public static final String CHECK_FOR_UPDATE_PATH ="/open/data/dynamic/version";
 
-    public static final String HTTP_CHECK_VERSION =HTTP+"%s"+CHECK_FOR_UPDATE_PATH;
-
-    public static final String HTTPS_CHECK_VERSION =HTTPS+"%s"+CHECK_FOR_UPDATE_PATH;
+    public static final String HTTP_CHECK_VERSION ="%s"+CHECK_FOR_UPDATE_PATH;
 
     public static final String FOR_DATA ="/open/data/dynamic/for-data";
 
-    public static final String HTTP_LOAD_DATA=HTTP+"%s"+FOR_DATA;
-
-    public static final String HTTPS_LOAD_DATA=HTTPS+"%s"+FOR_DATA;
+    public static final String HTTP_LOAD_DATA="%s"+FOR_DATA;
 
     public static final String NAME = "mars_";
 
