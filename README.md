@@ -5,7 +5,14 @@
 ##### 第一种是对 properties、yml 的动态配置修改功能,节省了我们频繁部署上线去修改 properties 的值。
 ##### 第二种是对一条或多条数据的配置系统,主要是针对数据量小的表集中通过 mars-dynamic-config配置,节省了我们创建小表带来的工作量;通过mars-dynamic-config 配置可以直接通过集成api 直接获取对应的数据，从而节省了我们的开发时间。
 
-![Image text](https://raw.githubusercontent.com/hongmaju/light7Local/master/img/productShow/20170518152848.png)
+![Image text](https://gitee.com/fashionbrot/mars-dynamic-config/blob/master/document/system-01.jpg)
+![Image text](https://gitee.com/fashionbrot/mars-dynamic-config/blob/master/document/system-02.jpg)
+
+
+![Image text](https://gitee.com/fashionbrot/mars-dynamic-config/blob/master/document/data-0.png)
+![Image text](https://gitee.com/fashionbrot/mars-dynamic-config/blob/master/document/data-0-1.png)
+![Image text](https://gitee.com/fashionbrot/mars-dynamic-config/blob/master/document/data-0-2.png)
+![Image text](https://gitee.com/fashionbrot/mars-dynamic-config/blob/master/document/data-02.png)
 
 #### 软件架构
 软件架构说明
