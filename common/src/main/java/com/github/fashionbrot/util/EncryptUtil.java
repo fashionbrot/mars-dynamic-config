@@ -27,6 +27,9 @@ public class EncryptUtil {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        if (instance==null){
+            throw new RuntimeException("instance is null");
+        }
         instance.reset();
         instance.update(salt.getBytes());
         byte[] digest = instance.digest(password.getBytes());

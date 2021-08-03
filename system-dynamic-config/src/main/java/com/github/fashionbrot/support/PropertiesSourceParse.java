@@ -35,10 +35,20 @@ public class PropertiesSourceParse implements SourceParse {
     @Override
     public Properties fileToProperties(File file) {
         Properties properties = new Properties();
+        FileInputStream fileInputStream = null;
         try {
-            properties.load(new FileInputStream(file));
+            fileInputStream = new FileInputStream(file);
+            properties.load(fileInputStream);
         } catch (IOException e) {
             log.error("fileToProperties error",e);
+        }finally {
+            if (fileInputStream!=null){
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return properties;
     }

@@ -10,6 +10,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
@@ -36,13 +37,23 @@ public class YamlSourceParse  implements SourceParse {
     public Properties fileToProperties(File file) {
         Properties properties=new Properties();
         Yaml yaml =new Yaml();
+        FileInputStream fileInputStream=null;
         try {
-            Map<String,Object> map = yaml.load(new FileInputStream(file));
+            fileInputStream = new FileInputStream(file);
+            Map<String,Object> map = yaml.load(fileInputStream);
             if (CollectionUtil.isNotEmpty(map)) {
                 properties.putAll(map);
             }
         } catch (FileNotFoundException e) {
             log.error("fileToProperties error",e);
+        }finally {
+            if (fileInputStream!=null){
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return properties;
     }
