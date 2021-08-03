@@ -24,10 +24,12 @@ public  class DataDynamicCache {
     private static Map<String,List> cache = new ConcurrentHashMap<>();
 
 
+
     /**
-     *  根据 模板获取 模板列表
+     * 根据 模板 获取模板列表
      * @param templateKey
-     * @return
+     * @param <E>
+     * @return   List<E>
      */
     public static  <E> List<E> getTemplateObject(String templateKey){
         if (cache.containsKey(templateKey)){
@@ -37,10 +39,10 @@ public  class DataDynamicCache {
     }
 
     /**
-     * 深度 copy cache
+     * 深度 copy
      * @param templateKey
      * @param <E>
-     * @return
+     * @return List<E>
      */
     public static  <E> List<E> getDeepTemplateObject(String templateKey){
         if (cache.containsKey(templateKey)){

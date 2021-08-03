@@ -1,10 +1,6 @@
 package com.github.fashionbrot;
 
-/**
- * @author fashionbrot
- * @version 0.1.0
- * @date 2020/11/23 22:45
- */
+
 public class DataDynamicConsts {
 
     public static final String HEALTH = "/open/health";

@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "mars.data.dynamic")
+@ConfigurationProperties(prefix = "mars.dynamic.data")
 public class MarsDataDynamicConfigurationProperties {
 
     /**

@@ -7,7 +7,7 @@
 
     <groupId>com.github.fashionbrot</groupId>
     <artifactId>demo</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.1</version>
 
     <!--<modules>
         <module>data-dynamic-demo</module>

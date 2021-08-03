@@ -8,9 +8,9 @@ import com.github.fashionbrot.ribbon.loadbalancer.ILoadBalancer;
 public interface IRule {
 
     /**
-     * Choose a server from load balancer.
-     * @return
+     * choose a server  from load balancer
+     * @param lb
+     * @return Server
      */
     Server choose(ILoadBalancer lb);
-
 }

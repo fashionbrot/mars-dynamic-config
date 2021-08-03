@@ -13,19 +13,20 @@ import java.util.List;
 public class TestController {
 
 
-
-    @RequestMapping("test")
-    @ResponseBody
-    public Object test(){
-        return DataDynamicCache.getTemplateObject("banner");
-    }
-
+    /**
+     * 浅拷贝
+     * @return
+     */
     @RequestMapping("test1")
     @ResponseBody
     public Object test1(){
         return DataDynamicCache.getTemplateObject("banner");
     }
 
+    /**
+     * 深拷贝
+     * @return
+     */
     @RequestMapping("test2")
     @ResponseBody
     public Object test2(){

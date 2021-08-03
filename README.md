@@ -5,6 +5,7 @@
 ##### 第一种是对 properties、yml 的动态配置修改功能,节省了我们频繁部署上线去修改 properties 的值。
 ##### 第二种是对一条或多条数据的配置系统,主要是针对数据量小的表集中通过 mars-dynamic-config配置,节省了我们创建小表带来的工作量;通过mars-dynamic-config 配置可以直接通过集成api 直接获取对应的数据，从而节省了我们的开发时间。
 
+![Image text](https://raw.githubusercontent.com/hongmaju/light7Local/master/img/productShow/20170518152848.png)
 
 #### 软件架构
 软件架构说明
@@ -61,7 +62,7 @@ mars.cluster.sync.retry=3
 |mars.dynamic.system.local-cache-path|本地缓存路径(默认user.home)|否|
 
 
-#### 3、【客户端】spring 需要@EnableMarsConfig注解启动（springboot/springcloud 不需要） 
+#### 3、【客户端】spring 需要@EnableSystemDynamicConfig注解启动（springboot/springcloud 不需要） 
 ```java
 package com.github.fashionbrot;
 
@@ -147,7 +148,7 @@ public class TestConfig {
 |mars.dynamic.data.listen-long-poll-ms|客户端轮训毫秒数（默认10000）|否|
 
 
-#### 3、【客户端】spring 需要@EnableMarsValue注解启动（springboot|springcloud 不需要） 
+#### 3、【客户端】spring 需要@EnableDataDynamicConfig注解启动（springboot|springcloud 不需要） 
 ```java
 package com.github.fashionbrot.config;
 

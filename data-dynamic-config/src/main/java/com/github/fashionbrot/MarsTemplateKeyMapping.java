@@ -8,8 +8,8 @@ import java.util.Map;
 public abstract class MarsTemplateKeyMapping implements Ordered {
 
     /**
-     * class 必须实现序列化
-     * @return
+     * 必须实现java 序列化
+     * @return Map<String,Class>
      */
     public abstract Map<String,Class> initTemplateKeyClass();
 

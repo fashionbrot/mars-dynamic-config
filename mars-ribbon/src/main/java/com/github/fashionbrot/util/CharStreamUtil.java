@@ -3,11 +3,7 @@ package com.github.fashionbrot.util;
 import java.io.IOException;
 import java.nio.CharBuffer;
 
-/**
- * @author fashionbrot
- * @version 0.1.0
- * @date 2019/12/15 23:31
- */
+
 public class CharStreamUtil {
 
     private static final int BUF_SIZE = 0x800; // 2K chars (4K bytes)

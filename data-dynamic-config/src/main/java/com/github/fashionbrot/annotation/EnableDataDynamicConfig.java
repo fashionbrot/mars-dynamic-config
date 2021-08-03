@@ -15,39 +15,29 @@ public @interface EnableDataDynamicConfig {
 
 
     /**
-     * project Code
-     * @return
+     * project code
      */
     String appCode() default DataDynamicConsts.APP_CODE;
 
     /**
-     * profiles env code
-     * @return
+     * env code
      */
     String envCode() default DataDynamicConsts.ENV_CODE;
 
     /**
-     * mars server address
-     * @return
+     * server address
      */
     String serverAddress() default DataDynamicConsts.SERVER_ADDRESS;
 
+
     /**
-     * listen long poll timeout  default 10000 ms
+     * listen long poll timeout default 10000 ms
      */
     String listenLongPollMs() default DataDynamicConsts.LISTEN_LONG_POLL_MS;
 
 
-    /**
-     * 集群配置
-     * @return
-     */
+
     String cluster() default DataDynamicConsts.CLUSTER;
 
-    /**
-     * 预留方法
-     * Local cache file path
-     * @return
-     */
     String localCachePath() default DataDynamicConsts.LOCAL_CACHE_PATH;
 }
