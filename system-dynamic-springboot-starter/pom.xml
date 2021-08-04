@@ -27,8 +27,8 @@
         </license>
     </licenses>
     <scm>
-        <tag>master</tag>
-        <url>scm:git:https://github.com/fashionbrot/mars-dynamic-config.git</url>
+        <tag>2.0.1</tag>
+        <url>https://github.com/fashionbrot/mars-dynamic-config.git</url>
         <connection>scm:git:https://github.com/fashionbrot/mars-dynamic-config.git</connection>
         <developerConnection>https://github.com/fashionbrot/mars-dynamic-config</developerConnection>
     </scm>
@@ -79,6 +79,7 @@
 
 
 
+
     <build>
         <plugins>
             <plugin>
@@ -125,8 +126,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0</version>
                 <configuration>
-                    <excludePackageNames>com.facebook.thrift:com.facebook.thrift.*</excludePackageNames>
+                    <encoding>UTF-8</encoding>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
                 </configuration>
                 <executions>
                     <execution>
@@ -137,6 +141,7 @@
                         </goals>
                         <configuration>
                             <doclint>none</doclint>
+                            <encoding>UTF-8</encoding>
                         </configuration>
                     </execution>
                 </executions>

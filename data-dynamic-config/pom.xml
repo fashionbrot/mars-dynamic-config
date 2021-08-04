@@ -29,8 +29,8 @@
     </licenses>
 
     <scm>
-        <tag>master</tag>
-        <url>scm:git:https://github.com/fashionbrot/mars-dynamic-config.git</url>
+        <tag>0.2.0</tag>
+        <url>https://github.com/fashionbrot/mars-dynamic-config.git</url>
         <connection>scm:git:https://github.com/fashionbrot/mars-dynamic-config.git</connection>
         <developerConnection>https://github.com/fashionbrot/mars-dynamic-config</developerConnection>
     </scm>

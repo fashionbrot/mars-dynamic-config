@@ -33,7 +33,38 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+    <url>https://github.com/fashionbrot/mars-dynamic-config</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <tag>0.1.3</tag>
+        <url>https://github.com/fashionbrot/mars-dynamic-config</url>
+        <connection>scm:git:https://github.com/fashionbrot/mars-dynamic-config.git</connection>
+        <developerConnection>https://github.com/fashionbrot/mars-dynamic-config</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>fashionbrot</name>
+            <email>fashionbrot@163.com</email>
+            <organization>github</organization>
+        </developer>
+    </developers>
 
+    <distributionManagement>
+        <repository>
+            <id>release</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 
     <build>
