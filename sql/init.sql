@@ -395,6 +395,14 @@ CREATE TABLE `m_system_release` (
   KEY `index` (`env_code`,`app_code`) USING BTREE
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统配置发布表';
 
+DROP TABLE IF EXISTS `m_sequence`;
+CREATE TABLE `m_sequence` (
+`s_name` varchar(32) NOT NULL ,
+`number` int(5) default 0,
+PRIMARY KEY (`s_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+INSERT INTO `m_sequence` (`s_name`, `number`) VALUES ('system', '1');
+
 
 
 
