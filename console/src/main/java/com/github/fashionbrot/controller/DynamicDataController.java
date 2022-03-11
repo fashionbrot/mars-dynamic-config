@@ -52,19 +52,19 @@ public class DynamicDataController  {
     @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
-        return "/m/dynamicData/index";
+        return "m/dynamicData/index";
     }
 
     @MarsPermission(":add")
     @GetMapping("/add")
     public String add(){
-        return "/m/dynamicData/add";
+        return "m/dynamicData/add";
     }
 
     @MarsPermission(":edit")
     @GetMapping("/edit")
     public String edit(){
-        return "/m/dynamicData/edit";
+        return "m/dynamicData/edit";
     }
 
 

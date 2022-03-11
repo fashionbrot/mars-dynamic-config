@@ -56,25 +56,25 @@ public class PropertyController  {
     @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
-        return "/m/property/index";
+        return "m/property/index";
     }
 
     @MarsPermission(":add")
     @GetMapping("/add")
     public String add(){
-        return "/m/property/add";
+        return "m/property/add";
     }
 
     @MarsPermission(":edit")
     @GetMapping("/edit")
     public String edit(){
-        return "/m/property/edit";
+        return "m/property/edit";
     }
 
     @MarsPermission(":copyProperty")
     @GetMapping("/copyProperty")
     public String copyProperty(){
-        return "/m/property/copyProperty";
+        return "m/property/copyProperty";
     }
 
 

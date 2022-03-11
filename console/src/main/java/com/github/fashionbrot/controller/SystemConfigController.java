@@ -51,22 +51,22 @@ public class SystemConfigController {
     @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
-        return "/m/systemConfig/index";
+        return "m/systemConfig/index";
     }
 
     @GetMapping("/add")
     public String add(){
-        return "/m/systemConfig/add";
+        return "m/systemConfig/add";
     }
 
     @GetMapping("/edit")
     public String edit(){
-        return "/m/systemConfig/edit";
+        return "m/systemConfig/edit";
     }
 
     @GetMapping("/clone")
     public String clone(){
-        return "/m/systemConfig/clone";
+        return "m/systemConfig/clone";
     }
 
 

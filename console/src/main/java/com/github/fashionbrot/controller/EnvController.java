@@ -52,19 +52,19 @@ public class EnvController  {
     @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
-        return "/m/env/index";
+        return "m/env/index";
     }
 
     @MarsPermission(":add")
     @GetMapping("/add")
     public String add(){
-        return "/m/env/add";
+        return "m/env/add";
     }
 
     @MarsPermission(":edit")
     @GetMapping("/edit")
     public String edit(){
-        return "/m/env/edit";
+        return "m/env/edit";
     }
 
 

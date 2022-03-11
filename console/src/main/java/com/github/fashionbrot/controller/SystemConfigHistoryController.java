@@ -50,13 +50,13 @@ public class SystemConfigHistoryController  {
     @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
-        return "/m/systemConfigHistory/index";
+        return "m/systemConfigHistory/index";
     }
 
     @MarsPermission(":view")
     @GetMapping("/view")
     public String view(){
-        return "/m/systemConfigHistory/view";
+        return "m/systemConfigHistory/view";
     }
 
     @ApiOperation("分页列表")

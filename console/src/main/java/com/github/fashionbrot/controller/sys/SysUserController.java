@@ -61,25 +61,25 @@ public class SysUserController {
     @MarsPermission(":index")
     @GetMapping("/index")
     public String index() {
-        return "/system/user/userInfo";
+        return "system/user/userInfo";
     }
 
     @GetMapping("/index/add")
     public String indexAdd() {
-        return "/system/user/addInfo" ;
+        return "system/user/addInfo" ;
     }
 
     @RequestMapping("/edit")
     public String edit(Long id, ModelMap modelMap) {
         modelMap.put("info",service.getById(id));
-        return "/system/user/editInfo" ;
+        return "system/user/editInfo" ;
     }
 
     @GetMapping("/profile/resetPwd")
     public String test(ModelMap mmap) {
         LoginModel loginModel = userLoginService.getLogin();
         mmap.put("user", loginModel);
-        return "/system/user/resetPwd" ;
+        return "system/user/resetPwd" ;
     }
 
     @ApiOperation("系统登录")

@@ -52,17 +52,17 @@ public class DynamicDataLogController  {
     @MarsPermission(":index")
     @GetMapping("/index")
     public String index(){
-        return "/m/dynamicDataLog/index";
+        return "m/dynamicDataLog/index";
     }
 
     @GetMapping("/add")
     public String add(){
-        return "/m/dynamicDataLog/add";
+        return "m/dynamicDataLog/add";
     }
 
     @GetMapping("/edit")
     public String edit(){
-        return "/m/dynamicDataLog/edit";
+        return "m/dynamicDataLog/edit";
     }
 
     @MarsPermission(":index")
