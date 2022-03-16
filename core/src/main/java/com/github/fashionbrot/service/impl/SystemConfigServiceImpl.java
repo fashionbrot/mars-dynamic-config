@@ -64,8 +64,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
     private SystemReleaseMapper systemReleaseMapper;
     @Autowired
     private SystemConfigCacheService systemConfigCacheService;
-    @Autowired
-    private SequenceMapper sequenceMapper;
+
 
     @Autowired
     private Environment environment;
@@ -119,7 +118,6 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
         releaseQuery.eq("app_code", appCode);
         releaseQuery.eq("release_flag",0);
 
-        Long nextValue = sequenceMapper.selectNextValue(SEQUENCE_NAME);
 
         SystemReleaseEntity systemReleaseEntity = systemReleaseMapper.selectOne(releaseQuery);
         if (systemReleaseEntity == null) {
@@ -265,19 +263,17 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
     @Override
     public void releaseConfig(SystemConfigEntity req) {
 
-        Long nowNextValue = sequenceMapper.selectNextValue("system");
-        if (req.getNextValue().longValue()!=nowNextValue.longValue()){
-            throw new MarsException("处理繁忙，请稍后重试");
-        }
 
         QueryWrapper q = new QueryWrapper<SystemReleaseEntity>()
                 .eq("env_code", req.getEnvCode())
                 .eq("app_code", req.getAppCode())
                 .eq("release_flag", 0);
-        int  count = systemReleaseMapper.selectCount(q);
-        if (count==0) {
+        SystemReleaseEntity  release = systemReleaseMapper.selectOne(q);
+        if (release==null) {
             throw new MarsException("没有要发布的配置");
         }
+
+        long nowNextValue = release.getId();
 
         //更新 SystemConfigEntity表 新增 编辑 状态为发布
         baseMapper.updateRelease(SystemConfigDto.builder()
@@ -333,7 +329,7 @@ public class SystemConfigServiceImpl extends ServiceImpl<SystemConfigMapper, Sys
                     public void run() {
                         for (int i = 0; i < retry; i++) {
                             HttpResult httpResult = HttpClientUtil.httpPost(s, null, params, "UTF-8", 2000, 2000);
-                            if (httpResult.isSuccess() && (nowNextValue.longValue() + "").equals(httpResult.getResponseBody())) {
+                            if (httpResult.isSuccess() && (nowNextValue + "").equals(httpResult.getResponseBody())) {
                                 break;
                             }
                         }

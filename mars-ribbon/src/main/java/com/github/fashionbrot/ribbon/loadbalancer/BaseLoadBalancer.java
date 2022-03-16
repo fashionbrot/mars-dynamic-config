@@ -55,11 +55,12 @@ public class BaseLoadBalancer implements ILoadBalancer {
                 if (svr.length == 2) {
                     port = StringUtil.parseInteger(svr[1], 80);
                 }
-                serverList.add(Server.builder()
-                        .host(svr[0])
-                        .port(port)
-                        .path(healthUrl)
-                        .build());
+                Server newServer=new Server();
+                newServer.setHost(svr[0]);
+                newServer.setPort(port);
+                newServer.setPath(healthUrl);
+
+                serverList.add(newServer);
             }
             this.addServers(serverList);
         }
